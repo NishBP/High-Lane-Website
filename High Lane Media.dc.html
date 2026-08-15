@@ -201,27 +201,32 @@ a{color:inherit;text-decoration:none}
 @keyframes hl-live{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--aqua) 70%,transparent)}
   70%,100%{box-shadow:0 0 0 9px transparent}}
 
-/* the name lockup: "High Lane" + the rotating service wheel beside it */
-.hero-title{margin:clamp(20px,2.6vw,28px) 0 0;display:flex;flex-wrap:wrap;align-items:baseline;
-  gap:clamp(12px,1.6vw,22px);font-size:clamp(46px,6.4vw,84px);letter-spacing:-.042em}
+/* the name lockup: "High Lane" with the services pinwheel turning beside it */
+.hero-title{margin:clamp(20px,2.6vw,28px) 0 0;display:flex;flex-wrap:wrap;align-items:center;
+  gap:clamp(10px,1.5vw,22px);font-size:clamp(44px,5.6vw,76px);letter-spacing:-.042em}
 .hero-title .brand{margin-left:-.045em}
-.hl-wheel{display:inline-flex;align-items:baseline;gap:.62em;font-size:.36em;letter-spacing:-.025em;
-  transform:translateY(-.22em);min-width:0;max-width:100%}
-.hl-wheel .lane{width:.62em;height:.62em;flex:none;align-self:center;color:var(--aqua);
-  animation:hl-nudge 4.5s var(--ease-out) infinite}
-@keyframes hl-nudge{0%,68%,100%{transform:translateX(0)}80%{transform:translateX(.16em)}}
-.hl-wheel-mask{position:relative;height:1.34em;overflow:hidden;
-  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent);
-          mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent)}
-.hl-wheel-inner{animation:hl-roll 9s var(--ease-out) infinite}
-.hl-wheel-inner > span{display:block;height:1.34em;line-height:1.34em;white-space:nowrap;color:var(--teal-700)}
-.hl-wheel-inner i{font-style:normal;color:var(--aqua)}
-@keyframes hl-roll{
-  0%,20%   {transform:translateY(0)}
-  25%,53%  {transform:translateY(-25%)}
-  58%,86%  {transform:translateY(-50%)}
-  91%,100% {transform:translateY(-75%)}
-}
+
+/* three services set around a turning wheel. The ring and the blades run in
+   opposite directions so the whole thing reads as a pinwheel rather than a
+   badge — the blade group carries #hl-wheel, so the authored wheelSeconds
+   prop still drives its speed. */
+.pinwheel{flex:none;display:block;width:clamp(150px,17vw,230px)}
+.pinwheel svg{display:block;width:100%;height:auto;overflow:visible}
+/* The three names orbit the hub; each one counter-rotates on the SAME linear
+   duration, so the two rotations cancel exactly and every label stays upright
+   and readable all the way round — no upside-down text. */
+.pw-orbit{transform-origin:120px 120px;animation:hl-spin 22s linear infinite}
+.pw-lab{animation:hl-spin-back 22s linear infinite}
+.pw-lab.a{transform-origin:120px 36px}
+.pw-lab.b{transform-origin:192.7px 162px}
+.pw-lab.c{transform-origin:47.3px 162px}
+.pw-text{font-family:var(--font-display);font-weight:700;font-size:12px;letter-spacing:.09em;
+  fill:var(--teal-700);text-anchor:middle}
+.pw-blades{transform-origin:120px 120px;animation:hl-spin-back 9s linear infinite}
+.pw-blade{fill:none;stroke-width:13;stroke-linecap:round}
+.pw-spoke{stroke:var(--line-2);stroke-width:2;stroke-linecap:round}
+@keyframes hl-spin{to{transform:rotate(360deg)}}
+@keyframes hl-spin-back{to{transform:rotate(-360deg)}}
 
 /* ── HERO GRAPHIC — one lane in, three services out ───────────────────── */
 /* the stage is scaled, not reflowed, so its 470px layout box has to be
@@ -273,13 +278,16 @@ a{color:inherit;text-decoration:none}
 .chip.c2{left:36px;top:344px;animation-delay:2.6s}
 
 /* the cursor, borrowed from the inspiration board */
-.cursor{position:absolute;left:0;top:0;width:22px;height:22px;pointer-events:none;
+.cursor{position:absolute;left:0;top:0;width:32px;height:32px;pointer-events:none;
   animation:hl-cursor 8s var(--ease) infinite;z-index:5}
-.cursor svg{width:22px;height:22px;display:block;filter:drop-shadow(0 3px 6px rgba(8,25,27,.28))}
-.cursor .ring{position:absolute;left:-9px;top:-9px;width:38px;height:38px;border-radius:50%;
+/* tighter, darker shadow — the old soft one greyed the pointer out */
+.cursor svg{width:32px;height:32px;display:block;filter:drop-shadow(0 2px 3px rgba(8,25,27,.45))}
+/* the click ripple is centred on the pointer TIP, not on its bounding box */
+.cursor .ring{position:absolute;left:-15px;top:-19px;width:44px;height:44px;border-radius:50%;
   border:2px solid var(--aqua);animation:hl-click 8s var(--ease-out) infinite}
 @keyframes hl-cursor{
   0%   {transform:translate(52px,392px);opacity:0}
+  3%   {opacity:1}
   6%   {transform:translate(120px,330px);opacity:1}
   22%  {transform:translate(314px,74px)}
   32%  {transform:translate(314px,74px)}
@@ -287,6 +295,7 @@ a{color:inherit;text-decoration:none}
   60%  {transform:translate(314px,358px)}
   78%  {transform:translate(314px,216px)}
   88%  {transform:translate(314px,216px)}
+  94%  {opacity:1}
   97%  {transform:translate(52px,392px);opacity:0}
   100% {transform:translate(52px,392px);opacity:0}
 }
@@ -420,10 +429,12 @@ a{color:inherit;text-decoration:none}
 .tape-mask{margin-top:clamp(28px,4vw,48px);width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;
   -webkit-mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent);
           mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent)}
-.tape{display:flex;width:max-content;gap:20px;padding-inline:20px;animation:hl-marquee 58s linear infinite}
+.tape{display:flex;width:max-content;animation:hl-marquee 58s linear infinite}
 .tape-mask:hover .tape{animation-play-state:paused}
-@keyframes hl-marquee{to{transform:translateX(calc(-50% - 10px))}}
-.review{margin:0;flex:none;width:clamp(292px,29vw,388px);display:flex;flex-direction:column;gap:16px;
+/* each card owns its trailing gap, so one full set is exactly 50% of the
+   track at any card width — no magic pixel correction, no jump on wrap */
+@keyframes hl-marquee{to{transform:translateX(-50%)}}
+.review{margin:0 20px 0 0;flex:none;width:clamp(292px,29vw,388px);display:flex;flex-direction:column;gap:16px;
   padding:clamp(24px,2.5vw,32px);background:var(--bg);border:1px solid var(--line);
   border-radius:var(--r-lg);box-shadow:var(--sh-1)}
 .review .qm{font-family:var(--font-display);font-weight:800;font-size:34px;line-height:.6;color:var(--aqua)}
@@ -563,16 +574,24 @@ a{color:inherit;text-decoration:none}
 
       <h1 class="hero-title">
         <span class="brand">High Lane</span>
-        <span class="hl-wheel">
-          <svg class="lane" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h13"/><path d="m13 6 6 6-6 6"/></svg>
-          <span class="hl-wheel-mask">
-            <span class="hl-wheel-inner" id="hl-wheel">
-              <span>Social Media<i>.</i></span>
-              <span>AI Automations<i>.</i></span>
-              <span>Web Development<i>.</i></span>
-              <span>Social Media<i>.</i></span>
-            </span>
-          </span>
+        <span class="pinwheel" aria-hidden="true">
+          <svg viewBox="0 0 240 240">
+            <g class="pw-blades" id="hl-wheel">
+              <path class="pw-spoke" d="M136 120 H160"/>
+              <path class="pw-spoke" d="M112 133.9 L100 154.6"/>
+              <path class="pw-spoke" d="M112 106.1 L100 85.4"/>
+              <path class="pw-blade" stroke="#12eef2" d="M150.9 83.2 A48 48 0 0 1 150.9 156.8"/>
+              <path class="pw-blade" stroke="#0b8f96" d="M136.4 165.1 A48 48 0 0 1 72.7 128.3"/>
+              <path class="pw-blade" stroke="#06383c" d="M72.7 111.7 A48 48 0 0 1 136.4 74.9"/>
+            </g>
+            <circle cx="120" cy="120" r="9" fill="#06383c"/>
+            <circle cx="120" cy="120" r="3" fill="#12eef2"/>
+            <g class="pw-orbit">
+              <g class="pw-lab a"><text class="pw-text" x="120" y="32">SOCIAL<tspan x="120" dy="13">MEDIA</tspan></text></g>
+              <g class="pw-lab b"><text class="pw-text" x="192.7" y="158">AI<tspan x="192.7" dy="13">AUTOMATIONS</tspan></text></g>
+              <g class="pw-lab c"><text class="pw-text" x="47.3" y="158">WEB<tspan x="47.3" dy="13">DEVELOPMENT</tspan></text></g>
+            </g>
+          </svg>
         </span>
       </h1>
 
@@ -623,7 +642,7 @@ a{color:inherit;text-decoration:none}
 
         <div class="cursor">
           <span class="ring"></span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 3.2 19 12.4l-5.9.7-2.8 5.5z" fill="#08191b" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2 L5 20.5 L9.8 16.2 L12.6 22.5 L15.9 21 L13.1 14.9 L19.4 14.6 Z" fill="#04191c" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
         </div>
       </div></div>
     </div>
