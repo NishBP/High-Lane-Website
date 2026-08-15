@@ -203,31 +203,34 @@ a{color:inherit;text-decoration:none}
 
 /* the name lockup: "High Lane" with the services pinwheel turning beside it */
 .hero-title{margin:clamp(20px,2.6vw,28px) 0 0;display:flex;flex-wrap:wrap;align-items:baseline;
-  gap:clamp(10px,1.4vw,20px);font-size:clamp(44px,5.4vw,72px);letter-spacing:-.042em}
+  gap:clamp(10px,1.4vw,20px);font-size:clamp(38px,4.2vw,56px);letter-spacing:-.042em}
 .hero-title .brand{margin-left:-.045em}
 
-/* The services pinwheel: a three-sided prism turning on the Y axis, one
-   service facing front at a time. The faces sit on the three sides of an
-   equilateral prism, so the depth --r is half the face width divided by
-   tan(60deg) — measured in JS from the real rendered width, because the
-   value depends on the widest label once the webfont has loaded. */
-.pinwheel{position:relative;display:inline-block;font-size:.38em;letter-spacing:-.025em;
-  perspective:1100px;color:var(--teal-700)}
+/* The services pinwheel: a three-sided drum that flips VERTICALLY — each
+   service rolls up and out while the next arrives from below. That motion
+   is rotateX (rotation about the horizontal axis); rotateY would spin the
+   text sideways like a revolving door, which is not what we want here.
+   The faces sit on the three sides of an equilateral prism, so the depth
+   --r is half the face HEIGHT over tan(60deg) — height, not width, because
+   the faces stack vertically. Measured in JS: it depends on the line box
+   once the webfont has loaded. */
+.pinwheel{position:relative;display:inline-block;font-size:.56em;letter-spacing:-.03em;
+  line-height:1.16;perspective:900px;color:var(--teal-700)}
 .pw-sizer{visibility:hidden;white-space:nowrap} /* holds the width + baseline */
 .pw-prism{position:absolute;left:0;top:0;width:100%;height:100%;transform-style:preserve-3d;
   animation:hl-turn 9s cubic-bezier(.72,0,.2,1) infinite}
 .pw-face{position:absolute;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;
   white-space:nowrap;backface-visibility:hidden;
-  transform:rotateY(var(--a)) translateZ(var(--r,2.6em))}
+  transform:rotateX(var(--a)) translateZ(var(--r,.34em))}
 .pw-face i{font-style:normal;color:var(--aqua)}
 .pw-face.f1{--a:0deg}
 .pw-face.f2{--a:120deg}
 .pw-face.f3{--a:240deg}
 @keyframes hl-turn{
-  0%,26%  {transform:rotateY(0deg)}
-  33%,59% {transform:rotateY(-120deg)}
-  66%,92% {transform:rotateY(-240deg)}
-  100%    {transform:rotateY(-360deg)}
+  0%,26%  {transform:rotateX(0deg)}
+  33%,59% {transform:rotateX(-120deg)}
+  66%,92% {transform:rotateX(-240deg)}
+  100%    {transform:rotateX(-360deg)}
 }
 
 /* ── HERO GRAPHIC — one lane in, three services out ───────────────────── */
@@ -1042,15 +1045,16 @@ class Component extends DCLogic {
     this.wireLucide();
   }
 
-  /* The prism's faces must sit on the sides of an equilateral triangle, so
-     the depth is (width / 2) / tan(60deg). The width depends on the widest
-     label in the loaded webfont, so measure rather than guess. */
+  /* The drum's faces must sit on the sides of an equilateral triangle, so
+     the depth is (height / 2) / tan(60deg) — HEIGHT, because the rotation
+     is on X and the faces stack vertically. The line box depends on the
+     loaded webfont, so measure rather than guess. */
   sizePinwheel() {
     const pw = document.querySelector('.pinwheel');
     if (!pw) return;
     const set = () => {
-      const w = pw.getBoundingClientRect().width;
-      if (w) pw.style.setProperty('--r', (w / 2 / Math.tan(Math.PI / 3)).toFixed(2) + 'px');
+      const h = pw.getBoundingClientRect().height;
+      if (h) pw.style.setProperty('--r', (h / 2 / Math.tan(Math.PI / 3)).toFixed(2) + 'px');
     };
     set();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(set);
