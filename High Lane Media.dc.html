@@ -103,14 +103,16 @@ a{color:inherit;text-decoration:none}
 .section{padding-block:clamp(64px,8vw,116px)}
 
 /* ── shared type ──────────────────────────────────────────────────────── */
+/* Section sub-heading. It sits UNDER its section heading, with no rule mark
+   and no letterspaced caps — as an italic line it reads as a subtitle rather
+   than a label. */
 .kicker{
-  display:inline-flex;align-items:center;gap:9px;
-  font-family:var(--font-body);font-size:12px;font-weight:600;
-  letter-spacing:.16em;text-transform:uppercase;color:var(--teal-700);
+  display:block;font-family:var(--font-body);font-size:clamp(14.5px,1.15vw,16.5px);
+  font-weight:400;font-style:italic;letter-spacing:0;line-height:1.45;
+  color:var(--teal-700);margin-top:10px;
 }
-.kicker::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--aqua);flex:none}
 .kicker.on-deep{color:var(--aqua-300)}
-.h2{font-size:clamp(30px,4.1vw,52px);margin-top:16px}
+.h2{font-size:clamp(30px,4.1vw,52px);margin-top:0}
 .lede{font-size:clamp(15.5px,1.35vw,17.5px);line-height:1.65;color:var(--ink-70);max-width:52ch}
 
 .sec-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:clamp(18px,3vw,48px)}
@@ -333,12 +335,19 @@ a{color:inherit;text-decoration:none}
 .services{background:var(--surface);border-top:1px solid var(--line);position:relative;overflow:hidden}
 
 /* one lane in, three lanes out — drawn at a fixed aspect so nothing stretches */
-.split{display:block;width:100%;height:auto;margin-top:clamp(26px,3.4vw,44px)}
-.split .lane-base{fill:none;stroke:color-mix(in srgb,var(--teal) 26%,transparent);stroke-width:2.2;
+/* the services header: copy on the left, the one-lane-splits-into-three
+   graphic beside it rather than as a full-width band below */
+.svc-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);
+  gap:clamp(24px,4vw,60px);align-items:center}
+@media (max-width:900px){.svc-intro{grid-template-columns:1fr;gap:28px}}
+.split{display:block;width:100%;height:auto}
+/* strokes are heavier than they look here: the graphic now renders at about
+   half its old width, so 2.2 would land under a pixel */
+.split .lane-base{fill:none;stroke:color-mix(in srgb,var(--teal) 30%,transparent);stroke-width:4;
   stroke-linecap:round;stroke-linejoin:round}
-.split .lane-glow{fill:none;stroke:var(--teal);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;
+.split .lane-glow{fill:none;stroke:var(--teal);stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round;
   stroke-dasharray:120 1600;animation:hl-lane 4.2s var(--ease-out) infinite}
-.split .head{fill:none;stroke:var(--teal);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.split .head{fill:none;stroke:var(--teal);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
 .split .l2{animation-delay:.28s}.split .l3{animation-delay:.56s}
 @keyframes hl-lane{0%{stroke-dashoffset:1720;opacity:0}8%{opacity:1}88%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 @media (max-width:700px){.split{display:none}}
@@ -656,15 +665,14 @@ a{color:inherit;text-decoration:none}
      their shape at every width.
      ══════════════════════════════════════════════════════════════════════ -->
 <section class="services section wrap" id="services" data-screen-label="Services">
-  <div class="sec-head" data-reveal>
+  <div class="svc-intro" data-reveal>
     <div>
-      <span class="kicker">Three services, one lane</span>
       <h2 class="h2">What we run for you</h2>
+      <span class="kicker">Three services, one lane</span>
+      <p class="lede" style="margin-top:18px">Start anywhere. Most clients add the next service once they see what the first one frees up.</p>
     </div>
-    <p class="lede">Start anywhere. Most clients add the next service once they see what the first one frees up.</p>
-  </div>
 
-  <svg class="split" viewBox="0 0 1200 210" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true" data-reveal>
+    <svg class="split" viewBox="0 0 1200 210" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
     <path class="lane-base" d="M24 105 H 470 C 590 105 570 26 690 26 H 1120"/>
     <path class="lane-base" d="M24 105 H 1120"/>
     <path class="lane-base" d="M24 105 H 470 C 590 105 570 184 690 184 H 1120"/>
@@ -674,7 +682,8 @@ a{color:inherit;text-decoration:none}
     <polyline class="head" points="1106,14 1120,26 1106,38"/>
     <polyline class="head" points="1106,93 1120,105 1106,117"/>
     <polyline class="head" points="1106,172 1120,184 1106,196"/>
-  </svg>
+    </svg>
+  </div>
 
   <div class="svc-list" data-reveal>
 
@@ -836,9 +845,9 @@ a{color:inherit;text-decoration:none}
 <section class="story section wrap" id="story" data-screen-label="Story">
   <div class="story-grid">
     <div data-reveal>
+      <h2 class="h2">We kept getting asked for <em>the next thing.</em></h2>
       <span class="kicker">Our story</span>
       <p class="lede" style="margin-top:20px">High Lane started in a spare room with two laptops and one client's Instagram account. The content worked, the enquiries came in — and then the same question kept arriving: “can you handle the replies too?”, “can you fix the website they land on?”</p>
-      <h2 class="h2">We kept getting asked for <em>the next thing.</em></h2>
       <p class="lede" style="margin-top:18px">So we learned to. Automations came first, out of necessity. Web development followed, because a great campaign pointing at a broken site is just expensive noise. We are still small on purpose: you talk to the people doing the work.</p>
       <div class="btn-row">
         <a class="btn btn-primary" href="#team">Meet the team</a>
@@ -866,8 +875,8 @@ a{color:inherit;text-decoration:none}
 <section class="section wrap" id="team" data-screen-label="Team">
   <div class="sec-head" data-reveal>
     <div>
-      <span class="kicker">The team</span>
       <h2 class="h2">Behind the scenes</h2>
+      <span class="kicker">The team</span>
     </div>
     <p class="lede">Five specialists, no layers. The person who plans your content is the person who posts it.</p>
   </div>
@@ -904,8 +913,8 @@ a{color:inherit;text-decoration:none}
      ══════════════════════════════════════════════════════════════════════ -->
 <section class="reviews section" id="reviews" data-screen-label="Reviews">
   <div class="wrap" data-reveal>
-    <span class="kicker">Client reviews</span>
     <h2 class="h2">What it's like to work with us</h2>
+    <span class="kicker">Client reviews</span>
   </div>
 
   <div class="tape-mask" data-reveal>
