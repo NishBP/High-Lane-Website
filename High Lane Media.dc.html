@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>High Lane — Social media, AI automations & web development</title>
+<meta name="description" content="High Lane runs your social channels, automates the work behind them with AI, and ships the web apps and sites those channels point at.">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-28d11f88-3de9-49ec-bc66-7b499bb184e1/styles.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Poppins:wght@500;600;700;800&amp;display=swap">
+<script src="_ds/modernist-28d11f88-3de9-49ec-bc66-7b499bb184e1/_ds_bundle.js"></script>
+<script src="image-slot.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   HIGH LANE — design tokens
+   One accent (electric aqua) spent sparingly, a deep brand teal that matches
+   the logo, hairline rules instead of heavy borders, one radius scale and
+   one shadow scale. Every value below is used by name — change it here and
+   it changes everywhere.
+   ══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --font-display:"Poppins",system-ui,-apple-system,sans-serif;
+  --font-body:"Inter","Poppins",system-ui,-apple-system,sans-serif;
+
+  /* ground */
+  --bg:#ffffff;
+  --bg-soft:#f8fbfb;
+  --surface:#f3f9f9;
+  --surface-2:#e8f4f5;
+
+  /* brand deeps — tuned to the logo's green */
+  --deep:#06383c;
+  --deep-2:#0a4a4f;
+
+  /* ink */
+  --ink:#08191b;
+  --ink-70:rgba(8,25,27,.70);
+  --ink-55:rgba(8,25,27,.55);
+  --ink-40:rgba(8,25,27,.40);
+  --line:rgba(8,25,27,.085);
+  --line-2:rgba(8,25,27,.16);
+
+  /* accent ramp */
+  --aqua:#12eef2;
+  --aqua-soft:#8ffffa;
+  --aqua-100:#effffe;
+  --aqua-200:#c8fffc;
+  --aqua-300:#8ffffa;
+  --teal:#0b8f96;
+  --teal-700:#0a6a70;
+  --teal-800:#075055;
+
+  /* shape */
+  --r-xs:6px; --r-sm:10px; --r:14px; --r-lg:20px; --r-xl:28px; --r-pill:999px;
+  --sh-1:0 1px 2px rgba(8,25,27,.04), 0 6px 16px -8px rgba(8,25,27,.10);
+  --sh-2:0 2px 6px rgba(8,25,27,.04), 0 18px 40px -16px rgba(8,25,27,.18);
+  --sh-3:0 40px 80px -34px rgba(6,56,60,.38);
+  --sh-aqua:0 18px 44px -18px rgba(11,143,150,.45);
+
+  /* motion — one easing family, nothing snappier than 380ms */
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+
+  /* layout */
+  --maxw:1200px;
+  --pad:max(22px,calc((100% - var(--maxw))/2 + 22px));
+
+  /* aliases kept so anything still referencing the old token names resolves */
+  --color-bg:var(--bg); --color-surface:var(--surface); --color-text:var(--ink);
+  --color-divider:var(--line-2); --color-accent:var(--teal);
+  --color-accent-100:var(--aqua-100); --color-accent-200:var(--aqua-200);
+  --color-accent-300:var(--aqua-300); --color-accent-400:#4ff7f9;
+  --color-accent-500:var(--aqua); --color-accent-600:#097b81;
+  --color-accent-700:var(--teal-700); --color-accent-800:var(--teal-800);
+  --color-accent-900:var(--deep);
+  --font-heading:var(--font-display);
+}
+
+/* ── base ─────────────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--font-body);font-size:16px;line-height:1.6;
+  text-wrap:pretty;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  font-feature-settings:"cv11" 1,"ss01" 1;
+}
+img{max-width:100%}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:800;letter-spacing:-.032em;line-height:1.05;margin:0}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--aqua);color:var(--deep)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:var(--r-xs)}
+
+.wrap{padding-inline:var(--pad)}
+#top{max-width:100%;overflow-x:clip}
+.section{padding-block:clamp(64px,8vw,116px)}
+
+/* ── shared type ──────────────────────────────────────────────────────── */
+.kicker{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--font-body);font-size:12px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--teal-700);
+}
+.kicker::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--aqua);flex:none}
+.kicker.on-deep{color:var(--aqua-300)}
+.h2{font-size:clamp(30px,4.1vw,52px);margin-top:16px}
+.lede{font-size:clamp(15.5px,1.35vw,17.5px);line-height:1.65;color:var(--ink-70);max-width:52ch}
+
+.sec-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:clamp(18px,3vw,48px)}
+.sec-head .lede{max-width:38ch}
+
+/* ── buttons (self-contained — no external design-system dependency) ──── */
+.btn{
+  --btn-bg:var(--deep);--btn-fg:#fff;--btn-bd:transparent;
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--font-body);font-size:15px;font-weight:500;line-height:1;
+  padding:14px 22px;border-radius:var(--r-pill);border:1px solid var(--btn-bd);
+  background:var(--btn-bg);color:var(--btn-fg);cursor:pointer;white-space:nowrap;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease),
+             background .3s var(--ease),color .3s var(--ease),border-color .3s var(--ease);
+  box-shadow:var(--sh-1);appearance:none;text-decoration:none;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--sh-2)}
+.btn:active{transform:translateY(0)}
+.btn .ico{width:16px;height:16px;flex:none;transition:transform .35s var(--ease)}
+.btn:hover .ico{transform:translateX(3px)}
+.btn-primary{--btn-bg:var(--deep);--btn-fg:#fff}
+.btn-primary:hover{--btn-bg:var(--deep-2)}
+.btn-ghost{--btn-bg:transparent;--btn-fg:var(--ink);--btn-bd:var(--line-2);box-shadow:none}
+.btn-ghost:hover{--btn-bd:var(--teal);--btn-fg:var(--teal-700);box-shadow:var(--sh-1)}
+.btn-aqua{--btn-bg:var(--aqua);--btn-fg:var(--deep)}
+.btn-aqua:hover{--btn-bg:var(--aqua-soft)}
+.btn-sm{padding:11px 17px;font-size:14px}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(24px,3vw,34px)}
+
+/* ── nav ──────────────────────────────────────────────────────────────── */
+.nav{
+  position:sticky;top:0;z-index:60;display:flex;align-items:center;
+  gap:clamp(14px,2.4vw,34px);padding:13px var(--pad);
+  background:color-mix(in srgb,var(--bg) 78%,transparent);
+  backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid transparent;transition:border-color .4s var(--ease),background .4s var(--ease);
+}
+.nav[data-stuck]{border-bottom-color:var(--line);background:color-mix(in srgb,var(--bg) 88%,transparent)}
+.nav-brand{display:flex;align-items:center;margin-right:auto}
+/* the logo file is the wordmark — never re-typeset the brand name in CSS */
+.nav-brand img{display:block;height:38px;width:auto}
+@media (max-width:520px){.nav-brand img{height:32px}}
+.nav-link{position:relative;font-size:14.5px;font-weight:450;color:var(--ink-70);padding-block:4px;
+  transition:color .3s var(--ease)}
+.nav-link::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;border-radius:2px;
+  background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--ease)}
+.nav-link:hover{color:var(--ink)}
+.nav-link:hover::after{transform:scaleX(1)}
+@media (max-width:860px){.nav-link{display:none}}
+
+/* ── HERO ─────────────────────────────────────────────────────────────── */
+.hero{position:relative;padding:clamp(48px,7vw,96px) var(--pad) clamp(56px,8vw,104px);isolation:isolate}
+.hero-bg{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.hero-glow{position:absolute;inset:0;
+  background:
+    radial-gradient(46% 42% at 82% 4%,  color-mix(in srgb,var(--aqua) 26%,transparent) 0%, transparent 68%),
+    radial-gradient(38% 46% at 6% 92%, color-mix(in srgb,var(--teal) 12%,transparent) 0%, transparent 70%);
+}
+/* the grid: hairline cells, radially masked so it dissolves rather than stops */
+.hero-grid{position:absolute;inset:0;display:grid;
+  -webkit-mask-image:radial-gradient(120% 100% at 50% 0%,#000 0%,#000 42%,transparent 88%);
+          mask-image:radial-gradient(120% 100% at 50% 0%,#000 0%,#000 42%,transparent 88%)}
+.hero-grid span{display:block;border-right:1px solid rgba(8,25,27,.055);border-bottom:1px solid rgba(8,25,27,.055);
+  background:transparent;transition:background .7s var(--ease-out)}
+/* two slow light beams sweeping the grid */
+.hero-beam{position:absolute;top:-10%;height:120%;width:min(38vw,460px);pointer-events:none;
+  background:linear-gradient(100deg,transparent,color-mix(in srgb,var(--aqua) 16%,transparent) 45%,transparent);
+  filter:blur(24px);animation:hl-sweep 13s var(--ease-out) infinite}
+.hero-beam.b2{width:min(24vw,300px);animation-duration:17s;animation-delay:5s;
+  background:linear-gradient(100deg,transparent,color-mix(in srgb,var(--teal) 12%,transparent) 45%,transparent)}
+@keyframes hl-sweep{0%{left:-40%;opacity:0}12%,72%{opacity:1}100%{left:112%;opacity:0}}
+
+/* the graphic column is pinned to the stage's real width so its SVG wires
+   never scale away from the px-positioned cards sitting on top of them */
+.hero-inner{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 470px;
+  gap:clamp(30px,4.5vw,64px);align-items:center}
+/* grid items default to min-width:auto, which would let the 470px stage set
+   the column width and push the page wider than the viewport */
+.hero-inner > *{min-width:0}
+@media (max-width:1080px){.hero-inner{grid-template-columns:1fr}}
+
+.hero-badge{display:inline-flex;align-items:center;gap:10px;padding:7px 15px 7px 11px;
+  border-radius:var(--r-pill);background:color-mix(in srgb,var(--bg) 70%,transparent);
+  border:1px solid var(--line-2);box-shadow:var(--sh-1);backdrop-filter:blur(8px);
+  font-size:12.5px;font-weight:500;letter-spacing:.01em;color:var(--ink-70)}
+.hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--aqua);flex:none;
+  box-shadow:0 0 0 0 color-mix(in srgb,var(--aqua) 70%,transparent);animation:hl-live 2.6s var(--ease-out) infinite}
+@keyframes hl-live{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--aqua) 70%,transparent)}
+  70%,100%{box-shadow:0 0 0 9px transparent}}
+
+/* the name lockup: "High Lane" + the rotating service wheel beside it */
+.hero-title{margin:clamp(20px,2.6vw,28px) 0 0;display:flex;flex-wrap:wrap;align-items:baseline;
+  gap:clamp(12px,1.6vw,22px);font-size:clamp(46px,6.4vw,84px);letter-spacing:-.042em}
+.hero-title .brand{margin-left:-.045em}
+.hl-wheel{display:inline-flex;align-items:baseline;gap:.62em;font-size:.36em;letter-spacing:-.025em;
+  transform:translateY(-.22em);min-width:0;max-width:100%}
+.hl-wheel .lane{width:.62em;height:.62em;flex:none;align-self:center;color:var(--aqua);
+  animation:hl-nudge 4.5s var(--ease-out) infinite}
+@keyframes hl-nudge{0%,68%,100%{transform:translateX(0)}80%{transform:translateX(.16em)}}
+.hl-wheel-mask{position:relative;height:1.34em;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent);
+          mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent)}
+.hl-wheel-inner{animation:hl-roll 9s var(--ease-out) infinite}
+.hl-wheel-inner > span{display:block;height:1.34em;line-height:1.34em;white-space:nowrap;color:var(--teal-700)}
+.hl-wheel-inner i{font-style:normal;color:var(--aqua)}
+@keyframes hl-roll{
+  0%,20%   {transform:translateY(0)}
+  25%,53%  {transform:translateY(-25%)}
+  58%,86%  {transform:translateY(-50%)}
+  91%,100% {transform:translateY(-75%)}
+}
+
+/* ── HERO GRAPHIC — one lane in, three services out ───────────────────── */
+/* the stage is scaled, not reflowed, so its 470px layout box has to be
+   clipped by a wrapper — otherwise it widens the page on small screens */
+.stage-wrap{width:100%;overflow:hidden;display:flex;justify-content:center}
+.stage{position:relative;width:470px;flex:none;height:430px;
+  font-family:var(--font-body)}
+.stage-glow{position:absolute;left:-6%;top:12%;width:70%;height:66%;border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--aqua) 40%,transparent),transparent 68%);
+  filter:blur(34px);animation:hl-breathe 8s var(--ease-out) infinite}
+@keyframes hl-breathe{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.9;transform:scale(1.08)}}
+.stage svg.wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+
+.hub{position:absolute;left:2px;top:160px;width:172px;padding:16px 16px 15px;
+  border-radius:var(--r-lg);background:var(--deep);color:#fff;box-shadow:var(--sh-3);
+  animation:hl-float 7s var(--ease-out) infinite}
+/* the logo is a single solid colour, so it knocks out cleanly to white */
+.hub img{display:block;width:122px;height:auto;filter:brightness(0) invert(1);opacity:.96}
+.hub .meta{margin-top:9px;font-size:11.5px;color:rgba(255,255,255,.6)}
+.hub .pulse{position:absolute;right:14px;top:14px;width:8px;height:8px;border-radius:50%;background:var(--aqua);
+  box-shadow:0 0 0 0 color-mix(in srgb,var(--aqua) 60%,transparent);animation:hl-live 2.6s var(--ease-out) infinite}
+
+.node{position:absolute;left:276px;width:190px;display:flex;align-items:center;gap:11px;
+  padding:13px 14px;border-radius:var(--r);background:#fff;border:1px solid var(--line);
+  box-shadow:var(--sh-1);animation:hl-tap 8s linear infinite}
+.node .ic{width:34px;height:34px;flex:none;border-radius:var(--r-sm);display:flex;align-items:center;
+  justify-content:center;background:var(--aqua-100);color:var(--teal-700)}
+.node .ic svg{width:17px;height:17px}
+.node .tx{display:block;min-width:0}
+.node .t{display:block;font-family:var(--font-display);font-weight:700;font-size:12.8px;
+  letter-spacing:-.02em;color:var(--ink);line-height:1.25;white-space:nowrap}
+.node .s{display:block;font-size:11px;line-height:1.35;color:var(--ink-55);margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.node.n1{top:44px;animation-delay:-5.92s}
+.node.n2{top:186px;animation-delay:-1.44s}
+.node.n3{top:328px;animation-delay:-3.68s}
+@keyframes hl-tap{
+  0%,2%    {box-shadow:var(--sh-1);transform:translateY(0)}
+  4%,9%    {box-shadow:0 0 0 1.5px var(--aqua),var(--sh-2);transform:translateY(-3px)}
+  14%,100% {box-shadow:var(--sh-1);transform:translateY(0)}
+}
+@keyframes hl-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.chip{position:absolute;display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:var(--r-pill);
+  background:#fff;border:1px solid var(--line);box-shadow:var(--sh-2);
+  font-size:11.5px;font-weight:600;color:var(--ink);white-space:nowrap;animation:hl-float 6s var(--ease-out) infinite}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--aqua);flex:none}
+.chip.c1{left:96px;top:64px;animation-delay:1.2s}
+.chip.c2{left:36px;top:344px;animation-delay:2.6s}
+
+/* the cursor, borrowed from the inspiration board */
+.cursor{position:absolute;left:0;top:0;width:22px;height:22px;pointer-events:none;
+  animation:hl-cursor 8s var(--ease) infinite;z-index:5}
+.cursor svg{width:22px;height:22px;display:block;filter:drop-shadow(0 3px 6px rgba(8,25,27,.28))}
+.cursor .ring{position:absolute;left:-9px;top:-9px;width:38px;height:38px;border-radius:50%;
+  border:2px solid var(--aqua);animation:hl-click 8s var(--ease-out) infinite}
+@keyframes hl-cursor{
+  0%   {transform:translate(52px,392px);opacity:0}
+  6%   {transform:translate(120px,330px);opacity:1}
+  22%  {transform:translate(314px,74px)}
+  32%  {transform:translate(314px,74px)}
+  50%  {transform:translate(314px,358px)}
+  60%  {transform:translate(314px,358px)}
+  78%  {transform:translate(314px,216px)}
+  88%  {transform:translate(314px,216px)}
+  97%  {transform:translate(52px,392px);opacity:0}
+  100% {transform:translate(52px,392px);opacity:0}
+}
+@keyframes hl-click{
+  0%,22%   {transform:scale(.2);opacity:0}
+  26%      {transform:scale(1);opacity:.7}
+  33%,50%  {transform:scale(1.5);opacity:0}
+  54%      {transform:scale(1);opacity:.7}
+  61%,78%  {transform:scale(1.5);opacity:0}
+  82%      {transform:scale(1);opacity:.7}
+  89%,100% {transform:scale(1.5);opacity:0}
+}
+/* below the two-column breakpoint the stage scales as a whole unit, so the
+   wires and the cards on top of them stay in register */
+@media (max-width:1080px){.stage{transform:scale(.92);transform-origin:top center;margin-bottom:-34px}}
+@media (max-width:560px){.stage{transform:scale(.66);margin-top:-26px;margin-bottom:-146px}}
+@media (max-width:420px){.stage{transform:scale(.56);margin-bottom:-190px}}
+
+/* travelling light along the wires */
+.flow{fill:none;stroke:var(--aqua);stroke-width:2.4;stroke-linecap:round;
+  stroke-dasharray:26 400;animation:hl-flow 3.4s linear infinite}
+.wire{fill:none;stroke:var(--line-2);stroke-width:1.6;stroke-linecap:round}
+@keyframes hl-flow{0%{stroke-dashoffset:426}100%{stroke-dashoffset:0}}
+
+/* ── SERVICES ─────────────────────────────────────────────────────────── */
+.services{background:var(--surface);border-top:1px solid var(--line);position:relative;overflow:hidden}
+
+/* one lane in, three lanes out — drawn at a fixed aspect so nothing stretches */
+.split{display:block;width:100%;height:auto;margin-top:clamp(26px,3.4vw,44px)}
+.split .lane-base{fill:none;stroke:color-mix(in srgb,var(--teal) 26%,transparent);stroke-width:2.2;
+  stroke-linecap:round;stroke-linejoin:round}
+.split .lane-glow{fill:none;stroke:var(--teal);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:120 1600;animation:hl-lane 4.2s var(--ease-out) infinite}
+.split .head{fill:none;stroke:var(--teal);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.split .l2{animation-delay:.28s}.split .l3{animation-delay:.56s}
+@keyframes hl-lane{0%{stroke-dashoffset:1720;opacity:0}8%{opacity:1}88%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@media (max-width:700px){.split{display:none}}
+
+.svc-list{margin-top:clamp(28px,3.6vw,46px);border-radius:var(--r-lg);background:var(--bg);
+  border:1px solid var(--line);box-shadow:var(--sh-1);overflow:hidden}
+.svc{position:relative;cursor:pointer;transition:background .45s var(--ease)}
+.svc + .svc{border-top:1px solid var(--line)}
+.svc-bar{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--aqua);
+  transform:scaleY(0);transform-origin:top;transition:transform .5s var(--ease)}
+.svc-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
+  gap:clamp(12px,2vw,26px);padding:clamp(20px,2.5vw,30px) clamp(18px,2.2vw,32px)}
+.svc-num{font-family:var(--font-display);font-weight:600;font-size:12.5px;letter-spacing:.1em;
+  color:var(--ink-40);transition:color .4s var(--ease);font-variant-numeric:tabular-nums}
+.svc-title{font-size:clamp(22px,2.9vw,36px);letter-spacing:-.03em;font-weight:700;color:var(--ink);
+  transition:color .4s var(--ease)}
+.svc-sub{margin-top:7px;font-size:13.5px;color:var(--ink-55);transition:color .4s var(--ease)}
+.svc-arrow{width:clamp(40px,3.4vw,48px);height:clamp(40px,3.4vw,48px);border-radius:50%;flex:none;
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--line-2);
+  color:var(--ink-70);background:transparent;
+  transition:background .4s var(--ease),color .4s var(--ease),border-color .4s var(--ease),transform .5s var(--ease)}
+.svc-arrow svg{width:18px;height:18px}
+.svc-body{overflow:hidden;max-height:0;opacity:0;
+  transition:max-height .65s var(--ease),opacity .45s var(--ease)}
+.svc-body-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));
+  gap:clamp(22px,3vw,46px);align-items:center;padding:0 clamp(18px,2.2vw,32px) clamp(28px,3vw,38px)}
+.svc-copy{font-size:15.5px;line-height:1.65;color:var(--ink-70);max-width:50ch}
+.svc-ul{margin:20px 0 0;padding:0;list-style:none;display:grid;gap:10px;font-size:14.5px;color:var(--ink)}
+.svc-ul li{display:flex;gap:11px;align-items:center}
+.svc-ul li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--aqua);flex:none;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--aqua) 18%,transparent)}
+.svc[data-open] {background:color-mix(in srgb,var(--aqua-100) 72%,var(--bg))}
+.svc[data-open] .svc-bar{transform:scaleY(1)}
+.svc[data-open] .svc-num{color:var(--teal-700)}
+.svc[data-open] .svc-title{color:var(--deep)}
+.svc[data-open] .svc-arrow{background:var(--deep);border-color:var(--deep);color:#fff;transform:rotate(45deg)}
+.svc:hover .svc-arrow{border-color:var(--teal)}
+
+/* the little product vignettes inside each service row */
+.mock{position:relative;height:200px;border-radius:var(--r);overflow:hidden;background:var(--bg);
+  border:1px solid var(--line);box-shadow:var(--sh-2)}
+.mock-in{position:absolute;inset:0;background:linear-gradient(180deg,var(--bg-soft),var(--surface))}
+.card{position:absolute;background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);
+  box-shadow:var(--sh-1)}
+@keyframes hl-post{0%{transform:translateY(12px) scale(.97);opacity:0}
+  10%,44%{transform:none;opacity:1}54%,100%{transform:translateY(-12px) scale(.97);opacity:0}}
+/* engagement sparkline: thin tonal bars, not a wall of accent */
+.spark{display:flex;align-items:flex-end;gap:5px}
+.spark span{flex:1;height:100%;border-radius:3px 3px 1px 1px;transform-origin:bottom;
+  background:linear-gradient(180deg,var(--aqua),color-mix(in srgb,var(--teal) 55%,var(--aqua)));
+  opacity:.85;animation:hl-bar 3.2s var(--ease-out) infinite;animation-delay:var(--d)}
+@keyframes hl-bar{0%,100%{transform:scaleY(.22)}50%{transform:scaleY(1)}}
+@keyframes hl-skeleton{0%,100%{opacity:.4}50%{opacity:.95}}
+@keyframes hl-dash{to{stroke-dashoffset:-28}}
+@keyframes hl-travel{0%{offset-distance:0%;opacity:0}10%,90%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@keyframes hl-pulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.3);opacity:.2}}
+@keyframes hl-chip{0%,20%{background:var(--aqua-100);color:var(--teal-800)}
+  32%,58%{background:var(--aqua);color:var(--deep)}72%,100%{background:var(--aqua-100);color:var(--teal-800)}}
+
+/* ── STORY ────────────────────────────────────────────────────────────── */
+.story{background:var(--bg)}
+.story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));
+  gap:clamp(34px,5vw,76px);align-items:center}
+.story h2 em{font-style:normal;color:var(--teal-700)}
+.story-fig{position:relative;margin:0}
+.story-fig img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r-lg);
+  box-shadow:var(--sh-2)}
+.story-fig::after{content:"";position:absolute;inset:0;border-radius:var(--r-lg);
+  box-shadow:inset 0 0 0 1px var(--line);pointer-events:none}
+.story-stat{position:absolute;left:-14px;bottom:26px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r);box-shadow:var(--sh-2);padding:15px 19px;animation:hl-float 7s var(--ease-out) infinite}
+.story-stat .n{font-family:var(--font-display);font-weight:800;font-size:26px;letter-spacing:-.03em;color:var(--deep)}
+.story-stat .l{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-55);margin-top:2px}
+@media (max-width:560px){.story-stat{left:8px;bottom:12px;padding:12px 15px}}
+
+/* ── TEAM ─────────────────────────────────────────────────────────────── */
+.team-grid{margin-top:clamp(30px,4vw,48px);display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr));gap:clamp(16px,2vw,26px)}
+.person{border-radius:var(--r);overflow:hidden;background:var(--bg);border:1px solid var(--line);
+  box-shadow:var(--sh-1);transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
+.person:hover{transform:translateY(-5px);box-shadow:var(--sh-2)}
+.portrait{position:relative;aspect-ratio:4/5;background:var(--surface);overflow:hidden}
+.portrait img,.portrait image-slot{display:block;width:100%;height:100%;object-fit:cover;
+  filter:grayscale(1) contrast(1.04);transition:filter .55s var(--ease),transform .7s var(--ease)}
+.portrait::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--aqua) 26%,transparent),color-mix(in srgb,var(--teal) 34%,transparent));
+  mix-blend-mode:multiply;opacity:.5;transition:opacity .55s var(--ease)}
+.person:hover .portrait img{filter:grayscale(0) contrast(1);transform:scale(1.04)}
+.person:hover .portrait::after{opacity:0}
+.person .who{padding:14px 15px 17px}
+.person .nm{font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:-.02em}
+.person .rl{margin-top:4px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--teal-700);font-weight:600}
+
+/* ── REVIEWS ──────────────────────────────────────────────────────────── */
+.reviews{background:var(--surface);border-top:1px solid var(--line)}
+.tape-mask{margin-top:clamp(28px,4vw,48px);width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent);
+          mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent)}
+.tape{display:flex;width:max-content;gap:20px;padding-inline:20px;animation:hl-marquee 58s linear infinite}
+.tape-mask:hover .tape{animation-play-state:paused}
+@keyframes hl-marquee{to{transform:translateX(calc(-50% - 10px))}}
+.review{margin:0;flex:none;width:clamp(292px,29vw,388px);display:flex;flex-direction:column;gap:16px;
+  padding:clamp(24px,2.5vw,32px);background:var(--bg);border:1px solid var(--line);
+  border-radius:var(--r-lg);box-shadow:var(--sh-1)}
+.review .qm{font-family:var(--font-display);font-weight:800;font-size:34px;line-height:.6;color:var(--aqua)}
+.review blockquote{margin:0;font-family:var(--font-display);font-weight:700;
+  font-size:clamp(17px,1.7vw,20.5px);line-height:1.35;letter-spacing:-.022em}
+.review p{font-size:14px;line-height:1.6;color:var(--ink-55)}
+.review figcaption{margin-top:auto;padding-top:4px;font-size:13px;color:var(--ink-55)}
+.review figcaption strong{display:block;color:var(--ink);font-family:var(--font-display);font-weight:700}
+
+/* ── CONTACT ──────────────────────────────────────────────────────────── */
+.contact{padding-block:clamp(40px,5vw,72px)}
+.contact-panel{position:relative;overflow:hidden;border-radius:var(--r-xl);background:var(--deep);
+  color:#fff;box-shadow:var(--sh-3);padding:clamp(34px,4.4vw,64px);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));
+  gap:clamp(28px,3.5vw,56px);align-items:center}
+.contact-panel::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(52% 60% at 88% 8%,color-mix(in srgb,var(--aqua) 24%,transparent),transparent 68%)}
+.contact-panel::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:46px 46px;
+  -webkit-mask-image:radial-gradient(80% 80% at 50% 50%,#000,transparent 78%);
+          mask-image:radial-gradient(80% 80% at 50% 50%,#000,transparent 78%)}
+.contact-panel > *{position:relative;z-index:1}
+.contact h2{font-size:clamp(32px,4.6vw,60px);letter-spacing:-.04em}
+.contact .lede{color:rgba(255,255,255,.72);max-width:44ch;margin-top:18px}
+.ways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch}
+@media (max-width:1180px){.ways{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}}
+.ways .lbl{grid-column:1/-1;margin:0;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:600;color:var(--aqua-300)}
+.way{display:flex;flex-direction:column;gap:9px;padding:17px;border-radius:var(--r);
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(6px);
+  transition:background .4s var(--ease),border-color .4s var(--ease),transform .4s var(--ease)}
+.way:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.24);transform:translateY(-3px)}
+.way .ic{width:34px;height:34px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;
+  background:var(--aqua);color:var(--deep);flex:none}
+.way .ic svg{width:17px;height:17px}
+.way .cap{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.55)}
+.way a.tel{font-family:var(--font-display);font-weight:700;font-size:16px;letter-spacing:-.02em;color:#fff}
+.way a.tel:hover{color:var(--aqua)}
+.way .note{margin-top:auto;font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.55);overflow-wrap:anywhere}
+.way .note a{color:var(--aqua-300);font-weight:500}
+.way .btn{width:100%}
+
+/* ── MODAL ────────────────────────────────────────────────────────────── */
+.modal{display:none;position:fixed;inset:0;z-index:200;padding:24px;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--deep) 55%,transparent);backdrop-filter:blur(6px)}
+.modal[data-on]{display:flex;animation:hl-fade .3s var(--ease)}
+@keyframes hl-fade{from{opacity:0}to{opacity:1}}
+.modal form{width:min(100%,520px);max-height:90vh;overflow:auto;background:var(--bg);border-radius:var(--r-xl);
+  box-shadow:var(--sh-3);padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;gap:16px;
+  animation:hl-pop .4s var(--ease-out)}
+@keyframes hl-pop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.modal h3{font-size:25px;flex:1}
+.x{width:36px;height:36px;flex:none;border-radius:50%;border:1px solid var(--line-2);background:transparent;
+  color:var(--ink-70);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;
+  transition:background .3s var(--ease),color .3s var(--ease)}
+.x:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.field{display:flex;flex-direction:column;gap:7px;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
+  font-weight:600;color:var(--ink-55)}
+.field input,.field textarea{font-family:var(--font-body);font-size:15px;font-weight:400;text-transform:none;
+  letter-spacing:0;color:var(--ink);padding:13px 15px;border:1px solid var(--line-2);border-radius:var(--r-sm);
+  background:var(--bg-soft);transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease)}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--teal);background:#fff;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--aqua) 26%,transparent)}
+.field textarea{resize:vertical}
+
+/* ── FOOTER ───────────────────────────────────────────────────────────── */
+.foot{padding:clamp(30px,4vw,52px) var(--pad);display:flex;flex-wrap:wrap;gap:18px;
+  justify-content:space-between;align-items:center;font-size:13px;color:var(--ink-55);
+  border-top:1px solid var(--line)}
+.foot .brand{display:flex;align-items:center}
+.foot .brand img{display:block;height:34px;width:auto}
+.foot nav{display:flex;flex-wrap:wrap;gap:20px}
+.foot nav a{color:var(--ink-55);transition:color .3s var(--ease)}
+.foot nav a:hover{color:var(--teal-700)}
+
+/* ── scroll reveal ────────────────────────────────────────────────────── */
+[data-reveal]{opacity:0;transform:translateY(18px);
+  transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)}
+[data-reveal][data-in]{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  [data-reveal]{opacity:1!important;transform:none!important}
+}
+</style>
+</helmet>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     HIGH LANE — one-page site. All copy is plain text in this template,
+     in page order: NAV › 01 HERO › 02 SERVICES › 03 STORY › 04 TEAM ›
+     05 REVIEWS › 06 CONTACT › MESSAGE MODAL › FOOTER.
+     Each section below opens with a banner listing exactly what text it holds.
+     Click any text in the editor to change it — or search this file for the
+     words you can see on the page.
+     Not text: the hero grid + beams and the service-row vignettes are built
+     in CSS at the top; the accordion and grid logic live in the class at the
+     bottom (wireServices / buildGrid).
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="top">
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     NAV BAR
+     Copy to edit: brand wordmark, 4 nav links, "Client login" button label
+     ══════════════════════════════════════════════════════════════════════ -->
+<nav class="nav" data-nav>
+  <a class="nav-brand" href="#top" aria-label="High Lane — back to top">
+    <img src="assets/hlm-logo.png" alt="High Lane">
+  </a>
+  <a class="nav-link" href="#services">Services</a>
+  <a class="nav-link" href="#story">Story</a>
+  <a class="nav-link" href="#team">Team</a>
+  <a class="nav-link" href="#reviews">Reviews</a>
+  <a class="btn btn-primary btn-sm" href="#contact">Client login</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     01 · HERO
+     Copy to edit: the badge line, the "High Lane" wordmark, the 3 rotating
+     services in .hl-wheel-inner (the 4th is a repeat of the 1st — keep them
+     matching so the loop stays seamless), the intro paragraph, 2 button
+     labels, and the labels inside the graphic (hub + 3 nodes + 2 chips).
+     ══════════════════════════════════════════════════════════════════════ -->
+<section class="hero" data-screen-label="Hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-glow"></div>
+    <div class="hero-grid" data-blockgrid></div>
+    <div class="hero-beam"></div>
+    <div class="hero-beam b2"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div data-reveal>
+      <span class="hero-badge"><span class="dot"></span>Social media · AI automations · Web development</span>
+
+      <h1 class="hero-title">
+        <span class="brand">High Lane</span>
+        <span class="hl-wheel">
+          <svg class="lane" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h13"/><path d="m13 6 6 6-6 6"/></svg>
+          <span class="hl-wheel-mask">
+            <span class="hl-wheel-inner" id="hl-wheel">
+              <span>Social Media<i>.</i></span>
+              <span>AI Automations<i>.</i></span>
+              <span>Web Development<i>.</i></span>
+              <span>Social Media<i>.</i></span>
+            </span>
+          </span>
+        </span>
+      </h1>
+
+      <p class="lede" style="margin-top:clamp(22px,3vw,32px)">We started as a social media agency and never stopped building. Today High Lane runs your channels, automates the work behind them with AI, and ships the site those channels point at — one small team, three tightly connected services.</p>
+
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#contact">Get in touch with us
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#services">See what we do</a>
+      </div>
+    </div>
+
+    <div data-reveal aria-hidden="true">
+      <div class="stage-wrap"><div class="stage">
+        <div class="stage-glow"></div>
+
+        <svg class="wires" viewBox="0 0 470 430" fill="none">
+          <path class="wire" d="M174 218 C 232 218 226 78 276 78"/>
+          <path class="wire" d="M174 218 H 276"/>
+          <path class="wire" d="M174 218 C 232 218 226 358 276 358"/>
+          <path class="flow" d="M174 218 C 232 218 226 78 276 78"/>
+          <path class="flow" d="M174 218 H 276" style="animation-delay:1.1s"/>
+          <path class="flow" d="M174 218 C 232 218 226 358 276 358" style="animation-delay:2.2s"/>
+        </svg>
+
+        <div class="hub">
+          <span class="pulse"></span>
+          <img src="assets/hlm-logo.png" alt="">
+          <div class="meta">One team, one lane</div>
+        </div>
+
+        <div class="node n1">
+          <span class="ic"><i data-lucide="megaphone"></i></span>
+          <span class="tx"><span class="t">Social media</span><span class="s">Content &amp; community</span></span>
+        </div>
+        <div class="node n2">
+          <span class="ic"><i data-lucide="cpu"></i></span>
+          <span class="tx"><span class="t">AI automations</span><span class="s">Runs 24/7</span></span>
+        </div>
+        <div class="node n3">
+          <span class="ic"><i data-lucide="layout-panel-left"></i></span>
+          <span class="tx"><span class="t">Web development</span><span class="s">Sites, CRMs &amp; apps</span></span>
+        </div>
+
+        <span class="chip c1"><i></i>Posts scheduled</span>
+        <span class="chip c2"><i></i>Leads routed</span>
+
+        <div class="cursor">
+          <span class="ring"></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 3.2 19 12.4l-5.9.7-2.8 5.5z" fill="#08191b" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     02 · SERVICES
+     Copy to edit: kicker, section heading, the intro line, then one .svc row
+     per service: number, title, sub-line, blurb and bullet list.
+     The single-lane-splits-into-three graphic above the list is the <svg
+     class="split"> — its geometry is fixed-ratio, so the arrowheads keep
+     their shape at every width.
+     ══════════════════════════════════════════════════════════════════════ -->
+<section class="services section wrap" id="services" data-screen-label="Services">
+  <div class="sec-head" data-reveal>
+    <div>
+      <span class="kicker">Three services, one lane</span>
+      <h2 class="h2">What we run for you</h2>
+    </div>
+    <p class="lede">Start anywhere. Most clients add the next service once they see what the first one frees up.</p>
+  </div>
+
+  <svg class="split" viewBox="0 0 1200 210" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true" data-reveal>
+    <path class="lane-base" d="M24 105 H 470 C 590 105 570 26 690 26 H 1120"/>
+    <path class="lane-base" d="M24 105 H 1120"/>
+    <path class="lane-base" d="M24 105 H 470 C 590 105 570 184 690 184 H 1120"/>
+    <path class="lane-glow l1" d="M24 105 H 470 C 590 105 570 26 690 26 H 1120"/>
+    <path class="lane-glow l2" d="M24 105 H 1120"/>
+    <path class="lane-glow l3" d="M24 105 H 470 C 590 105 570 184 690 184 H 1120"/>
+    <polyline class="head" points="1106,14 1120,26 1106,38"/>
+    <polyline class="head" points="1106,93 1120,105 1106,117"/>
+    <polyline class="head" points="1106,172 1120,184 1106,196"/>
+  </svg>
+
+  <div class="svc-list" data-reveal>
+
+    <article class="svc" data-svc="0" tabindex="0" role="button" aria-expanded="true">
+      <span class="svc-bar" aria-hidden="true"></span>
+      <div class="svc-head">
+        <span class="svc-num">01</span>
+        <div>
+          <h3 class="svc-title">Social Media Management</h3>
+          <p class="svc-sub">Strategy · Content production · Community · Paid support</p>
+        </div>
+        <span class="svc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
+      </div>
+      <div class="svc-body" data-svc-body>
+        <div class="svc-body-in">
+          <div>
+            <p class="svc-copy">The service we were born doing. Channel strategy, a month of content planned in advance, shooting and editing, publishing, community replies, and a monthly read on what actually moved.</p>
+            <ul class="svc-ul">
+              <li>Content calendars &amp; production</li>
+              <li>Community management &amp; DMs</li>
+              <li>Paid social support &amp; reporting</li>
+            </ul>
+            <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px">Discuss a project</a>
+          </div>
+          <div class="mock" data-svc-mock>
+            <div class="mock-in">
+              <div style="position:absolute;left:18px;top:18px;right:18px;height:112px">
+                <div class="card" style="inset:0;padding:12px;animation:hl-post 7s var(--ease-out) infinite">
+                  <div style="display:flex;align-items:center;gap:9px"><span style="width:22px;height:22px;border-radius:50%;background:var(--aqua);display:block"></span><span style="height:7px;width:78px;border-radius:4px;background:var(--aqua-200);display:block"></span></div>
+                  <div style="margin-top:11px;display:flex;flex-direction:column;gap:6px"><span style="height:7px;width:100%;border-radius:4px;background:rgba(8,25,27,.10);display:block"></span><span style="height:7px;width:62%;border-radius:4px;background:rgba(8,25,27,.10);display:block"></span></div>
+                  <div style="margin-top:13px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--teal-700)"><span style="width:8px;height:8px;border-radius:50%;background:var(--aqua);display:block;animation:hl-pulse 2.2s var(--ease-out) infinite"></span>2.4k engaged</div>
+                </div>
+                <div class="card" style="inset:0;padding:12px;animation:hl-post 7s var(--ease-out) infinite;animation-delay:3.5s">
+                  <div style="display:flex;align-items:center;gap:9px"><span style="width:22px;height:22px;border-radius:50%;background:var(--deep);display:block"></span><span style="height:7px;width:60px;border-radius:4px;background:var(--aqua-200);display:block"></span></div>
+                  <div style="margin-top:11px;display:flex;flex-direction:column;gap:6px"><span style="height:7px;width:86%;border-radius:4px;background:rgba(8,25,27,.10);display:block"></span><span style="height:7px;width:46%;border-radius:4px;background:rgba(8,25,27,.10);display:block"></span></div>
+                  <div style="margin-top:13px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--teal-700)"><span style="width:8px;height:8px;border-radius:50%;background:var(--aqua);display:block;animation:hl-pulse 2.2s var(--ease-out) infinite"></span>+38% reach</div>
+                </div>
+              </div>
+              <div class="spark" style="position:absolute;left:18px;right:18px;bottom:18px;height:44px">
+                <span style="--d:0s"></span><span style="--d:.14s"></span><span style="--d:.28s"></span>
+                <span style="--d:.42s"></span><span style="--d:.56s"></span><span style="--d:.7s"></span>
+                <span style="--d:.84s"></span><span style="--d:.98s"></span><span style="--d:1.12s"></span>
+                <span style="--d:1.26s"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="svc" data-svc="1" tabindex="0" role="button" aria-expanded="false">
+      <span class="svc-bar" aria-hidden="true"></span>
+      <div class="svc-head">
+        <span class="svc-num">02</span>
+        <div>
+          <h3 class="svc-title">AI Automations</h3>
+          <p class="svc-sub">Lead routing · Inbox triage · Reporting · Internal tools</p>
+        </div>
+        <span class="svc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
+      </div>
+      <div class="svc-body" data-svc-body>
+        <div class="svc-body-in">
+          <div>
+            <p class="svc-copy">We map the admin that eats your week, then hand it to something that never gets tired: lead qualification, inbox triage, first-line replies, content repurposing and reports that write themselves.</p>
+            <ul class="svc-ul">
+              <li>Lead capture &amp; follow-up agents</li>
+              <li>Inbox, DM and booking triage</li>
+              <li>Reporting &amp; internal tooling</li>
+            </ul>
+            <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px">Discuss a project</a>
+          </div>
+          <div class="mock" data-svc-mock>
+            <div class="mock-in">
+              <svg viewBox="0 0 330 200" style="position:absolute;inset:0;width:100%;height:100%">
+                <g fill="none" stroke="#08191b" stroke-opacity=".2" stroke-width="1.4" stroke-dasharray="5 6" style="animation:hl-dash 1.9s linear infinite">
+                  <path d="M74 52 C 118 52 122 100 164 100"/>
+                  <path d="M74 100 H 164"/>
+                  <path d="M74 148 C 118 148 122 100 164 100"/>
+                  <path d="M206 100 C 244 100 242 58 276 58"/>
+                  <path d="M206 100 C 244 100 242 142 276 142"/>
+                </g>
+                <g fill="#fff" stroke="#08191b" stroke-opacity=".16">
+                  <rect x="24" y="40" width="50" height="24" rx="7"/><rect x="24" y="88" width="50" height="24" rx="7"/><rect x="24" y="136" width="50" height="24" rx="7"/>
+                  <rect x="276" y="46" width="50" height="24" rx="7"/><rect x="276" y="130" width="50" height="24" rx="7"/>
+                </g>
+                <g fill="#08191b" font-size="8" font-family="Inter, sans-serif" font-weight="600" opacity=".6" letter-spacing=".6">
+                  <text x="33" y="55">INBOX</text><text x="33" y="103">FORMS</text><text x="33" y="151">DMS</text>
+                  <text x="288" y="61">CRM</text><text x="285" y="145">REPLY</text>
+                </g>
+                <rect x="164" y="76" width="42" height="48" rx="11" fill="#06383c"/>
+                <text x="175" y="106" fill="#12eef2" font-size="14" font-family="Poppins, sans-serif" font-weight="800">AI</text>
+                <circle cx="185" cy="100" r="32" fill="none" stroke="#12eef2" stroke-width="1.6" style="transform-origin:185px 100px;animation:hl-pulse 3s var(--ease-out) infinite"/>
+              </svg>
+              <span style="position:absolute;width:8px;height:8px;border-radius:50%;background:var(--aqua);offset-path:path('M74 100 H 164');animation:hl-travel 2.6s linear infinite"></span>
+              <span style="position:absolute;width:8px;height:8px;border-radius:50%;background:var(--teal);offset-path:path('M206 100 C 244 100 242 58 276 58');animation:hl-travel 2.6s linear infinite;animation-delay:1.3s"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="svc" data-svc="2" tabindex="0" role="button" aria-expanded="false">
+      <span class="svc-bar" aria-hidden="true"></span>
+      <div class="svc-head">
+        <span class="svc-num">03</span>
+        <div>
+          <h3 class="svc-title">Web Development</h3>
+          <p class="svc-sub">Landing pages · CRMs &amp; web apps · Payments · CMS</p>
+        </div>
+        <span class="svc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
+      </div>
+      <div class="svc-body" data-svc-body>
+        <div class="svc-body-in">
+          <div>
+            <p class="svc-copy">Not a brochure — a launchpad for the whole business. Fast, light sites and the machinery attached: card payments and checkout, forms wired to your CRM, custom web apps built around the problem you actually have, and a CMS so your team edits copy without calling us.</p>
+            <ul class="svc-ul">
+              <li>Landing pages, design, build &amp; launch</li>
+              <li>Custom CRMs &amp; web app builds</li>
+              <li>Payments, forms and CMS training</li>
+            </ul>
+            <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px">Discuss a project</a>
+          </div>
+          <div class="mock" data-svc-mock>
+            <div class="mock-in" style="display:flex;align-items:center;justify-content:center">
+              <div class="card" style="position:relative;width:86%;border-radius:var(--r);animation:hl-float 7s var(--ease-out) infinite">
+                <div style="display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line)">
+                  <span style="width:7px;height:7px;border-radius:50%;background:var(--aqua);display:block"></span>
+                  <span style="width:7px;height:7px;border-radius:50%;background:var(--aqua-300);display:block"></span>
+                  <span style="width:7px;height:7px;border-radius:50%;background:var(--aqua-200);display:block"></span>
+                  <span style="margin-left:8px;height:8px;flex:1;border-radius:4px;background:rgba(8,25,27,.07);display:block"></span>
+                </div>
+                <div style="padding:13px;display:grid;grid-template-columns:1fr 1fr;gap:9px">
+                  <span style="height:34px;border-radius:6px;background:var(--aqua-200);display:block;animation:hl-skeleton 3s var(--ease-out) infinite"></span>
+                  <span style="height:34px;border-radius:6px;background:rgba(8,25,27,.07);display:block;animation:hl-skeleton 3s var(--ease-out) infinite;animation-delay:.5s"></span>
+                  <span style="height:14px;border-radius:5px;background:rgba(8,25,27,.07);display:block;animation:hl-skeleton 3s var(--ease-out) infinite;animation-delay:1s"></span>
+                  <span style="height:14px;border-radius:5px;background:var(--aqua-300);display:block;animation:hl-skeleton 3s var(--ease-out) infinite;animation-delay:1.5s"></span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;padding:0 13px 14px">
+                  <span style="font-size:10px;font-weight:600;letter-spacing:.05em;padding:5px 9px;border-radius:var(--r-pill);animation:hl-chip 6s var(--ease-out) infinite">PAYMENTS</span>
+                  <span style="font-size:10px;font-weight:600;letter-spacing:.05em;padding:5px 9px;border-radius:var(--r-pill);animation:hl-chip 6s var(--ease-out) infinite;animation-delay:1.5s">CRM</span>
+                  <span style="font-size:10px;font-weight:600;letter-spacing:.05em;padding:5px 9px;border-radius:var(--r-pill);animation:hl-chip 6s var(--ease-out) infinite;animation-delay:3s">WEB APP</span>
+                  <span style="font-size:10px;font-weight:600;letter-spacing:.05em;padding:5px 9px;border-radius:var(--r-pill);animation:hl-chip 6s var(--ease-out) infinite;animation-delay:4.5s">CMS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     03 · OUR STORY
+     Copy to edit: kicker, the two paragraphs, the pull heading, the floating
+     stat card (number + label), and the 2 button labels
+     ══════════════════════════════════════════════════════════════════════ -->
+<section class="story section wrap" id="story" data-screen-label="Story">
+  <div class="story-grid">
+    <div data-reveal>
+      <span class="kicker">Our story</span>
+      <p class="lede" style="margin-top:20px">High Lane started in a spare room with two laptops and one client's Instagram account. The content worked, the enquiries came in — and then the same question kept arriving: “can you handle the replies too?”, “can you fix the website they land on?”</p>
+      <h2 class="h2">We kept getting asked for <em>the next thing.</em></h2>
+      <p class="lede" style="margin-top:18px">So we learned to. Automations came first, out of necessity. Web development followed, because a great campaign pointing at a broken site is just expensive noise. We are still small on purpose: you talk to the people doing the work.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#team">Meet the team</a>
+        <a class="btn btn-ghost" href="#services">What we run</a>
+      </div>
+    </div>
+
+    <div data-reveal>
+      <figure class="story-fig">
+        <img src="assets/about-us.jpg" alt="The High Lane desk: laptops, a notebook and the week's to-do board">
+        <figcaption class="story-stat">
+          <div class="n">3 services</div>
+          <div class="l">One connected team</div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     04 · TEAM
+     Copy to edit: kicker, heading, intro line, then one card per person:
+     name + role. Photos live in assets/team/.
+     ══════════════════════════════════════════════════════════════════════ -->
+<section class="section wrap" id="team" data-screen-label="Team">
+  <div class="sec-head" data-reveal>
+    <div>
+      <span class="kicker">The team</span>
+      <h2 class="h2">Behind the scenes</h2>
+    </div>
+    <p class="lede">Five specialists, no layers. The person who plans your content is the person who posts it.</p>
+  </div>
+
+  <div class="team-grid" data-reveal>
+    <div class="person">
+      <div class="portrait"><img src="assets/team/nishal-paranagama.jpeg" alt="Nishal Paranagama"></div>
+      <div class="who"><p class="nm">Nishal Paranagama</p><p class="rl">Role TBC</p></div>
+    </div>
+    <div class="person">
+      <div class="portrait"><img src="assets/team/nabeel-ikram.jpeg" alt="Nabeel Ikram"></div>
+      <div class="who"><p class="nm">Nabeel Ikram</p><p class="rl">Role TBC</p></div>
+    </div>
+    <div class="person">
+      <div class="portrait"><img src="assets/team/joshua-boltong.jpeg" alt="Joshua Boltong"></div>
+      <div class="who"><p class="nm">Joshua Boltong</p><p class="rl">Role TBC</p></div>
+    </div>
+    <div class="person">
+      <div class="portrait"><img src="assets/team/tarun-sarvanathan.jpg" alt="Tarun Sarvanathan"></div>
+      <div class="who"><p class="nm">Tarun Sarvanathan</p><p class="rl">Role TBC</p></div>
+    </div>
+    <div class="person">
+      <div class="portrait"><image-slot id="hl-team-5" shape="rect" placeholder="Headshot"></image-slot></div>
+      <div class="who"><p class="nm">Fifth member</p><p class="rl">Name &amp; role TBC</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     05 · CLIENT REVIEWS
+     Copy to edit: kicker, heading, then each testimonial: quote, detail
+     paragraph, name + company. Cards are duplicated for the seamless loop —
+     edit BOTH copies of a quote.
+     ══════════════════════════════════════════════════════════════════════ -->
+<section class="reviews section" id="reviews" data-screen-label="Reviews">
+  <div class="wrap" data-reveal>
+    <span class="kicker">Client reviews</span>
+    <h2 class="h2">What it's like to work with us</h2>
+  </div>
+
+  <div class="tape-mask" data-reveal>
+    <div class="tape">
+      <figure class="review">
+        <span class="qm" aria-hidden="true">“</span>
+        <blockquote>Bookings up 60% in four months, and I stopped answering DMs at midnight.</blockquote>
+        <p>They took the social channels, then quietly automated the enquiry flow behind them. I found out because my evenings came back.</p>
+        <figcaption><strong>Elena Marsh</strong>Owner, Marsh &amp; Fern Studio</figcaption>
+      </figure>
+      <figure class="review">
+        <span class="qm" aria-hidden="true">“</span>
+        <blockquote>The new site paid for itself in six weeks of online orders.</blockquote>
+        <p>Website build, payments and a CMS my team runs without help. Three weeks from kickoff to live, no drama.</p>
+        <figcaption><strong>Tobi Adeyemi</strong>Director, Northgate Fitness</figcaption>
+      </figure>
+      <figure class="review">
+        <span class="qm" aria-hidden="true">“</span>
+        <blockquote>We cancelled two software subscriptions after their automation work.</blockquote>
+        <p>They audited how we actually worked before touching anything. Lead routing and reporting now run themselves.</p>
+        <figcaption><strong>Hana Lindqvist</strong>Ops Manager, Beacon Legal</figcaption>
+      </figure>
+      <figure class="review" aria-hidden="true">
+        <span class="qm">“</span>
+        <blockquote>Bookings up 60% in four months, and I stopped answering DMs at midnight.</blockquote>
+        <p>They took the social channels, then quietly automated the enquiry flow behind them. I found out because my evenings came back.</p>
+        <figcaption><strong>Elena Marsh</strong>Owner, Marsh &amp; Fern Studio</figcaption>
+      </figure>
+      <figure class="review" aria-hidden="true">
+        <span class="qm">“</span>
+        <blockquote>The new site paid for itself in six weeks of online orders.</blockquote>
+        <p>Website build, payments and a CMS my team runs without help. Three weeks from kickoff to live, no drama.</p>
+        <figcaption><strong>Tobi Adeyemi</strong>Director, Northgate Fitness</figcaption>
+      </figure>
+      <figure class="review" aria-hidden="true">
+        <span class="qm">“</span>
+        <blockquote>We cancelled two software subscriptions after their automation work.</blockquote>
+        <p>They audited how we actually worked before touching anything. Lead routing and reporting now run themselves.</p>
+        <figcaption><strong>Hana Lindqvist</strong>Ops Manager, Beacon Legal</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     06 · CONTACT — "Take the fast lane."
+     Copy to edit: heading, paragraph, then the 3 contact cards: phone
+     numbers (also update the tel: links), message-card label, booking link
+     + its href
+     ══════════════════════════════════════════════════════════════════════ -->
+<section class="contact wrap" id="contact" data-screen-label="Contact">
+  <div class="contact-panel">
+    <div data-reveal>
+      <h2>Take the fast lane.</h2>
+      <p class="lede">Tell us what's slowing you down — content, admin or a site that doesn't convert. We'll send back a plan and a price, no pitch deck.</p>
+    </div>
+
+    <div class="ways" data-reveal>
+      <p class="lbl">Three ways to reach us</p>
+
+      <div class="way">
+        <span class="ic"><i data-lucide="phone-call"></i></span>
+        <span class="cap">Call us</span>
+        <a class="tel" href="tel:+441614960142">0161 496 0142</a>
+        <a class="tel" href="tel:+447700900482">07700 900 482</a>
+        <span class="note">Mon–Fri, 9am–6pm</span>
+      </div>
+
+      <div class="way">
+        <span class="ic"><i data-lucide="message-square"></i></span>
+        <span class="cap">Send a message</span>
+        <button type="button" class="btn btn-aqua btn-sm" data-msg-open>Write to us
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+        <span class="note">or <a href="mailto:hello@highlanemedia.com">hello@highlanemedia.com</a></span>
+      </div>
+
+      <div class="way">
+        <span class="ic"><i data-lucide="calendar-check"></i></span>
+        <span class="cap">Book a meeting</span>
+        <a class="btn btn-ghost btn-sm" style="--btn-fg:#fff;--btn-bd:rgba(255,255,255,.28)" href="https://cal.com/highlanemedia/intro" target="_blank" rel="noopener">30-min intro ↗</a>
+        <span class="note">Pick a slot — reply within one working day</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     MESSAGE MODAL (opens from the Contact section)
+     Copy to edit: dialog title, the 3 field labels + placeholders, submit
+     button label, confirmation note
+     ══════════════════════════════════════════════════════════════════════ -->
+<div class="modal" data-msg-modal role="dialog" aria-modal="true" aria-label="Send us a message">
+  <form data-msg-form>
+    <div style="display:flex;align-items:flex-start;gap:16px">
+      <h3>Send us a message</h3>
+      <button type="button" class="x" data-msg-close aria-label="Close">✕</button>
+    </div>
+    <label class="field">Name
+      <input required name="name" placeholder="Your name">
+    </label>
+    <label class="field">Email
+      <input required type="email" name="email" placeholder="you@company.com">
+    </label>
+    <label class="field">What's slowing you down?
+      <textarea required name="message" rows="4" placeholder="Content, admin, or a site that doesn't convert…"></textarea>
+    </label>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:4px">
+      <button type="submit" class="btn btn-primary">Send message</button>
+      <span data-msg-note style="font-size:13px;color:var(--ink-55)">We reply within one working day.</span>
+    </div>
+  </form>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     FOOTER
+     Copy to edit: brand wordmark, link labels, copyright line
+     ══════════════════════════════════════════════════════════════════════ -->
+<footer class="foot">
+  <span class="brand"><img src="assets/hlm-logo.png" alt="High Lane"></span>
+  <nav><a href="#services">Services</a><a href="#story">Story</a><a href="#team">Team</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a></nav>
+  <span>© 2026 High Lane. Social · AI automations · Web development.</span>
+</footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;wheelSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:9,&quot;min&quot;:5,&quot;max&quot;:18,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const wheel = document.getElementById('hl-wheel');
+    const secs = this.props.wheelSeconds;
+    if (wheel && secs) wheel.style.animationDuration = secs + 's';
+
+    this.revealOnScroll();
+    this.stickyNav();
+    this.buildGrid();
+    this.wireServices();
+    this.wireContactModal();
+    this.wireLucide();
+  }
+
+  /* fade-and-rise as each block enters the viewport, lightly staggered */
+  revealOnScroll() {
+    this.io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        e.target.setAttribute('data-in', '');
+        this.io.unobserve(e.target);
+      }
+    }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+    this.scan = () => document.querySelectorAll('[data-reveal]').forEach((el, i) => {
+      if (el.dataset.seen) return;
+      el.dataset.seen = '1';
+      el.style.transitionDelay = ((i % 3) * 0.08) + 's';
+      this.io.observe(el);
+    });
+    this.scan();
+    this.rescan = setInterval(this.scan, 700);
+  }
+
+  /* the nav only grows its hairline once the page has moved */
+  stickyNav() {
+    const nav = document.querySelector('[data-nav]');
+    if (!nav) return;
+    this.onScroll = () => nav.toggleAttribute('data-stuck', scrollY > 8);
+    this.onScroll();
+    addEventListener('scroll', this.onScroll, { passive: true });
+  }
+
+  /* hero grid: hairline cells with a soft light running along one row */
+  buildGrid() {
+    const host = document.querySelector('[data-blockgrid]');
+    if (!host) { this.gridRetry = setTimeout(() => this.buildGrid(), 400); return; }
+    const CELL = 46;
+    const build = () => {
+      const w = host.clientWidth, h = host.clientHeight;
+      if (!w || !h) return;
+      const cols = Math.max(4, Math.ceil(w / CELL)), rows = Math.max(3, Math.ceil(h / CELL));
+      host.style.gridTemplateColumns = 'repeat(' + cols + ',1fr)';
+      host.style.gridTemplateRows = 'repeat(' + rows + ',1fr)';
+      host.textContent = '';
+      const cells = [];
+      for (let i = 0; i < cols * rows; i++) { const c = document.createElement('span'); host.appendChild(c); cells.push(c); }
+      this.grid = { cells, cols, rows };
+    };
+    build();
+
+    const tints = [
+      'color-mix(in srgb,var(--aqua) 20%,transparent)',
+      'color-mix(in srgb,var(--aqua) 13%,transparent)',
+      'color-mix(in srgb,var(--teal) 9%,transparent)'
+    ];
+    const sweep = () => {
+      const g = this.grid;
+      if (!g || !g.cells.length) return;
+      const r = Math.floor(Math.random() * Math.max(1, Math.floor(g.rows * 0.62)));
+      const tint = tints[Math.floor(Math.random() * tints.length)];
+      const rtl = Math.random() < 0.4;
+      for (let c = 0; c < g.cols; c++) {
+        const cell = g.cells[r * g.cols + (rtl ? g.cols - 1 - c : c)];
+        if (!cell) continue;
+        setTimeout(() => {
+          cell.style.background = tint;
+          setTimeout(() => { cell.style.background = 'transparent'; }, 420);
+        }, c * 46);
+      }
+    };
+    this.sweepTimer = setInterval(sweep, 1100);
+    setTimeout(sweep, 600);
+    this.gridResize = () => { clearTimeout(this.gridTo); this.gridTo = setTimeout(build, 200); };
+    addEventListener('resize', this.gridResize);
+  }
+
+  /* services accordion — hover or focus opens, click toggles */
+  wireServices() {
+    const rows = Array.from(document.querySelectorAll('[data-svc]'));
+    if (!rows.length) { this.svcRetry = setTimeout(() => this.wireServices(), 400); return; }
+    const set = (row, on) => {
+      const body = row.querySelector('[data-svc-body]');
+      row.toggleAttribute('data-open', on);
+      row.setAttribute('aria-expanded', on ? 'true' : 'false');
+      if (body) {
+        body.style.opacity = on ? '1' : '0';
+        body.style.maxHeight = on ? (body.scrollHeight + 48) + 'px' : '0px';
+      }
+    };
+    const open = (i) => { rows.forEach((r, j) => set(r, i === j)); this.svcOpen = i; };
+    rows.forEach((row, i) => {
+      row.addEventListener('mouseenter', () => open(i));
+      row.addEventListener('focusin', () => open(i));
+      row.addEventListener('click', (e) => {
+        if (e.target.closest('a,button')) return;
+        open(this.svcOpen === i ? -1 : i);
+      });
+      row.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(this.svcOpen === i ? -1 : i); }
+      });
+    });
+    open(0);
+    this.svcResize = () => { if (this.svcOpen >= 0) open(this.svcOpen); };
+    addEventListener('resize', this.svcResize);
+    // reflow once webfonts land, so the open row's height is measured correctly
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.svcResize());
+  }
+
+  wireContactModal() {
+    const modal = document.querySelector('[data-msg-modal]');
+    const openers = Array.from(document.querySelectorAll('[data-msg-open]'));
+    if (!modal || !openers.length) { this.msgRetry = setTimeout(() => this.wireContactModal(), 400); return; }
+    const note = modal.querySelector('[data-msg-note]');
+    const form = modal.querySelector('[data-msg-form]');
+    const show = (on) => modal.toggleAttribute('data-on', on);
+    openers.forEach((b) => b.addEventListener('click', () => show(true)));
+    modal.addEventListener('click', (e) => { if (e.target === modal || e.target.closest('[data-msg-close]')) show(false); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') show(false); });
+    if (form) form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (note) {
+        note.textContent = 'Thanks — message sent. We\'ll reply within one working day.';
+        note.style.fontWeight = '600'; note.style.color = 'var(--teal-700)';
+      }
+      setTimeout(() => show(false), 1500);
+    });
+  }
+
+  wireLucide() {
+    const go = () => {
+      if (window.lucide && window.lucide.createIcons) {
+        try { window.lucide.createIcons({ attrs: { 'stroke-width': 2 } }); } catch (err) { window.lucide.createIcons(); }
+      } else { this.lucideRetry = setTimeout(go, 300); }
+    };
+    go();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.svcRetry); clearTimeout(this.gridRetry);
+    clearTimeout(this.msgRetry); clearTimeout(this.lucideRetry);
+    clearInterval(this.rescan); clearInterval(this.sweepTimer);
+    if (this.gridResize) removeEventListener('resize', this.gridResize);
+    if (this.svcResize) removeEventListener('resize', this.svcResize);
+    if (this.onScroll) removeEventListener('scroll', this.onScroll);
+    this.io && this.io.disconnect();
+  }
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

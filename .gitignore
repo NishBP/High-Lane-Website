@@ -1,0 +1,26 @@
+# Build output — regenerate with `node build.js`
+dist/
+
+# Reference material, not part of the site. Stays local; never published.
+inspiration/
+
+# Node (not used today, but keeps an accidental `npm i` out of the repo)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Claude Design editor state
+.image-slots.state.json
+.thumbnail
+
+# Local tooling
+.claude/
+
+# Backups
+*.bak
+
+# OS cruft
+.DS_Store
+**/.DS_Store
+Thumbs.db
