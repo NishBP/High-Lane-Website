@@ -184,9 +184,13 @@ a{color:inherit;text-decoration:none}
 @keyframes hl-sweep{0%{left:-40%;opacity:0}12%,72%{opacity:1}100%{left:112%;opacity:0}}
 
 /* the graphic column is pinned to the stage's real width so its SVG wires
-   never scale away from the px-positioned cards sitting on top of them */
-.hero-inner{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 470px;
-  gap:clamp(30px,4.5vw,64px);align-items:center}
+   never scale away from the px-positioned cards sitting on top of them.
+   It is held narrower than the stage's 470px and the stage scaled to suit,
+   which buys the headline row the width it needs to carry the wordmark and
+   the services wheel at a matched size on one line. */
+.hero-inner{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 424px;
+  gap:clamp(26px,3vw,44px);align-items:center}
+@media (min-width:1081px){.stage{transform:scale(.902);transform-origin:center center}}
 /* grid items default to min-width:auto, which would let the 470px stage set
    the column width and push the page wider than the viewport */
 .hero-inner > *{min-width:0}
@@ -203,7 +207,7 @@ a{color:inherit;text-decoration:none}
 
 /* the name lockup: "High Lane" with the services pinwheel turning beside it */
 .hero-title{margin:clamp(20px,2.6vw,28px) 0 0;display:flex;flex-wrap:wrap;align-items:baseline;
-  gap:clamp(10px,1.4vw,20px);font-size:clamp(38px,4.2vw,56px);letter-spacing:-.042em}
+  gap:clamp(9px,1.1vw,16px);font-size:clamp(36px,3.9vw,52px);letter-spacing:-.042em}
 .hero-title .brand{margin-left:-.045em}
 
 /* The services pinwheel: a three-sided drum that flips VERTICALLY — each
@@ -214,7 +218,7 @@ a{color:inherit;text-decoration:none}
    --r is half the face HEIGHT over tan(60deg) — height, not width, because
    the faces stack vertically. Measured in JS: it depends on the line box
    once the webfont has loaded. */
-.pinwheel{position:relative;display:inline-block;font-size:.56em;letter-spacing:-.03em;
+.pinwheel{position:relative;display:inline-block;font-size:.8em;letter-spacing:-.035em;
   line-height:1.16;perspective:900px;color:var(--teal-700)}
 .pw-sizer{visibility:hidden;white-space:nowrap} /* holds the width + baseline */
 .pw-prism{position:absolute;left:0;top:0;width:100%;height:100%;transform-style:preserve-3d;
