@@ -417,11 +417,6 @@ a{color:inherit;text-decoration:none}
   box-shadow:var(--sh-2)}
 .story-fig::after{content:"";position:absolute;inset:0;border-radius:var(--r-lg);
   box-shadow:inset 0 0 0 1px var(--line);pointer-events:none}
-.story-stat{position:absolute;left:-14px;bottom:26px;background:#fff;border:1px solid var(--line);
-  border-radius:var(--r);box-shadow:var(--sh-2);padding:15px 19px;animation:hl-float 7s var(--ease-out) infinite}
-.story-stat .n{font-family:var(--font-display);font-weight:800;font-size:26px;letter-spacing:-.03em;color:var(--deep)}
-.story-stat .l{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-55);margin-top:2px}
-@media (max-width:560px){.story-stat{left:8px;bottom:12px;padding:12px 15px}}
 
 /* ── TEAM ─────────────────────────────────────────────────────────────── */
 .team-grid{margin-top:clamp(30px,4vw,48px);display:grid;
@@ -431,12 +426,8 @@ a{color:inherit;text-decoration:none}
 .person:hover{transform:translateY(-5px);box-shadow:var(--sh-2)}
 .portrait{position:relative;aspect-ratio:4/5;background:var(--surface);overflow:hidden}
 .portrait img,.portrait image-slot{display:block;width:100%;height:100%;object-fit:cover;
-  filter:grayscale(1) contrast(1.04);transition:filter .55s var(--ease),transform .7s var(--ease)}
-.portrait::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,color-mix(in srgb,var(--aqua) 26%,transparent),color-mix(in srgb,var(--teal) 34%,transparent));
-  mix-blend-mode:multiply;opacity:.5;transition:opacity .55s var(--ease)}
-.person:hover .portrait img{filter:grayscale(0) contrast(1);transform:scale(1.04)}
-.person:hover .portrait::after{opacity:0}
+  transition:transform .7s var(--ease)}
+.person:hover .portrait img{transform:scale(1.04)}
 .person .who{padding:14px 15px 17px}
 .person .nm{font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:-.02em}
 .person .rl{margin-top:4px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
@@ -479,7 +470,9 @@ a{color:inherit;text-decoration:none}
 .contact-panel > *{position:relative;z-index:1}
 .contact h2{font-size:clamp(32px,4.6vw,60px);letter-spacing:-.04em}
 .contact .lede{color:rgba(255,255,255,.72);max-width:44ch;margin-top:18px}
-.ways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch}
+.ways{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.5fr) minmax(0,1fr);
+  gap:12px;align-items:stretch}
+@media (min-width:1181px){.contact-panel{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)}}
 @media (max-width:1180px){.ways{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}}
 .ways .lbl{grid-column:1/-1;margin:0;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
   font-weight:600;color:var(--aqua-300)}
@@ -492,33 +485,11 @@ a{color:inherit;text-decoration:none}
 .way .ic svg{width:17px;height:17px}
 .way .cap{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.55)}
 .way a.tel{font-family:var(--font-display);font-weight:700;font-size:16px;letter-spacing:-.02em;color:#fff}
+.way a.eml{font-size:14.5px;letter-spacing:-.01em;overflow-wrap:anywhere}
 .way a.tel:hover{color:var(--aqua)}
 .way .note{margin-top:auto;font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.55);overflow-wrap:anywhere}
 .way .note a{color:var(--aqua-300);font-weight:500}
 .way .btn{width:100%}
-
-/* ── MODAL ────────────────────────────────────────────────────────────── */
-.modal{display:none;position:fixed;inset:0;z-index:200;padding:24px;align-items:center;justify-content:center;
-  background:color-mix(in srgb,var(--deep) 55%,transparent);backdrop-filter:blur(6px)}
-.modal[data-on]{display:flex;animation:hl-fade .3s var(--ease)}
-@keyframes hl-fade{from{opacity:0}to{opacity:1}}
-.modal form{width:min(100%,520px);max-height:90vh;overflow:auto;background:var(--bg);border-radius:var(--r-xl);
-  box-shadow:var(--sh-3);padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;gap:16px;
-  animation:hl-pop .4s var(--ease-out)}
-@keyframes hl-pop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
-.modal h3{font-size:25px;flex:1}
-.x{width:36px;height:36px;flex:none;border-radius:50%;border:1px solid var(--line-2);background:transparent;
-  color:var(--ink-70);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;
-  transition:background .3s var(--ease),color .3s var(--ease)}
-.x:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
-.field{display:flex;flex-direction:column;gap:7px;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
-  font-weight:600;color:var(--ink-55)}
-.field input,.field textarea{font-family:var(--font-body);font-size:15px;font-weight:400;text-transform:none;
-  letter-spacing:0;color:var(--ink);padding:13px 15px;border:1px solid var(--line-2);border-radius:var(--r-sm);
-  background:var(--bg-soft);transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease)}
-.field input:focus,.field textarea:focus{outline:none;border-color:var(--teal);background:#fff;
-  box-shadow:0 0 0 3px color-mix(in srgb,var(--aqua) 26%,transparent)}
-.field textarea{resize:vertical}
 
 /* ── FOOTER ───────────────────────────────────────────────────────────── */
 .foot{padding:clamp(30px,4vw,52px) var(--pad);display:flex;flex-wrap:wrap;gap:18px;
@@ -529,6 +500,9 @@ a{color:inherit;text-decoration:none}
 .foot nav{display:flex;flex-wrap:wrap;gap:20px}
 .foot nav a{color:var(--ink-55);transition:color .3s var(--ease)}
 .foot nav a:hover{color:var(--teal-700)}
+.foot .legal{line-height:1.7}
+.foot .abn{color:var(--ink-40);letter-spacing:.03em;font-variant-numeric:tabular-nums}
+@media (min-width:761px){.foot .legal{text-align:right}}
 
 /* ── scroll reveal ────────────────────────────────────────────────────── */
 [data-reveal]{opacity:0;transform:translateY(18px);
@@ -546,7 +520,7 @@ a{color:inherit;text-decoration:none}
 <!-- ═══════════════════════════════════════════════════════════════════════════
      HIGH LANE — one-page site. All copy is plain text in this template,
      in page order: NAV › 01 HERO › 02 SERVICES › 03 STORY › 04 TEAM ›
-     05 REVIEWS › 06 CONTACT › MESSAGE MODAL › FOOTER.
+     05 REVIEWS › 06 CONTACT › FOOTER.
      Each section below opens with a banner listing exactly what text it holds.
      Click any text in the editor to change it — or search this file for the
      words you can see on the page.
@@ -558,7 +532,7 @@ a{color:inherit;text-decoration:none}
 
 <!-- ══════════════════════════════════════════════════════════════════════
      NAV BAR
-     Copy to edit: brand wordmark, 4 nav links, "Client login" button label
+     Copy to edit: brand wordmark, 4 nav links, "Login" button label
      ══════════════════════════════════════════════════════════════════════ -->
 <nav class="nav" data-nav>
   <a class="nav-brand" href="#top" aria-label="High Lane — back to top">
@@ -568,7 +542,7 @@ a{color:inherit;text-decoration:none}
   <a class="nav-link" href="#story">Story</a>
   <a class="nav-link" href="#team">Team</a>
   <a class="nav-link" href="#reviews">Reviews</a>
-  <a class="btn btn-primary btn-sm" href="#contact">Client login</a>
+  <a class="btn btn-primary btn-sm" href="#contact">Login</a>
 </nav>
 
 <!-- ══════════════════════════════════════════════════════════════════════
@@ -839,8 +813,8 @@ a{color:inherit;text-decoration:none}
 
 <!-- ══════════════════════════════════════════════════════════════════════
      03 · OUR STORY
-     Copy to edit: kicker, the two paragraphs, the pull heading, the floating
-     stat card (number + label), and the 2 button labels
+     Copy to edit: kicker, the two paragraphs, the pull heading and the
+     2 button labels
      ══════════════════════════════════════════════════════════════════════ -->
 <section class="story section wrap" id="story" data-screen-label="Story">
   <div class="story-grid">
@@ -858,10 +832,6 @@ a{color:inherit;text-decoration:none}
     <div data-reveal>
       <figure class="story-fig">
         <img src="assets/about-us.jpg" alt="The High Lane desk: laptops, a notebook and the week's to-do board">
-        <figcaption class="story-stat">
-          <div class="n">3 services</div>
-          <div class="l">One connected team</div>
-        </figcaption>
       </figure>
     </div>
   </div>
@@ -962,8 +932,8 @@ a{color:inherit;text-decoration:none}
 <!-- ══════════════════════════════════════════════════════════════════════
      06 · CONTACT — "Take the fast lane."
      Copy to edit: heading, paragraph, then the 3 contact cards: phone
-     numbers (also update the tel: links), message-card label, booking link
-     + its href
+     numbers (also update the tel: links), the email address (also update
+     the mailto: link), booking link + its href
      ══════════════════════════════════════════════════════════════════════ -->
 <section class="contact wrap" id="contact" data-screen-label="Contact">
   <div class="contact-panel">
@@ -984,12 +954,10 @@ a{color:inherit;text-decoration:none}
       </div>
 
       <div class="way">
-        <span class="ic"><i data-lucide="message-square"></i></span>
-        <span class="cap">Send a message</span>
-        <button type="button" class="btn btn-aqua btn-sm" data-msg-open>Write to us
-          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </button>
-        <span class="note">or <a href="mailto:hello@highlanemedia.com">hello@highlanemedia.com</a></span>
+        <span class="ic"><i data-lucide="mail"></i></span>
+        <span class="cap">Email us</span>
+        <a class="tel eml" href="mailto:hello@highlanemedia.com">hello@<wbr>highlanemedia.com</a>
+        <span class="note">We reply within one working day</span>
       </div>
 
       <div class="way">
@@ -1003,40 +971,14 @@ a{color:inherit;text-decoration:none}
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════════════
-     MESSAGE MODAL (opens from the Contact section)
-     Copy to edit: dialog title, the 3 field labels + placeholders, submit
-     button label, confirmation note
-     ══════════════════════════════════════════════════════════════════════ -->
-<div class="modal" data-msg-modal role="dialog" aria-modal="true" aria-label="Send us a message">
-  <form data-msg-form>
-    <div style="display:flex;align-items:flex-start;gap:16px">
-      <h3>Send us a message</h3>
-      <button type="button" class="x" data-msg-close aria-label="Close">✕</button>
-    </div>
-    <label class="field">Name
-      <input required name="name" placeholder="Your name">
-    </label>
-    <label class="field">Email
-      <input required type="email" name="email" placeholder="you@company.com">
-    </label>
-    <label class="field">What's slowing you down?
-      <textarea required name="message" rows="4" placeholder="Content, admin, or a site that doesn't convert…"></textarea>
-    </label>
-    <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:4px">
-      <button type="submit" class="btn btn-primary">Send message</button>
-      <span data-msg-note style="font-size:13px;color:var(--ink-55)">We reply within one working day.</span>
-    </div>
-  </form>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════════════════
      FOOTER
-     Copy to edit: brand wordmark, link labels, copyright line
+     Copy to edit: brand wordmark, link labels, copyright line, ABN
      ══════════════════════════════════════════════════════════════════════ -->
 <footer class="foot">
   <span class="brand"><img src="assets/hlm-logo.png" alt="High Lane"></span>
   <nav><a href="#services">Services</a><a href="#story">Story</a><a href="#team">Team</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a></nav>
-  <span>© 2026 High Lane. Social · AI automations · Web development.</span>
+  <span class="legal">© 2026 High Lane. Social · AI automations · Web development.<br>
+    <span class="abn">ABN 00 000 000 000</span></span>
 </footer>
 
 </div>
@@ -1054,7 +996,6 @@ class Component extends DCLogic {
     this.stickyNav();
     this.buildGrid();
     this.wireServices();
-    this.wireContactModal();
     this.wireLucide();
   }
 
@@ -1179,26 +1120,6 @@ class Component extends DCLogic {
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.svcResize());
   }
 
-  wireContactModal() {
-    const modal = document.querySelector('[data-msg-modal]');
-    const openers = Array.from(document.querySelectorAll('[data-msg-open]'));
-    if (!modal || !openers.length) { this.msgRetry = setTimeout(() => this.wireContactModal(), 400); return; }
-    const note = modal.querySelector('[data-msg-note]');
-    const form = modal.querySelector('[data-msg-form]');
-    const show = (on) => modal.toggleAttribute('data-on', on);
-    openers.forEach((b) => b.addEventListener('click', () => show(true)));
-    modal.addEventListener('click', (e) => { if (e.target === modal || e.target.closest('[data-msg-close]')) show(false); });
-    addEventListener('keydown', (e) => { if (e.key === 'Escape') show(false); });
-    if (form) form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (note) {
-        note.textContent = 'Thanks — message sent. We\'ll reply within one working day.';
-        note.style.fontWeight = '600'; note.style.color = 'var(--teal-700)';
-      }
-      setTimeout(() => show(false), 1500);
-    });
-  }
-
   wireLucide() {
     const go = () => {
       if (window.lucide && window.lucide.createIcons) {
@@ -1210,7 +1131,7 @@ class Component extends DCLogic {
 
   componentWillUnmount() {
     clearTimeout(this.svcRetry); clearTimeout(this.gridRetry);
-    clearTimeout(this.msgRetry); clearTimeout(this.lucideRetry);
+    clearTimeout(this.lucideRetry);
     clearInterval(this.rescan); clearInterval(this.sweepTimer);
     if (this.gridResize) removeEventListener('resize', this.gridResize);
     if (this.svcResize) removeEventListener('resize', this.svcResize);

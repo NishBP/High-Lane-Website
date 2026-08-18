@@ -70,3 +70,4 @@ and is never published.
 - Team roles all read "Role TBC"; the fifth member has no photo or name.
 - `hello@highlanemedia.com` and the `cal.com/highlanemedia/intro` booking link.
 - Phone numbers `0161 496 0142` and `07700 900 482`.
+- The ABN in the footer reads `ABN 00 000 000 000` — swap in the real one.
