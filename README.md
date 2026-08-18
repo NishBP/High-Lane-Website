@@ -3,16 +3,31 @@
 The marketing site for High Lane. Plain HTML, CSS and JavaScript. No framework,
 no dependencies, no server runtime, no database.
 
-## Deploying (Cloudflare Pages)
+## Deploying
 
-| Setting               | Value           |
-| --------------------- | --------------- |
-| Build command         | `node build.js` |
-| Build output directory| `dist`          |
-| Root directory        | *(leave blank)* |
-| Environment variables | none            |
+The site is a Cloudflare **Worker with static assets** — `high-lane-website`,
+built from this repo by Workers Builds. Not a Pages project, despite being
+plain static files.
 
-Nothing in `dist/` needs a server — it is static files only.
+| Setting | Value |
+| --- | --- |
+| Build command | `node build.js` |
+| Assets directory | `dist` (declared in `wrangler.jsonc`) |
+| Root directory | `/` |
+| Environment variables | none |
+
+`wrangler.jsonc` at the repo root is what points the Worker at `dist/`. Keep
+`name` matching the existing Worker — a different name deploys a second one
+alongside it.
+
+**`dist/` is git-ignored, so the build command is not optional.** With no build
+step there is no `dist/`, and Cloudflare will fall back to whatever other
+directory in the repo happens to hold an `index.html` — which is `admin/`, and
+which silently serves the CMS at the site's root. That has happened once
+already.
+
+Nothing in `dist/` needs a server — it is static files only. The one piece of
+server-side code in this repo is `oauth-worker/`, a separate Worker.
 
 ## Editing the site without touching code
 
@@ -81,6 +96,7 @@ for how to add or remove an editor.
   `config.yml`.
 - **`oauth-worker/`** — the Cloudflare Worker that signs editors in. Deployed
   separately from the site; not part of `dist/`.
+- **`wrangler.jsonc`** — tells Cloudflare the site is `dist/`.
 
 Every style, animation and graphic lives inside the template. There is no
 separate CSS or JS file.

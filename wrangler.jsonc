@@ -1,0 +1,21 @@
+// High Lane — the website itself.
+//
+// This is NOT a Cloudflare Pages project. The site is deployed as a Worker
+// with static assets, built from this repo by Workers Builds. `name` must
+// match the existing Worker, or a deploy creates a second one.
+//
+// The site has no server-side code: there is no `main`, just a directory of
+// files. Everything dynamic about it happens at build time in build.js.
+//
+// The OAuth provider for the CMS is a SEPARATE Worker with its own config in
+// oauth-worker/wrangler.toml. Don't merge the two.
+{
+  "name": "high-lane-website",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    // build.js writes this. It is git-ignored, so it only exists after the
+    // build command has run — which is why Cloudflare must be told to run
+    // `node build.js` before deploying.
+    "directory": "./dist"
+  }
+}
