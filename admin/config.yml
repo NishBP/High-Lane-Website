@@ -14,7 +14,7 @@ backend:
   repo: NishBP/High-Lane-Website
   branch: main
   # ── replace with the Worker's real URL, no trailing slash ──
-  base_url: https://high-lane-oauth.REPLACE-ME.workers.dev
+  base_url: https://high-lane-oauth.hmnishalparanagama.workers.dev
   auth_endpoint: auth
 
 # Only images the team should be able to swap live here. The logo and the
