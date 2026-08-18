@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>High Lane — Social media, AI automations & web development</title>
-<meta name="description" content="High Lane runs your social channels, automates the work behind them with AI, and ships the web apps and sites those channels point at.">
+<title data-cms="meta.title">High Lane — Social media, AI automations & web development</title>
+<meta name="description" data-cms-attr="content=meta.description" content="High Lane runs your social channels, automates the work behind them with AI, and ships the web apps and sites those channels point at.">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -425,9 +425,12 @@ a{color:inherit;text-decoration:none}
   box-shadow:var(--sh-1);transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
 .person:hover{transform:translateY(-5px);box-shadow:var(--sh-2)}
 .portrait{position:relative;aspect-ratio:4/5;background:var(--surface);overflow:hidden}
-.portrait img,.portrait image-slot{display:block;width:100%;height:100%;object-fit:cover;
+.portrait img{display:block;width:100%;height:100%;object-fit:cover;
   transition:transform .7s var(--ease)}
 .person:hover .portrait img{transform:scale(1.04)}
+.portrait-empty{display:flex;align-items:center;justify-content:center;height:100%;
+  background:var(--surface-2);color:var(--ink-40);font-size:12px;letter-spacing:.08em;
+  text-transform:uppercase;font-weight:600}
 .person .who{padding:14px 15px 17px}
 .person .nm{font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:-.02em}
 .person .rl{margin-top:4px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
@@ -538,11 +541,13 @@ a{color:inherit;text-decoration:none}
   <a class="nav-brand" href="#top" aria-label="High Lane — back to top">
     <img src="assets/hlm-logo.png" alt="High Lane">
   </a>
+  <!--cms:nav-links-->
   <a class="nav-link" href="#services">Services</a>
   <a class="nav-link" href="#story">Story</a>
   <a class="nav-link" href="#team">Team</a>
   <a class="nav-link" href="#reviews">Reviews</a>
-  <a class="btn btn-primary btn-sm" href="#contact">Login</a>
+  <!--/cms:nav-links-->
+  <a class="btn btn-primary btn-sm" href="#contact" data-cms="nav.cta.label" data-cms-attr="href=nav.cta.href">Login</a>
 </nav>
 
 <!-- ══════════════════════════════════════════════════════════════════════
@@ -562,27 +567,29 @@ a{color:inherit;text-decoration:none}
 
   <div class="hero-inner">
     <div data-reveal>
-      <span class="hero-badge"><span class="dot"></span>Social media · AI automations · Web development</span>
+      <span class="hero-badge"><span class="dot"></span><span data-cms="hero.badge">Social media · AI automations · Web development</span></span>
 
       <h1 class="hero-title">
-        <span class="brand">High Lane</span>
+        <span class="brand" data-cms="hero.brand">High Lane</span>
         <span class="pinwheel" aria-hidden="true">
+          <!--cms:hero-pinwheel-->
           <span class="pw-sizer">Web Development.</span>
           <span class="pw-prism" id="hl-wheel">
             <span class="pw-face f1">Social Media<i>.</i></span>
             <span class="pw-face f2">AI Automations<i>.</i></span>
             <span class="pw-face f3">Web Development<i>.</i></span>
           </span>
+          <!--/cms:hero-pinwheel-->
         </span>
       </h1>
 
-      <p class="lede" style="margin-top:clamp(22px,3vw,32px)">We started as a social media agency and never stopped building. Today High Lane runs your channels, automates the work behind them with AI, and ships the site those channels point at — one small team, three tightly connected services.</p>
+      <p class="lede" style="margin-top:clamp(22px,3vw,32px)" data-cms="hero.lede">We started as a social media agency and never stopped building. Today High Lane runs your channels, automates the work behind them with AI, and ships the site those channels point at — one small team, three tightly connected services.</p>
 
       <div class="btn-row">
-        <a class="btn btn-primary" href="#contact">Get in touch with us
+        <a class="btn btn-primary" href="#contact" data-cms-attr="href=hero.primaryCta.href"><span data-cms="hero.primaryCta.label">Get in touch with us</span>
           <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
-        <a class="btn btn-ghost" href="#services">See what we do</a>
+        <a class="btn btn-ghost" href="#services" data-cms="hero.secondaryCta.label" data-cms-attr="href=hero.secondaryCta.href">See what we do</a>
       </div>
     </div>
 
@@ -602,24 +609,24 @@ a{color:inherit;text-decoration:none}
         <div class="hub">
           <span class="pulse"></span>
           <img src="assets/hlm-logo.png" alt="">
-          <div class="meta">One team, one lane</div>
+          <div class="meta" data-cms="hero.graphic.hubLabel">One team, one lane</div>
         </div>
 
         <div class="node n1">
           <span class="ic"><i data-lucide="megaphone"></i></span>
-          <span class="tx"><span class="t">Social media</span><span class="s">Content &amp; community</span></span>
+          <span class="tx"><span class="t" data-cms="hero.graphic.nodes.0.title">Social media</span><span class="s" data-cms="hero.graphic.nodes.0.sub">Content &amp; community</span></span>
         </div>
         <div class="node n2">
           <span class="ic"><i data-lucide="cpu"></i></span>
-          <span class="tx"><span class="t">AI automations</span><span class="s">Runs 24/7</span></span>
+          <span class="tx"><span class="t" data-cms="hero.graphic.nodes.1.title">AI automations</span><span class="s" data-cms="hero.graphic.nodes.1.sub">Runs 24/7</span></span>
         </div>
         <div class="node n3">
           <span class="ic"><i data-lucide="layout-panel-left"></i></span>
-          <span class="tx"><span class="t">Web development</span><span class="s">Sites, CRMs &amp; apps</span></span>
+          <span class="tx"><span class="t" data-cms="hero.graphic.nodes.2.title">Web development</span><span class="s" data-cms="hero.graphic.nodes.2.sub">Sites, CRMs &amp; apps</span></span>
         </div>
 
-        <span class="chip c1"><i></i>Posts scheduled</span>
-        <span class="chip c2"><i></i>Leads routed</span>
+        <span class="chip c1"><i></i><span data-cms="hero.graphic.chips.0">Posts scheduled</span></span>
+        <span class="chip c2"><i></i><span data-cms="hero.graphic.chips.1">Leads routed</span></span>
 
         <div class="cursor">
           <span class="ring"></span>
@@ -641,9 +648,9 @@ a{color:inherit;text-decoration:none}
 <section class="services section wrap" id="services" data-screen-label="Services">
   <div class="svc-intro" data-reveal>
     <div>
-      <h2 class="h2">What we run for you</h2>
-      <span class="kicker">Three services, one lane</span>
-      <p class="lede" style="margin-top:18px">Start anywhere. Most clients add the next service once they see what the first one frees up.</p>
+      <h2 class="h2" data-cms="services.heading">What we run for you</h2>
+      <span class="kicker" data-cms="services.kicker">Three services, one lane</span>
+      <p class="lede" style="margin-top:18px" data-cms="services.lede">Start anywhere. Most clients add the next service once they see what the first one frees up.</p>
     </div>
 
     <svg class="split" viewBox="0 0 1200 210" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
@@ -664,23 +671,23 @@ a{color:inherit;text-decoration:none}
     <article class="svc" data-svc="0" tabindex="0" role="button" aria-expanded="true">
       <span class="svc-bar" aria-hidden="true"></span>
       <div class="svc-head">
-        <span class="svc-num">01</span>
+        <span class="svc-num" data-cms="services.items.0.num">01</span>
         <div>
-          <h3 class="svc-title">Social Media Management</h3>
-          <p class="svc-sub">Strategy · Content production · Community · Paid support</p>
+          <h3 class="svc-title" data-cms="services.items.0.title">Social Media Management</h3>
+          <p class="svc-sub" data-cms="services.items.0.sub">Strategy · Content production · Community · Paid support</p>
         </div>
         <span class="svc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
       </div>
       <div class="svc-body" data-svc-body>
         <div class="svc-body-in">
           <div>
-            <p class="svc-copy">The service we were born doing. Channel strategy, a month of content planned in advance, shooting and editing, publishing, community replies, and a monthly read on what actually moved.</p>
-            <ul class="svc-ul">
+            <p class="svc-copy" data-cms="services.items.0.copy">The service we were born doing. Channel strategy, a month of content planned in advance, shooting and editing, publishing, community replies, and a monthly read on what actually moved.</p>
+            <ul class="svc-ul"><!--cms:svc-bullets:0-->
               <li>Content calendars &amp; production</li>
               <li>Community management &amp; DMs</li>
               <li>Paid social support &amp; reporting</li>
-            </ul>
-            <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px">Discuss a project</a>
+            <!--/cms:svc-bullets:0--></ul>
+            <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px" data-cms="services.items.0.cta.label" data-cms-attr="href=services.items.0.cta.href">Discuss a project</a>
           </div>
           <div class="mock" data-svc-mock>
             <div class="mock-in">
@@ -711,23 +718,23 @@ a{color:inherit;text-decoration:none}
     <article class="svc" data-svc="1" tabindex="0" role="button" aria-expanded="false">
       <span class="svc-bar" aria-hidden="true"></span>
       <div class="svc-head">
-        <span class="svc-num">02</span>
+        <span class="svc-num" data-cms="services.items.1.num">02</span>
         <div>
-          <h3 class="svc-title">AI Automations</h3>
-          <p class="svc-sub">Lead routing · Inbox triage · Reporting · Internal tools</p>
+          <h3 class="svc-title" data-cms="services.items.1.title">AI Automations</h3>
+          <p class="svc-sub" data-cms="services.items.1.sub">Lead routing · Inbox triage · Reporting · Internal tools</p>
         </div>
         <span class="svc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
       </div>
       <div class="svc-body" data-svc-body>
         <div class="svc-body-in">
           <div>
-            <p class="svc-copy">We map the admin that eats your week, then hand it to something that never gets tired: lead qualification, inbox triage, first-line replies, content repurposing and reports that write themselves.</p>
-            <ul class="svc-ul">
+            <p class="svc-copy" data-cms="services.items.1.copy">We map the admin that eats your week, then hand it to something that never gets tired: lead qualification, inbox triage, first-line replies, content repurposing and reports that write themselves.</p>
+            <ul class="svc-ul"><!--cms:svc-bullets:1-->
               <li>Lead capture &amp; follow-up agents</li>
               <li>Inbox, DM and booking triage</li>
               <li>Reporting &amp; internal tooling</li>
-            </ul>
-            <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px">Discuss a project</a>
+            <!--/cms:svc-bullets:1--></ul>
+            <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px" data-cms="services.items.1.cta.label" data-cms-attr="href=services.items.1.cta.href">Discuss a project</a>
           </div>
           <div class="mock" data-svc-mock>
             <div class="mock-in">
@@ -762,23 +769,23 @@ a{color:inherit;text-decoration:none}
     <article class="svc" data-svc="2" tabindex="0" role="button" aria-expanded="false">
       <span class="svc-bar" aria-hidden="true"></span>
       <div class="svc-head">
-        <span class="svc-num">03</span>
+        <span class="svc-num" data-cms="services.items.2.num">03</span>
         <div>
-          <h3 class="svc-title">Web Development</h3>
-          <p class="svc-sub">Landing pages · CRMs &amp; web apps · Payments · CMS</p>
+          <h3 class="svc-title" data-cms="services.items.2.title">Web Development</h3>
+          <p class="svc-sub" data-cms="services.items.2.sub">Landing pages · CRMs &amp; web apps · Payments · CMS</p>
         </div>
         <span class="svc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
       </div>
       <div class="svc-body" data-svc-body>
         <div class="svc-body-in">
           <div>
-            <p class="svc-copy">Not a brochure — a launchpad for the whole business. Fast, light sites and the machinery attached: card payments and checkout, forms wired to your CRM, custom web apps built around the problem you actually have, and a CMS so your team edits copy without calling us.</p>
-            <ul class="svc-ul">
+            <p class="svc-copy" data-cms="services.items.2.copy">Not a brochure — a launchpad for the whole business. Fast, light sites and the machinery attached: card payments and checkout, forms wired to your CRM, custom web apps built around the problem you actually have, and a CMS so your team edits copy without calling us.</p>
+            <ul class="svc-ul"><!--cms:svc-bullets:2-->
               <li>Landing pages, design, build &amp; launch</li>
               <li>Custom CRMs &amp; web app builds</li>
               <li>Payments, forms and CMS training</li>
-            </ul>
-            <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px">Discuss a project</a>
+            <!--/cms:svc-bullets:2--></ul>
+            <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px" data-cms="services.items.2.cta.label" data-cms-attr="href=services.items.2.cta.href">Discuss a project</a>
           </div>
           <div class="mock" data-svc-mock>
             <div class="mock-in" style="display:flex;align-items:center;justify-content:center">
@@ -819,19 +826,21 @@ a{color:inherit;text-decoration:none}
 <section class="story section wrap" id="story" data-screen-label="Story">
   <div class="story-grid">
     <div data-reveal>
-      <h2 class="h2">We kept getting asked for <em>the next thing.</em></h2>
-      <span class="kicker">Our story</span>
+      <h2 class="h2" data-cms="story.heading">We kept getting asked for <em>the next thing.</em></h2>
+      <span class="kicker" data-cms="story.kicker">Our story</span>
+      <!--cms:story-paragraphs-->
       <p class="lede" style="margin-top:20px">High Lane started in a spare room with two laptops and one client's Instagram account. The content worked, the enquiries came in — and then the same question kept arriving: “can you handle the replies too?”, “can you fix the website they land on?”</p>
       <p class="lede" style="margin-top:18px">So we learned to. Automations came first, out of necessity. Web development followed, because a great campaign pointing at a broken site is just expensive noise. We are still small on purpose: you talk to the people doing the work.</p>
+      <!--/cms:story-paragraphs-->
       <div class="btn-row">
-        <a class="btn btn-primary" href="#team">Meet the team</a>
-        <a class="btn btn-ghost" href="#services">What we run</a>
+        <a class="btn btn-primary" href="#team" data-cms="story.primaryCta.label" data-cms-attr="href=story.primaryCta.href">Meet the team</a>
+        <a class="btn btn-ghost" href="#services" data-cms="story.secondaryCta.label" data-cms-attr="href=story.secondaryCta.href">What we run</a>
       </div>
     </div>
 
     <div data-reveal>
       <figure class="story-fig">
-        <img src="assets/about-us.jpg" alt="The High Lane desk: laptops, a notebook and the week's to-do board">
+        <img src="assets/uploads/about-us.jpg" alt="The High Lane desk: laptops, a notebook and the week's to-do board" data-cms-attr="src=story.image;alt=story.imageAlt">
       </figure>
     </div>
   </div>
@@ -845,13 +854,14 @@ a{color:inherit;text-decoration:none}
 <section class="section wrap" id="team" data-screen-label="Team">
   <div class="sec-head" data-reveal>
     <div>
-      <h2 class="h2">Behind the scenes</h2>
-      <span class="kicker">The team</span>
+      <h2 class="h2" data-cms="team.heading">Behind the scenes</h2>
+      <span class="kicker" data-cms="team.kicker">The team</span>
     </div>
-    <p class="lede">Five specialists, no layers. The person who plans your content is the person who posts it.</p>
+    <p class="lede" data-cms="team.intro">Five specialists, no layers. The person who plans your content is the person who posts it.</p>
   </div>
 
   <div class="team-grid" data-reveal>
+  <!--cms:team-cards-->
     <div class="person">
       <div class="portrait"><img src="assets/team/nishal-paranagama.jpeg" alt="Nishal Paranagama"></div>
       <div class="who"><p class="nm">Nishal Paranagama</p><p class="rl">Role TBC</p></div>
@@ -869,10 +879,11 @@ a{color:inherit;text-decoration:none}
       <div class="who"><p class="nm">Tarun Sarvanathan</p><p class="rl">Role TBC</p></div>
     </div>
     <div class="person">
-      <div class="portrait"><image-slot id="hl-team-5" shape="rect" placeholder="Headshot"></image-slot></div>
+      <div class="portrait"><div class="portrait-empty" role="img" aria-label="Headshot to come">Headshot</div></div>
       <div class="who"><p class="nm">Fifth member</p><p class="rl">Name &amp; role TBC</p></div>
     </div>
-  </div>
+    <!--/cms:team-cards-->
+</div>
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════════════
@@ -883,12 +894,13 @@ a{color:inherit;text-decoration:none}
      ══════════════════════════════════════════════════════════════════════ -->
 <section class="reviews section" id="reviews" data-screen-label="Reviews">
   <div class="wrap" data-reveal>
-    <h2 class="h2">What it's like to work with us</h2>
-    <span class="kicker">Client reviews</span>
+    <h2 class="h2" data-cms="reviews.heading">What it's like to work with us</h2>
+    <span class="kicker" data-cms="reviews.kicker">Client reviews</span>
   </div>
 
   <div class="tape-mask" data-reveal>
     <div class="tape">
+      <!--cms:review-cards-->
       <figure class="review">
         <span class="qm" aria-hidden="true">“</span>
         <blockquote>Bookings up 60% in four months, and I stopped answering DMs at midnight.</blockquote>
@@ -925,6 +937,7 @@ a{color:inherit;text-decoration:none}
         <p>They audited how we actually worked before touching anything. Lead routing and reporting now run themselves.</p>
         <figcaption><strong>Hana Lindqvist</strong>Ops Manager, Beacon Legal</figcaption>
       </figure>
+      <!--/cms:review-cards-->
     </div>
   </div>
 </section>
@@ -938,33 +951,37 @@ a{color:inherit;text-decoration:none}
 <section class="contact wrap" id="contact" data-screen-label="Contact">
   <div class="contact-panel">
     <div data-reveal>
-      <h2>Take the fast lane.</h2>
-      <p class="lede">Tell us what's slowing you down — content, admin or a site that doesn't convert. We'll send back a plan and a price, no pitch deck.</p>
+      <h2 data-cms="contact.heading">Take the fast lane.</h2>
+      <p class="lede" data-cms="contact.lede">Tell us what's slowing you down — content, admin or a site that doesn't convert. We'll send back a plan and a price, no pitch deck.</p>
     </div>
 
     <div class="ways" data-reveal>
-      <p class="lbl">Three ways to reach us</p>
+      <p class="lbl" data-cms="contact.waysLabel">Three ways to reach us</p>
 
       <div class="way">
         <span class="ic"><i data-lucide="phone-call"></i></span>
-        <span class="cap">Call us</span>
+        <span class="cap" data-cms="contact.phone.cap">Call us</span>
+        <!--cms:contact-phones-->
         <a class="tel" href="tel:+441614960142">0161 496 0142</a>
         <a class="tel" href="tel:+447700900482">07700 900 482</a>
-        <span class="note">Mon–Fri, 9am–6pm</span>
+        <!--/cms:contact-phones-->
+        <span class="note" data-cms="contact.phone.note">Mon–Fri, 9am–6pm</span>
       </div>
 
       <div class="way">
         <span class="ic"><i data-lucide="mail"></i></span>
-        <span class="cap">Email us</span>
+        <span class="cap" data-cms="contact.email.cap">Email us</span>
+        <!--cms:contact-email-->
         <a class="tel eml" href="mailto:hello@highlanemedia.com">hello@<wbr>highlanemedia.com</a>
-        <span class="note">We reply within one working day</span>
+        <!--/cms:contact-email-->
+        <span class="note" data-cms="contact.email.note">We reply within one working day</span>
       </div>
 
       <div class="way">
         <span class="ic"><i data-lucide="calendar-check"></i></span>
-        <span class="cap">Book a meeting</span>
-        <a class="btn btn-ghost btn-sm" style="--btn-fg:#fff;--btn-bd:rgba(255,255,255,.28)" href="https://cal.com/highlanemedia/intro" target="_blank" rel="noopener">30-min intro ↗</a>
-        <span class="note">Pick a slot — reply within one working day</span>
+        <span class="cap" data-cms="contact.booking.cap">Book a meeting</span>
+        <a class="btn btn-ghost btn-sm" style="--btn-fg:#fff;--btn-bd:rgba(255,255,255,.28)" href="https://cal.com/highlanemedia/intro" target="_blank" rel="noopener" data-cms="contact.booking.label" data-cms-attr="href=contact.booking.href">30-min intro ↗</a>
+        <span class="note" data-cms="contact.booking.note">Pick a slot — reply within one working day</span>
       </div>
     </div>
   </div>
@@ -976,9 +993,9 @@ a{color:inherit;text-decoration:none}
      ══════════════════════════════════════════════════════════════════════ -->
 <footer class="foot">
   <span class="brand"><img src="assets/hlm-logo.png" alt="High Lane"></span>
-  <nav><a href="#services">Services</a><a href="#story">Story</a><a href="#team">Team</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a></nav>
-  <span class="legal">© 2026 High Lane. Social · AI automations · Web development.<br>
-    <span class="abn">ABN 00 000 000 000</span></span>
+  <nav><!--cms:footer-links--><a href="#services">Services</a><a href="#story">Story</a><a href="#team">Team</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a><!--/cms:footer-links--></nav>
+  <span class="legal"><span data-cms="footer.copyright">© 2026 High Lane. Social · AI automations · Web development.</span><br>
+    <span class="abn" data-cms="footer.abn">ABN 00 000 000 000</span></span>
 </footer>
 
 </div>

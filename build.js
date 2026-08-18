@@ -2,14 +2,26 @@
 /**
  * High Lane — static site build.
  *
- * Turns the Claude Design source file (`High Lane Media.dc.html`) into a plain
- * static page at `dist/index.html`, with no runtime dependencies of any kind.
+ * Turns the Claude Design source file (`High Lane Media.dc.html`) plus the
+ * JSON in `content/` into a plain static page at `dist/index.html`, with no
+ * runtime dependencies of any kind.
  *
  *   node build.js        →  dist/
  *
  * There is no bundler, no npm install and no server runtime. This script only
- * uses `node:fs` and `node:path`. What it strips out of the source:
+ * uses `node:fs` and `node:path`.
  *
+ * ── content ────────────────────────────────────────────────────────────────
+ * Every piece of editable copy lives in `content/*.json`, which is what Decap
+ * CMS writes to. The template carries the same copy inline so the file still
+ * previews correctly in Claude Design — but at build time the JSON always
+ * wins. Three hooks connect them:
+ *
+ *   data-cms="path"                      replace this element's contents
+ *   data-cms-attr="href=path;alt=path"   set attributes on this element
+ *   <!--cms:name--> … <!--/cms:name-->   regenerate a run of elements
+ *
+ * ── stripped ───────────────────────────────────────────────────────────────
  *   · <x-dc> / <helmet> wrappers      — Claude Design editor scaffolding
  *   · support.js       (69 KB)        — the Claude Design runtime
  *   · image-slot.js    (65 KB)        — drag-and-drop image editor
@@ -31,6 +43,8 @@ const path = require('node:path');
 
 const ROOT = __dirname;
 const SRC = path.join(ROOT, 'High Lane Media.dc.html');
+const CONTENT_DIR = path.join(ROOT, 'content');
+const ADMIN = path.join(ROOT, 'admin');
 const OUT = path.join(ROOT, 'dist');
 
 /* Lucide icons used by the page, extracted from the rendered output.
@@ -53,7 +67,194 @@ function cut(src, needle, replacement, label) {
   return src.split(needle).join(replacement);
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   CONTENT — everything Decap CMS writes
+   ══════════════════════════════════════════════════════════════════════════ */
+
+function readJSON(name) {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(CONTENT_DIR, name), 'utf8'));
+  } catch (err) {
+    throw new Error(`build failed: could not read content/${name} — ${err.message}`);
+  }
+}
+
+const content = Object.assign({}, readJSON('site.json'), {
+  team: readJSON('team.json'),
+  reviews: readJSON('testimonials.json')
+});
+
+function get(key) {
+  const value = key.split('.').reduce((o, k) => (o == null ? o : o[k]), content);
+  if (value === undefined || value === null) {
+    throw new Error(`build failed: "${key}" is missing from content/*.json.`);
+  }
+  return value;
+}
+
+const esc = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escAttr = (v) => esc(v).replace(/"/g, '&quot;');
+
+/* Editors get exactly one piece of inline markup: *emphasis* becomes <em>.
+   Everything else is escaped, so a stray < typed into the CMS can't break
+   the page. */
+const rich = (v) => esc(v).replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+
+/* Decap writes "/assets/uploads/x.jpg" — its public_folder. The rest of the
+   page uses document-relative paths, which also survive being served from a
+   subdirectory, so normalise onto that. */
+const url = (v) => String(v).replace(/^\/+(assets\/)/, '$1');
+
+/* ── generated runs ─────────────────────────────────────────────────────── */
+
+const REGIONS = {
+  'nav-links': () => get('nav.links')
+    .map((l) => `<a class="nav-link" href="${escAttr(l.href)}">${esc(l.label)}</a>`).join(''),
+
+  'footer-links': () => get('footer.links')
+    .map((l) => `<a href="${escAttr(l.href)}">${esc(l.label)}</a>`).join(''),
+
+  /* The wheel is a three-sided prism: three faces 120° apart, plus a hidden
+     sizer holding the longest name so the box can't resize mid-turn. Any
+     other count needs new geometry in the stylesheet. */
+  'hero-pinwheel': () => {
+    const names = get('hero.services');
+    if (!Array.isArray(names) || names.length !== 3) {
+      throw new Error('build failed: hero.services must hold exactly three names — the ' +
+        'pinwheel is a three-sided prism and its CSS is cut for three faces.');
+    }
+    const longest = names.reduce((a, b) => (String(b).length > String(a).length ? b : a));
+    return `<span class="pw-sizer">${esc(longest)}.</span>` +
+      '<span class="pw-prism" id="hl-wheel">' +
+      names.map((n, i) => `<span class="pw-face f${i + 1}">${esc(n)}<i>.</i></span>`).join('') +
+      '</span>';
+  },
+
+  'story-paragraphs': () => get('story.paragraphs')
+    .map((t, i) => `<p class="lede" style="margin-top:${i === 0 ? 20 : 18}px">${rich(t)}</p>`).join(''),
+
+  'team-cards': () => get('team.members').map((m) => {
+    const shot = m.image
+      ? `<img src="${escAttr(url(m.image))}" alt="${escAttr(m.name)}">`
+      : '<div class="portrait-empty" role="img" aria-label="Headshot to come">Headshot</div>';
+    return '<div class="person">' +
+      `<div class="portrait">${shot}</div>` +
+      `<div class="who"><p class="nm">${esc(m.name)}</p><p class="rl">${esc(m.role)}</p></div>` +
+      '</div>';
+  }).join(''),
+
+  /* The marquee scrolls by exactly -50%, so the tape holds the same cards
+     twice. The second pass is aria-hidden, so a screen reader hears each
+     testimonial once. */
+  'review-cards': () => {
+    const items = get('reviews.items');
+    if (!items.length) {
+      throw new Error('build failed: content/testimonials.json has no items — the review marquee needs at least one.');
+    }
+    const card = (r, dup) =>
+      `<figure class="review"${dup ? ' aria-hidden="true"' : ''}>` +
+      `<span class="qm"${dup ? '' : ' aria-hidden="true"'}>“</span>` +
+      `<blockquote>${esc(r.quote)}</blockquote>` +
+      `<p>${esc(r.detail)}</p>` +
+      `<figcaption><strong>${esc(r.name)}</strong>${esc(r.company)}</figcaption>` +
+      '</figure>';
+    return items.map((r) => card(r, false)).join('') + items.map((r) => card(r, true)).join('');
+  },
+
+  'contact-phones': () => get('contact.phone.numbers')
+    .map((n) => `<a class="tel" href="tel:${escAttr(n.tel)}">${esc(n.display)}</a>`).join(''),
+
+  /* <wbr> after the @, so a narrow card breaks the address there rather than
+     through the middle of the domain. */
+  'contact-email': () => {
+    const address = String(get('contact.email.address'));
+    const at = address.lastIndexOf('@');
+    const shown = at < 0 ? esc(address)
+      : `${esc(address.slice(0, at + 1))}<wbr>${esc(address.slice(at + 1))}`;
+    return `<a class="tel eml" href="mailto:${escAttr(address)}">${shown}</a>`;
+  },
+
+  'svc-bullets': (i) => get(`services.items.${i}.bullets`)
+    .map((b) => `<li>${esc(b)}</li>`).join('')
+};
+
+/* ── the three template hooks ───────────────────────────────────────────── */
+
+/* Find the element carrying the attribute at `idx`, and where its matching
+   close tag starts. Counts nested tags of the same name, so a hook on an
+   outer <div> doesn't stop at an inner one's </div>. */
+function elementSpan(html, idx) {
+  const open = html.lastIndexOf('<', idx);
+  const name = (/^<([a-zA-Z][\w-]*)/.exec(html.slice(open, open + 40)) || [])[1];
+  if (!name) throw new Error('build failed: a data-cms attribute is not inside a tag.');
+  const openEnd = html.indexOf('>', idx) + 1;
+  const re = new RegExp(`<(/?)${name}\\b`, 'gi');
+  re.lastIndex = openEnd;
+  let depth = 1, m;
+  while ((m = re.exec(html))) {
+    depth += m[1] ? -1 : 1;
+    if (depth === 0) return { open, openEnd, closeStart: m.index };
+  }
+  throw new Error(`build failed: no closing </${name}> for a data-cms element.`);
+}
+
+function injectContent(html) {
+  let regions = 0, texts = 0, attrs = 0;
+
+  for (const [name, produce] of Object.entries(REGIONS)) {
+    const re = new RegExp(`<!--cms:${name}(?::([^-]*))?-->`);
+    let m;
+    while ((m = re.exec(html))) {
+      const close = `<!--/cms:${name}${m[1] !== undefined ? ':' + m[1] : ''}-->`;
+      const end = html.indexOf(close, m.index);
+      if (end < 0) throw new Error(`build failed: missing ${close} in the template.`);
+      html = html.slice(0, m.index) + produce(m[1]) + html.slice(end + close.length);
+      regions++;
+    }
+  }
+  const stray = /<!--\/?cms:([\w-]+)/.exec(html);
+  if (stray) {
+    throw new Error(`build failed: the template has a <!--cms:${stray[1]}--> region with no generator in build.js.`);
+  }
+
+  /* attributes first — the text pass rewrites the same open tag */
+  for (;;) {
+    const m = /\sdata-cms-attr="([^"]*)"/.exec(html);
+    if (!m) break;
+    const openStart = html.lastIndexOf('<', m.index);
+    const openEnd = html.indexOf('>', m.index) + 1;
+    let tag = html.slice(openStart, openEnd).replace(m[0], '');
+    for (const pair of m[1].split(';')) {
+      const [attr, key] = pair.split('=');
+      const value = ` ${attr}="${escAttr(url(get(key)))}"`;
+      const existing = new RegExp(`\\s${attr}="[^"]*"`);
+      tag = existing.test(tag) ? tag.replace(existing, value) : tag.slice(0, -1) + value + '>';
+      attrs++;
+    }
+    html = html.slice(0, openStart) + tag + html.slice(openEnd);
+  }
+
+  for (;;) {
+    const m = /\sdata-cms="([^"]*)"/.exec(html);
+    if (!m) break;
+    const span = elementSpan(html, m.index + 1);
+    const tag = html.slice(span.open, span.openEnd).replace(m[0], '');
+    html = html.slice(0, span.open) + tag + rich(get(m[1])) + html.slice(span.closeStart);
+    texts++;
+  }
+
+  steps.push(`content injected: ${texts} text hooks, ${attrs} attributes, ${regions} generated regions`);
+  return html;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BUILD
+   ══════════════════════════════════════════════════════════════════════════ */
+
 let html = fs.readFileSync(SRC, 'utf8');
+
+/* ── 0. pour the JSON into the template ─────────────────────────────────── */
+html = injectContent(html);
 
 /* ── 1. strip the editor runtime and the dead design-system links ───────── */
 html = cut(html, '<script src="./support.js"></script>\n', '', 'support.js tag');
@@ -93,15 +294,7 @@ html = html.replace(/<i data-lucide="([a-z-]+)"><\/i>/g, (m, name) => {
 if (iconCount === 0) throw new Error('build failed: no data-lucide icons matched.');
 steps.push(`${iconCount} icons inlined`);
 
-/* ── 4. the one <image-slot> is an editor-only placeholder ──────────────── */
-html = cut(html,
-  '<image-slot id="hl-team-5" shape="rect" placeholder="Headshot"></image-slot>',
-  '<div class="portrait-empty" role="img" aria-label="Headshot to come">Headshot</div>',
-  '<image-slot> placeholder');
-html = cut(html, '.portrait img,.portrait image-slot{', '.portrait img{',
-  '<image-slot> style rule');
-
-/* ── 5. rewrite the dc logic class as an ordinary script ────────────────── */
+/* ── 4. rewrite the dc logic class as an ordinary script ────────────────── */
 const openTag = html.match(/<script type="text\/x-dc"[^>]*data-props="([^"]*)"[^>]*>/);
 if (!openTag) throw new Error('build failed: could not find the <script type="text/x-dc"> tag.');
 
@@ -132,23 +325,15 @@ const plain = `<script>\n(() => {\n"use strict";\n${logic}\nconst app = new High
 html = html.slice(0, html.indexOf(openTag[0])) + plain + html.slice(bodyEnd + '</script>'.length);
 steps.push('logic class rewritten as plain JS');
 
-/* ── 6. a placeholder style for the empty team slot ─────────────────────── */
-html = cut(html, '/* ── REVIEWS',
-  `.portrait-empty{display:flex;align-items:center;justify-content:center;height:100%;
-  background:var(--surface-2);color:var(--ink-40);font-size:12px;letter-spacing:.08em;
-  text-transform:uppercase;font-weight:600}
-
-/* ── REVIEWS`, 'placeholder style anchor');
-
-/* ── 7. sanity checks on the finished document ─────────────────────────── */
-for (const banned of ['x-dc', 'support.js', 'image-slot', 'unpkg.com', '_ds/', 'DCLogic', 'data-dc-script']) {
+/* ── 5. sanity checks on the finished document ─────────────────────────── */
+for (const banned of ['x-dc', 'support.js', 'image-slot', 'unpkg.com', '_ds/', 'DCLogic', 'data-dc-script', 'data-cms']) {
   if (html.includes(banned)) throw new Error(`build failed: "${banned}" still present in output.`);
 }
 if (!html.includes('<!DOCTYPE html>') || !html.includes('</html>')) {
   throw new Error('build failed: output is not a complete document.');
 }
 
-/* ── 8. write dist/ ─────────────────────────────────────────────────────── */
+/* ── 6. write dist/ ─────────────────────────────────────────────────────── */
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 fs.writeFileSync(path.join(OUT, 'index.html'), html);
@@ -161,6 +346,21 @@ fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), {
   }
 });
 
+/* Decap CMS ships with the site: /admin is a static page that talks to GitHub
+   straight from the browser. config.yml has to sit next to it. */
+fs.cpSync(ADMIN, path.join(OUT, 'admin'), { recursive: true });
+steps.push('admin/ copied to dist/admin');
+
+/* Every image the page asks for must exist, or the CMS has been pointed at a
+   file that never got committed. */
+const missing = [...html.matchAll(/<img[^>]+src="([^"]+)"/g)]
+  .map((m) => m[1])
+  .filter((src) => !/^https?:/.test(src) && !fs.existsSync(path.join(OUT, src)));
+if (missing.length) {
+  throw new Error(`build failed: referenced but not in dist/:\n  ${missing.join('\n  ')}`);
+}
+steps.push('every <img> resolves inside dist/');
+
 const bytes = (p) => fs.statSync(p).size;
 const walk = (d) => fs.readdirSync(d, { withFileTypes: true })
   .flatMap((e) => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]);
@@ -169,6 +369,8 @@ const total = files.reduce((n, f) => n + bytes(f), 0);
 
 console.log('High Lane — static build');
 for (const s of steps) console.log('  ·', s);
-console.log(`\n  dist/index.html   ${(bytes(path.join(OUT, 'index.html')) / 1024).toFixed(1)} KB`);
+console.log(`\n  content:  ${get('services.items').length} services, ` +
+  `${get('team.members').length} team, ${get('reviews.items').length} testimonials`);
+console.log(`  dist/index.html   ${(bytes(path.join(OUT, 'index.html')) / 1024).toFixed(1)} KB`);
 console.log(`  ${files.length} files, ${(total / 1024 / 1024).toFixed(2)} MB total`);
 console.log('\n  output directory: dist');

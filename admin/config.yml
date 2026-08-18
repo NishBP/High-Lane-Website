@@ -1,0 +1,281 @@
+# ══════════════════════════════════════════════════════════════════════════
+# High Lane — Decap CMS
+#
+# Editing anything here changes the fields the team sees at /admin.
+# Saving in the CMS commits JSON to content/ on the branch below, which makes
+# Cloudflare Pages rebuild the site. Nothing runs on a server.
+#
+# BEFORE THIS WORKS: base_url must point at the deployed OAuth Worker
+# (see oauth-worker/README.md). Until then /admin loads but login fails.
+# ══════════════════════════════════════════════════════════════════════════
+
+backend:
+  name: github
+  repo: NishBP/High-Lane-Website
+  branch: main
+  # ── replace with the Worker's real URL, no trailing slash ──
+  base_url: https://high-lane-oauth.REPLACE-ME.workers.dev
+  auth_endpoint: auth
+
+# Only images the team should be able to swap live here. The logo and the
+# hand-built graphics stay in assets/ and are not CMS-managed.
+media_folder: assets/uploads
+public_folder: /assets/uploads
+
+# A phone photo is easily 5 MB. build.js will happily ship it, and every
+# visitor then downloads it, so cap uploads here.
+media_library:
+  name: default
+  config:
+    max_file_size: 2097152 # 2 MB
+
+site_url: https://highlanemedia.com
+display_url: https://highlanemedia.com
+publish_mode: simple
+
+collections:
+  # ────────────────────────────────────────────────────────────────────────
+  - name: content
+    label: Website content
+    editor:
+      preview: false
+    files:
+      # ── content/team.json ───────────────────────────────────────────────
+      - name: team
+        label: Team
+        file: content/team.json
+        description: The "Behind the scenes" section.
+        fields:
+          - { label: Section heading, name: heading, widget: string }
+          - { label: Subtitle, name: kicker, widget: string, hint: "The small italic line under the heading." }
+          - { label: Intro line, name: intro, widget: text }
+          - label: Members
+            name: members
+            widget: list
+            label_singular: member
+            summary: "{{fields.name}} — {{fields.role}}"
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Role, name: role, widget: string }
+              - label: Headshot
+                name: image
+                widget: image
+                required: false
+                hint: "Cropped to 4:5 portrait — a landscape photo will be cut off top and bottom. Leave empty to show a grey 'Headshot' placeholder. Max 2 MB."
+                media_library:
+                  config:
+                    max_file_size: 2097152
+
+      # ── content/testimonials.json ───────────────────────────────────────
+      - name: testimonials
+        label: Testimonials
+        file: content/testimonials.json
+        description: The scrolling client reviews.
+        fields:
+          - { label: Section heading, name: heading, widget: string }
+          - { label: Subtitle, name: kicker, widget: string }
+          - label: Reviews
+            name: items
+            widget: list
+            label_singular: review
+            summary: "{{fields.name}} — {{fields.company}}"
+            hint: "Each card is rendered twice so the marquee loops seamlessly — you only enter it once. Keep at least one."
+            fields:
+              - { label: Pull quote, name: quote, widget: text, hint: "The big bold line. Two lines reads best." }
+              - { label: Detail, name: detail, widget: text }
+              - { label: Name, name: name, widget: string }
+              - { label: Role and company, name: company, widget: string }
+
+      # ── content/site.json ───────────────────────────────────────────────
+      - name: site
+        label: Site copy
+        file: content/site.json
+        description: Everything else — headings, buttons, contact details, footer.
+        fields:
+          - label: Browser tab and search results
+            name: meta
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Page title, name: title, widget: string }
+              - { label: Search description, name: description, widget: text }
+
+          - label: Navigation
+            name: nav
+            widget: object
+            collapsed: true
+            fields:
+              - label: Links
+                name: links
+                widget: list
+                summary: "{{fields.label}} → {{fields.href}}"
+                hint: "Links must point at a section on this page: #services, #story, #team, #reviews or #contact."
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+              - label: Button
+                name: cta
+                widget: object
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+
+          - label: Hero
+            name: hero
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Badge line, name: badge, widget: string }
+              - { label: Wordmark, name: brand, widget: string }
+              - label: Rotating services
+                name: services
+                widget: list
+                field: { label: Service, name: service, widget: string }
+                hint: "Exactly three — the animation is a three-sided prism. A full stop is added for you. Keep them short; the longest one sets the width of the heading."
+              - { label: Intro paragraph, name: lede, widget: text }
+              - label: Main button
+                name: primaryCta
+                widget: object
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+              - label: Secondary button
+                name: secondaryCta
+                widget: object
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+              - label: Animated graphic
+                name: graphic
+                widget: object
+                collapsed: true
+                hint: "Labels only — the icons and layout are fixed."
+                fields:
+                  - { label: Centre label, name: hubLabel, widget: string }
+                  - label: Nodes
+                    name: nodes
+                    widget: list
+                    summary: "{{fields.title}}"
+                    hint: "Exactly three, in this order: social, automations, web. Their icons are fixed."
+                    fields:
+                      - { label: Title, name: title, widget: string }
+                      - { label: Sub-line, name: sub, widget: string }
+                  - label: Floating chips
+                    name: chips
+                    widget: list
+                    field: { label: Chip, name: chip, widget: string }
+                    hint: "Exactly two."
+
+          - label: Services
+            name: services
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Section heading, name: heading, widget: string }
+              - { label: Subtitle, name: kicker, widget: string }
+              - { label: Intro line, name: lede, widget: text }
+              - label: Services
+                name: items
+                widget: list
+                label_singular: service
+                summary: "{{fields.num}} — {{fields.title}}"
+                hint: "Exactly three. Each row has a hand-built animation that belongs to its position, so adding a fourth will not draw anything."
+                fields:
+                  - { label: Number, name: num, widget: string }
+                  - { label: Title, name: title, widget: string }
+                  - { label: Sub-line, name: sub, widget: string }
+                  - { label: Body copy, name: copy, widget: text }
+                  - label: Bullets
+                    name: bullets
+                    widget: list
+                    field: { label: Bullet, name: bullet, widget: string }
+                  - label: Button
+                    name: cta
+                    widget: object
+                    fields:
+                      - { label: Label, name: label, widget: string }
+                      - { label: Link, name: href, widget: string }
+
+          - label: Our story
+            name: story
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Section heading, name: heading, widget: string, hint: "Wrap words in *asterisks* to colour them, like *the next thing.*" }
+              - { label: Subtitle, name: kicker, widget: string }
+              - label: Paragraphs
+                name: paragraphs
+                widget: list
+                field: { label: Paragraph, name: paragraph, widget: text }
+              - label: Main button
+                name: primaryCta
+                widget: object
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+              - label: Secondary button
+                name: secondaryCta
+                widget: object
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+              - label: Photo
+                name: image
+                widget: image
+                hint: "Cropped to 4:5 portrait. Max 2 MB."
+                media_library:
+                  config:
+                    max_file_size: 2097152
+              - { label: Photo description, name: imageAlt, widget: string, hint: "Read aloud by screen readers, and shown if the image fails to load." }
+
+          - label: Contact
+            name: contact
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Paragraph, name: lede, widget: text }
+              - { label: Label above the cards, name: waysLabel, widget: string }
+              - label: Phone card
+                name: phone
+                widget: object
+                fields:
+                  - { label: Card label, name: cap, widget: string }
+                  - label: Numbers
+                    name: numbers
+                    widget: list
+                    summary: "{{fields.display}}"
+                    fields:
+                      - { label: Shown as, name: display, widget: string, hint: "e.g. 0161 496 0142" }
+                      - { label: Dials, name: tel, widget: string, hint: "International form, no spaces — e.g. +441614960142" }
+                  - { label: Note, name: note, widget: string }
+              - label: Email card
+                name: email
+                widget: object
+                fields:
+                  - { label: Card label, name: cap, widget: string }
+                  - { label: Address, name: address, widget: string, hint: "Shown on the page and used for the mailto: link." }
+                  - { label: Note, name: note, widget: string }
+              - label: Booking card
+                name: booking
+                widget: object
+                fields:
+                  - { label: Card label, name: cap, widget: string }
+                  - { label: Button label, name: label, widget: string }
+                  - { label: Booking link, name: href, widget: string }
+                  - { label: Note, name: note, widget: string }
+
+          - label: Footer
+            name: footer
+            widget: object
+            collapsed: true
+            fields:
+              - label: Links
+                name: links
+                widget: list
+                summary: "{{fields.label}} → {{fields.href}}"
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: href, widget: string }
+              - { label: Copyright line, name: copyright, widget: string }
+              - { label: ABN, name: abn, widget: string }

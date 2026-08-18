@@ -1,0 +1,16 @@
+# Cloudflare Worker that signs the team into Decap CMS with GitHub.
+# Deploy from this folder:  npx wrangler deploy
+# See README.md for the GitHub OAuth App and the two secrets it needs.
+
+name = "high-lane-oauth"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+# Origins allowed to receive the GitHub token. The CMS lives at /admin on the
+# site, so these are the site's origins — add the pages.dev preview host if you
+# want to log in there too. Comma-separated, no trailing slashes.
+ALLOWED_ORIGINS = "https://highlanemedia.com,https://www.highlanemedia.com"
+
+# GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET are NOT set here — they are
+# secrets. See README.md.

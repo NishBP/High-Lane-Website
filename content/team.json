@@ -1,0 +1,12 @@
+{
+  "heading": "Behind the scenes",
+  "kicker": "The team",
+  "intro": "Five specialists, no layers. The person who plans your content is the person who posts it.",
+  "members": [
+    { "name": "Nishal Paranagama", "role": "Role TBC", "image": "/assets/uploads/nishal-paranagama.jpeg" },
+    { "name": "Nabeel Ikram", "role": "Role TBC", "image": "/assets/uploads/nabeel-ikram.jpeg" },
+    { "name": "Joshua Boltong", "role": "Role TBC", "image": "/assets/uploads/joshua-boltong.jpeg" },
+    { "name": "Tarun Sarvanathan", "role": "Role TBC", "image": "/assets/uploads/tarun-sarvanathan.jpg" },
+    { "name": "Fifth member", "role": "Name & role TBC", "image": "" }
+  ]
+}

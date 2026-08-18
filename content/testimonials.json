@@ -1,0 +1,24 @@
+{
+  "heading": "What it's like to work with us",
+  "kicker": "Client reviews",
+  "items": [
+    {
+      "quote": "Bookings up 60% in four months, and I stopped answering DMs at midnight.",
+      "detail": "They took the social channels, then quietly automated the enquiry flow behind them. I found out because my evenings came back.",
+      "name": "Elena Marsh",
+      "company": "Owner, Marsh & Fern Studio"
+    },
+    {
+      "quote": "The new site paid for itself in six weeks of online orders.",
+      "detail": "Website build, payments and a CMS my team runs without help. Three weeks from kickoff to live, no drama.",
+      "name": "Tobi Adeyemi",
+      "company": "Director, Northgate Fitness"
+    },
+    {
+      "quote": "We cancelled two software subscriptions after their automation work.",
+      "detail": "They audited how we actually worked before touching anything. Lead routing and reporting now run themselves.",
+      "name": "Hana Lindqvist",
+      "company": "Ops Manager, Beacon Legal"
+    }
+  ]
+}
