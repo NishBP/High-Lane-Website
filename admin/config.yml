@@ -22,12 +22,11 @@ backend:
 media_folder: assets/uploads
 public_folder: /assets/uploads
 
-# A phone photo is easily 5 MB. build.js will happily ship it, and every
-# visitor then downloads it, so cap uploads here.
-media_library:
-  name: default
-  config:
-    max_file_size: 2097152 # 2 MB
+# NB: there is deliberately no top-level `media_library:` block. Decap treats
+# that as declaring an EXTERNAL library and refuses to start unless one has
+# been registered in JS ("Missing external media library"). The built-in one is
+# what you get by saying nothing. Upload limits therefore live on each image
+# field below, which is where Decap actually reads max_file_size.
 
 site_url: https://highlanemedia.com
 display_url: https://highlanemedia.com
