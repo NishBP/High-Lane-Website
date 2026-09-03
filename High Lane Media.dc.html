@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title data-cms="meta.title">High Lane — Social media, AI automations & web development</title>
+<title data-cms="meta.title">High Lane | Social media, AI automations &amp; web development</title>
 <meta name="description" data-cms-attr="content=meta.description" content="High Lane runs your social channels, automates the work behind them with AI, and ships the web apps and sites those channels point at.">
 <script src="./support.js"></script>
 </head>
@@ -161,6 +161,19 @@ a{color:inherit;text-decoration:none}
   background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--ease)}
 .nav-link:hover{color:var(--ink)}
 .nav-link:hover::after{transform:scaleX(1)}
+
+/* the nav CTA's tooltip. Real text rather than a title attribute, so screen
+   readers announce it and it appears instantly instead of after a delay. */
+.nav-cta{position:relative}
+.nav-cta .tip{position:absolute;top:calc(100% + 11px);right:0;
+  font-family:var(--font-body);font-size:11.5px;font-weight:500;letter-spacing:.01em;line-height:1;
+  padding:9px 12px;border-radius:var(--r-sm);background:var(--deep);color:#fff;box-shadow:var(--sh-2);
+  opacity:0;transform:translateY(-5px);pointer-events:none;
+  transition:opacity .28s var(--ease),transform .28s var(--ease)}
+.nav-cta .tip::before{content:"";position:absolute;right:20px;bottom:100%;
+  border:5px solid transparent;border-bottom-color:var(--deep)}
+@media (hover:hover){.nav-cta:hover .tip{opacity:1;transform:none}}
+.nav-cta:focus-visible .tip{opacity:1;transform:none}
 @media (max-width:860px){.nav-link{display:none}}
 
 /* ── HERO ─────────────────────────────────────────────────────────────── */
@@ -232,6 +245,12 @@ a{color:inherit;text-decoration:none}
 .pw-face.f1{--a:0deg}
 .pw-face.f2{--a:120deg}
 .pw-face.f3{--a:240deg}
+/* Stacked under the wordmark on a phone, .8em read as an afterthought. The
+   sizer can't wrap, so the steps below keep the longest service name inside
+   the padded column all the way down to a 320px screen. */
+@media (max-width:640px){.pinwheel{font-size:.92em}}
+@media (max-width:370px){.pinwheel{font-size:.86em}}
+@media (max-width:340px){.pinwheel{font-size:.78em}}
 @keyframes hl-turn{
   0%,26%  {transform:rotateX(0deg)}
   33%,59% {transform:rotateX(-120deg)}
@@ -322,8 +341,10 @@ a{color:inherit;text-decoration:none}
 /* below the two-column breakpoint the stage scales as a whole unit, so the
    wires and the cards on top of them stay in register */
 @media (max-width:1080px){.stage{transform:scale(.92);transform-origin:top center;margin-bottom:-34px}}
-@media (max-width:560px){.stage{transform:scale(.66);margin-top:-26px;margin-bottom:-146px}}
-@media (max-width:420px){.stage{transform:scale(.56);margin-bottom:-190px}}
+@media (max-width:560px){.stage{transform:scale(.78);margin-top:-26px;margin-bottom:-95px}}
+@media (max-width:410px){.stage{transform:scale(.70);margin-bottom:-129px}}
+@media (max-width:372px){.stage{transform:scale(.62);margin-bottom:-163px}}
+@media (max-width:334px){.stage{transform:scale(.55);margin-bottom:-194px}}
 
 /* travelling light along the wires */
 .flow{fill:none;stroke:var(--aqua);stroke-width:2.4;stroke-linecap:round;
@@ -473,9 +494,13 @@ a{color:inherit;text-decoration:none}
 .contact-panel > *{position:relative;z-index:1}
 .contact h2{font-size:clamp(32px,4.6vw,60px);letter-spacing:-.04em}
 .contact .lede{color:rgba(255,255,255,.72);max-width:44ch;margin-top:18px}
-.ways{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.5fr) minmax(0,1fr);
-  gap:12px;align-items:stretch}
-@media (min-width:1181px){.contact-panel{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)}}
+.ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:stretch}
+/* the email is the longest line in the panel, so it gets the roomiest column
+   — but only when all three cards are present to share the width with */
+@media (min-width:1181px){
+  .contact-panel{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)}
+  .ways:has(.way:nth-of-type(3)){grid-template-columns:minmax(0,.9fr) minmax(0,1.5fr) minmax(0,1fr)}
+}
 @media (max-width:1180px){.ways{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}}
 .ways .lbl{grid-column:1/-1;margin:0;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
   font-weight:600;color:var(--aqua-300)}
@@ -538,7 +563,7 @@ a{color:inherit;text-decoration:none}
      Copy to edit: brand wordmark, 4 nav links, "Login" button label
      ══════════════════════════════════════════════════════════════════════ -->
 <nav class="nav" data-nav>
-  <a class="nav-brand" href="#top" aria-label="High Lane — back to top">
+  <a class="nav-brand" href="#top" aria-label="High Lane, back to top">
     <img src="assets/hlm-logo.png" alt="High Lane">
   </a>
   <!--cms:nav-links-->
@@ -547,7 +572,7 @@ a{color:inherit;text-decoration:none}
   <a class="nav-link" href="#team">Team</a>
   <a class="nav-link" href="#reviews">Reviews</a>
   <!--/cms:nav-links-->
-  <a class="btn btn-primary btn-sm" href="#contact" data-cms="nav.cta.label" data-cms-attr="href=nav.cta.href">Login</a>
+  <a class="btn btn-primary btn-sm nav-cta" href="#contact" data-cms-attr="href=nav.cta.href"><span data-cms="nav.cta.label">Login</span><span class="tip" data-cms="nav.cta.tooltip">For Clients and Team Members</span></a>
 </nav>
 
 <!-- ══════════════════════════════════════════════════════════════════════
@@ -583,7 +608,7 @@ a{color:inherit;text-decoration:none}
         </span>
       </h1>
 
-      <p class="lede" style="margin-top:clamp(22px,3vw,32px)" data-cms="hero.lede">We started as a social media agency and never stopped building. Today High Lane runs your channels, automates the work behind them with AI, and ships the site those channels point at — one small team, three tightly connected services.</p>
+      <p class="lede" style="margin-top:clamp(22px,3vw,32px)" data-cms="hero.lede">We started as a social media agency and never stopped building. Today High Lane runs your channels, automates the work behind them with AI, and ships the site those channels point at. One small team, three tightly connected services.</p>
 
       <div class="btn-row">
         <a class="btn btn-primary" href="#contact" data-cms-attr="href=hero.primaryCta.href"><span data-cms="hero.primaryCta.label">Get in touch with us</span>
@@ -779,7 +804,7 @@ a{color:inherit;text-decoration:none}
       <div class="svc-body" data-svc-body>
         <div class="svc-body-in">
           <div>
-            <p class="svc-copy" data-cms="services.items.2.copy">Not a brochure — a launchpad for the whole business. Fast, light sites and the machinery attached: card payments and checkout, forms wired to your CRM, custom web apps built around the problem you actually have, and a CMS so your team edits copy without calling us.</p>
+            <p class="svc-copy" data-cms="services.items.2.copy">Not a brochure. A launchpad for the whole business. Fast, light sites and the machinery attached: card payments and checkout, forms wired to your CRM, custom web apps built around the problem you actually have, and a CMS so your team edits copy without calling us.</p>
             <ul class="svc-ul"><!--cms:svc-bullets:2-->
               <li>Landing pages, design, build &amp; launch</li>
               <li>Custom CRMs &amp; web app builds</li>
@@ -829,7 +854,7 @@ a{color:inherit;text-decoration:none}
       <h2 class="h2" data-cms="story.heading">We kept getting asked for <em>the next thing.</em></h2>
       <span class="kicker" data-cms="story.kicker">Our story</span>
       <!--cms:story-paragraphs-->
-      <p class="lede" style="margin-top:20px">High Lane started in a spare room with two laptops and one client's Instagram account. The content worked, the enquiries came in — and then the same question kept arriving: “can you handle the replies too?”, “can you fix the website they land on?”</p>
+      <p class="lede" style="margin-top:20px">High Lane started in a spare room with two laptops and one client's Instagram account. The content worked, the enquiries came in, and then the same question kept arriving: “can you handle the replies too?”, “can you fix the website they land on?”</p>
       <p class="lede" style="margin-top:18px">So we learned to. Automations came first, out of necessity. Web development followed, because a great campaign pointing at a broken site is just expensive noise. We are still small on purpose: you talk to the people doing the work.</p>
       <!--/cms:story-paragraphs-->
       <div class="btn-row">
@@ -952,7 +977,7 @@ a{color:inherit;text-decoration:none}
   <div class="contact-panel">
     <div data-reveal>
       <h2 data-cms="contact.heading">Take the fast lane.</h2>
-      <p class="lede" data-cms="contact.lede">Tell us what's slowing you down — content, admin or a site that doesn't convert. We'll send back a plan and a price, no pitch deck.</p>
+      <p class="lede" data-cms="contact.lede">Tell us what's slowing you down: content, admin or a site that doesn't convert. We'll send back a plan and a price, no pitch deck.</p>
     </div>
 
     <div class="ways" data-reveal>
@@ -977,12 +1002,14 @@ a{color:inherit;text-decoration:none}
         <span class="note" data-cms="contact.email.note">We reply within one working day</span>
       </div>
 
+      <!--cms:contact-booking-->
       <div class="way">
         <span class="ic"><i data-lucide="calendar-check"></i></span>
         <span class="cap" data-cms="contact.booking.cap">Book a meeting</span>
         <a class="btn btn-ghost btn-sm" style="--btn-fg:#fff;--btn-bd:rgba(255,255,255,.28)" href="https://cal.com/highlanemedia/intro" target="_blank" rel="noopener" data-cms="contact.booking.label" data-cms-attr="href=contact.booking.href">30-min intro ↗</a>
-        <span class="note" data-cms="contact.booking.note">Pick a slot — reply within one working day</span>
+        <span class="note" data-cms="contact.booking.note">Pick a slot and we'll reply within one working day</span>
       </div>
+      <!--/cms:contact-booking-->
     </div>
   </div>
 </section>
@@ -994,14 +1021,14 @@ a{color:inherit;text-decoration:none}
 <footer class="foot">
   <span class="brand"><img src="assets/hlm-logo.png" alt="High Lane"></span>
   <nav><!--cms:footer-links--><a href="#services">Services</a><a href="#story">Story</a><a href="#team">Team</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a><!--/cms:footer-links--></nav>
-  <span class="legal"><span data-cms="footer.copyright">© 2026 High Lane. Social · AI automations · Web development.</span><br>
-    <span class="abn" data-cms="footer.abn">ABN 00 000 000 000</span></span>
+  <!--cms:footer-legal--><span class="legal"><span>© 2026 High Lane. Social · AI automations · Web development.</span><br>
+    <span class="abn">ABN 00 000 000 000</span></span><!--/cms:footer-legal-->
 </footer>
 
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;wheelSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:9,&quot;min&quot;:5,&quot;max&quot;:18,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;wheelSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:6,&quot;min&quot;:5,&quot;max&quot;:18,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
 class Component extends DCLogic {
   componentDidMount() {
     const wheel = document.getElementById('hl-wheel');
@@ -1119,8 +1146,9 @@ class Component extends DCLogic {
       }
     };
     const open = (i) => { rows.forEach((r, j) => set(r, i === j)); this.svcOpen = i; };
+    const canHover = matchMedia('(hover: hover)').matches;
     rows.forEach((row, i) => {
-      row.addEventListener('mouseenter', () => open(i));
+      if (canHover) row.addEventListener('mouseenter', () => open(i));
       row.addEventListener('focusin', () => open(i));
       row.addEventListener('click', (e) => {
         if (e.target.closest('a,button')) return;

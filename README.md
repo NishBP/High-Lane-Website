@@ -44,14 +44,14 @@ for how to add or remove an editor.
 | Section | Editable | Fixed |
 | --- | --- | --- |
 | Browser tab / search result | title, description | — |
-| Nav & footer | link labels, link targets, button label | the logo |
+| Nav & footer | link labels, link targets, button label, the Login tooltip | the logo |
 | Hero | badge, wordmark, the 3 rotating services, intro, both buttons | the animated graphic's layout and icons |
 | Hero graphic | centre label, 3 node labels, 2 chip labels | icons, wiring, animation |
 | Services | heading, subtitle, intro, and per service: number, title, sub-line, copy, bullets, button | the 3 animated mockups |
 | Our story | heading, subtitle, paragraphs, both buttons, **the photo** | — |
 | Team | heading, subtitle, intro, and per person: name, role, **headshot** | — |
 | Testimonials | heading, subtitle, and per review: quote, detail, name, company | — |
-| Contact | heading, paragraph, all three cards, phone numbers, email, booking link | the icons |
+| Contact | heading, paragraph, the cards, phone numbers, email, booking link, and whether the booking card shows at all | the icons |
 | Footer | links, copyright, ABN | the logo |
 
 ### Quirks worth knowing
@@ -82,7 +82,21 @@ for how to add or remove an editor.
   in the editor and change nothing on the live site. Use Claude Design for
   layout and design; use `/admin` for words and photos.
 - **Uploads are capped at 2 MB** and land in `assets/uploads/`. Straight from a
-  phone, a photo is often 4–5 MB, and every visitor would download it.
+  phone, a photo is often 4-5 MB, and every visitor would download it.
+- **Clearing a field hides it.** An empty value removes the element rather than
+  leaving an empty box behind, because an empty `<span>` still eats a gap and
+  an empty `<p>` still takes a margin. That is how the ABN, the contact-card
+  notes and the Login tooltip are switched off. Clear a heading and the heading
+  disappears, so only empty what you mean to hide.
+- **The booking card has its own on/off switch**, since an empty field would
+  only blank its text and leave the card. With it off, the two remaining cards
+  share the width; with it on, the email card gets the roomiest column so the
+  address stays on one line.
+- **House style: no em dashes.** Use a full stop, a colon, or `*asterisks*` to
+  make a phrase stand out. The site had them in the hero, the story and the
+  contact panel; they are gone.
+- **Testimonials are two fields**, a bold pull quote and a smaller detail
+  paragraph. A one-line testimonial can leave the detail empty.
 
 ## The files that matter
 
@@ -165,13 +179,12 @@ It also lifts the `<helmet>` block into `<head>` (Claude Design leaves it in
 `inspiration/` (reference screenshots) is git-ignored. It stays on disk locally
 and is never published.
 
-## Still placeholder
+## Still to come
 
-- Testimonials are invented — replace before launch.
-- Team roles all read "Role TBC"; the fifth member has no photo or name.
-- `hello@highlanemedia.com` and the `cal.com/highlanemedia/intro` booking link.
-- Phone numbers `0161 496 0142` and `07700 900 482`.
-- The ABN in the footer reads `ABN 00 000 000 000` — swap in the real one.
-- `base_url` in `admin/config.yml` still says `REPLACE-ME`.
+- **Headshots for Lishan De Silva and Nivirithi Sirisha Dookhun.** Both show
+  the grey "Headshot" placeholder until someone uploads one at `/admin`.
+- **The ABN** is hidden, not removed. Type it into the footer field to show it.
+- **The booking card** is switched off while there is no calendar to point at.
+  Turn on "Show this card" under Contact, and fix the link, to bring it back.
 
-All of these are now editable at `/admin` — no code change needed.
+All of these are editable at `/admin`, with no code change needed.

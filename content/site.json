@@ -1,37 +1,72 @@
 {
   "meta": {
-    "title": "High Lane — Social media, AI automations & web development",
+    "title": "High Lane | Social media, AI automations & web development",
     "description": "High Lane runs your social channels, automates the work behind them with AI, and ships the web apps and sites those channels point at."
   },
-
   "nav": {
     "links": [
-      { "label": "Services", "href": "#services" },
-      { "label": "Story", "href": "#story" },
-      { "label": "Team", "href": "#team" },
-      { "label": "Reviews", "href": "#reviews" }
+      {
+        "label": "Services",
+        "href": "#services"
+      },
+      {
+        "label": "Story",
+        "href": "#story"
+      },
+      {
+        "label": "Team",
+        "href": "#team"
+      },
+      {
+        "label": "Reviews",
+        "href": "#reviews"
+      }
     ],
-    "cta": { "label": "Login", "href": "#contact" }
+    "cta": {
+      "label": "Login",
+      "href": "#contact",
+      "tooltip": "For Clients and Team Members"
+    }
   },
-
   "hero": {
     "badge": "Social media · AI automations · Web development",
     "brand": "High Lane",
-    "services": ["Social Media", "AI Automations", "Web Development"],
-    "lede": "We started as a social media agency and never stopped building. Today High Lane runs your channels, automates the work behind them with AI, and ships the site those channels point at — one small team, three tightly connected services.",
-    "primaryCta": { "label": "Get in touch with us", "href": "#contact" },
-    "secondaryCta": { "label": "See what we do", "href": "#services" },
+    "services": [
+      "Social Media",
+      "AI Automations",
+      "Web Development"
+    ],
+    "lede": "We started as a social media agency and never stopped building. Today High Lane runs your channels, automates the work behind them with AI, and ships the site those channels point at. One small team, three tightly connected services.",
+    "primaryCta": {
+      "label": "Get in touch with us",
+      "href": "#contact"
+    },
+    "secondaryCta": {
+      "label": "See what we do",
+      "href": "#services"
+    },
     "graphic": {
       "hubLabel": "One team, one lane",
       "nodes": [
-        { "title": "Social media", "sub": "Content & community" },
-        { "title": "AI automations", "sub": "Runs 24/7" },
-        { "title": "Web development", "sub": "Sites, CRMs & apps" }
+        {
+          "title": "Social media",
+          "sub": "Content & community"
+        },
+        {
+          "title": "AI automations",
+          "sub": "Runs 24/7"
+        },
+        {
+          "title": "Web development",
+          "sub": "Sites, CRMs & apps"
+        }
       ],
-      "chips": ["Posts scheduled", "Leads routed"]
+      "chips": [
+        "Posts scheduled",
+        "Leads routed"
+      ]
     }
   },
-
   "services": {
     "heading": "What we run for you",
     "kicker": "Three services, one lane",
@@ -47,7 +82,10 @@
           "Community management & DMs",
           "Paid social support & reporting"
         ],
-        "cta": { "label": "Discuss a project", "href": "#contact" }
+        "cta": {
+          "label": "Discuss a project",
+          "href": "#contact"
+        }
       },
       {
         "num": "02",
@@ -59,70 +97,97 @@
           "Inbox, DM and booking triage",
           "Reporting & internal tooling"
         ],
-        "cta": { "label": "Discuss a project", "href": "#contact" }
+        "cta": {
+          "label": "Discuss a project",
+          "href": "#contact"
+        }
       },
       {
         "num": "03",
         "title": "Web Development",
         "sub": "Landing pages · CRMs & web apps · Payments · CMS",
-        "copy": "Not a brochure — a launchpad for the whole business. Fast, light sites and the machinery attached: card payments and checkout, forms wired to your CRM, custom web apps built around the problem you actually have, and a CMS so your team edits copy without calling us.",
+        "copy": "Not a brochure. A launchpad for the whole business. Fast, light sites and the machinery attached: card payments and checkout, forms wired to your CRM, custom web apps built around the problem you actually have, and a CMS so your team edits copy without calling us.",
         "bullets": [
           "Landing pages, design, build & launch",
           "Custom CRMs & web app builds",
           "Payments, forms and CMS training"
         ],
-        "cta": { "label": "Discuss a project", "href": "#contact" }
+        "cta": {
+          "label": "Discuss a project",
+          "href": "#contact"
+        }
       }
     ]
   },
-
   "story": {
     "heading": "We kept getting asked for *the next thing.*",
     "kicker": "Our story",
     "paragraphs": [
-      "High Lane started in a spare room with two laptops and one client's Instagram account. The content worked, the enquiries came in — and then the same question kept arriving: “can you handle the replies too?”, “can you fix the website they land on?”",
+      "High Lane started in a spare room with two laptops and one client's Instagram account. The content worked, the enquiries came in, and then the same question kept arriving: “can you handle the replies too?”, “can you fix the website they land on?”",
       "So we learned to. Automations came first, out of necessity. Web development followed, because a great campaign pointing at a broken site is just expensive noise. We are still small on purpose: you talk to the people doing the work."
     ],
-    "primaryCta": { "label": "Meet the team", "href": "#team" },
-    "secondaryCta": { "label": "What we run", "href": "#services" },
+    "primaryCta": {
+      "label": "Meet the team",
+      "href": "#team"
+    },
+    "secondaryCta": {
+      "label": "What we run",
+      "href": "#services"
+    },
     "image": "/assets/uploads/about-us.jpg",
     "imageAlt": "The High Lane desk: laptops, a notebook and the week's to-do board"
   },
-
   "contact": {
     "heading": "Take the fast lane.",
-    "lede": "Tell us what's slowing you down — content, admin or a site that doesn't convert. We'll send back a plan and a price, no pitch deck.",
-    "waysLabel": "Three ways to reach us",
+    "lede": "Tell us what's slowing you down: content, admin or a site that doesn't convert. We'll send back a plan and a price, no pitch deck.",
+    "waysLabel": "Two ways to reach us",
     "phone": {
       "cap": "Call us",
       "numbers": [
-        { "display": "0161 496 0142", "tel": "+441614960142" },
-        { "display": "07700 900 482", "tel": "+447700900482" }
+        {
+          "display": "+61 493 562 939",
+          "tel": "+61493562939"
+        }
       ],
-      "note": "Mon–Fri, 9am–6pm"
+      "note": ""
     },
     "email": {
       "cap": "Email us",
-      "address": "hello@highlanemedia.com",
-      "note": "We reply within one working day"
+      "address": "info@highlanemedia.com",
+      "note": ""
     },
     "booking": {
+      "enabled": false,
       "cap": "Book a meeting",
       "label": "30-min intro ↗",
       "href": "https://cal.com/highlanemedia/intro",
-      "note": "Pick a slot — reply within one working day"
+      "note": "Pick a slot and we'll reply within one working day"
     }
   },
-
   "footer": {
     "links": [
-      { "label": "Services", "href": "#services" },
-      { "label": "Story", "href": "#story" },
-      { "label": "Team", "href": "#team" },
-      { "label": "Reviews", "href": "#reviews" },
-      { "label": "Contact", "href": "#contact" }
+      {
+        "label": "Services",
+        "href": "#services"
+      },
+      {
+        "label": "Story",
+        "href": "#story"
+      },
+      {
+        "label": "Team",
+        "href": "#team"
+      },
+      {
+        "label": "Reviews",
+        "href": "#reviews"
+      },
+      {
+        "label": "Contact",
+        "href": "#contact"
+      }
     ],
     "copyright": "© 2026 High Lane. Social · AI automations · Web development.",
-    "abn": "ABN 00 000 000 000"
+    "abn": ""
   }
 }

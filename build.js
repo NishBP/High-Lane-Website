@@ -151,12 +151,14 @@ const REGIONS = {
     if (!items.length) {
       throw new Error('build failed: content/testimonials.json has no items — the review marquee needs at least one.');
     }
+    // a one-line testimonial has no second paragraph, and not every client
+    // gives a company — both collapse rather than leaving an empty box
     const card = (r, dup) =>
       `<figure class="review"${dup ? ' aria-hidden="true"' : ''}>` +
       `<span class="qm"${dup ? '' : ' aria-hidden="true"'}>“</span>` +
       `<blockquote>${esc(r.quote)}</blockquote>` +
-      `<p>${esc(r.detail)}</p>` +
-      `<figcaption><strong>${esc(r.name)}</strong>${esc(r.company)}</figcaption>` +
+      (String(r.detail || '').trim() ? `<p>${esc(r.detail)}</p>` : '') +
+      `<figcaption><strong>${esc(r.name)}</strong>${esc(r.company || '')}</figcaption>` +
       '</figure>';
     return items.map((r) => card(r, false)).join('') + items.map((r) => card(r, true)).join('');
   },
@@ -175,7 +177,30 @@ const REGIONS = {
   },
 
   'svc-bullets': (i) => get(`services.items.${i}.bullets`)
-    .map((b) => `<li>${esc(b)}</li>`).join('')
+    .map((b) => `<li>${esc(b)}</li>`).join(''),
+
+  /* The booking card can be switched off entirely while there's no calendar
+     to point it at. The contact grid reads how many cards it actually got. */
+  'contact-booking': () => {
+    const b = get('contact.booking');
+    if (!b.enabled) return '';
+    return '<div class="way">' +
+      '<span class="ic"><i data-lucide="calendar-check"></i></span>' +
+      `<span class="cap">${esc(b.cap)}</span>` +
+      '<a class="btn btn-ghost btn-sm" style="--btn-fg:#fff;--btn-bd:rgba(255,255,255,.28)" ' +
+      `href="${escAttr(b.href)}" target="_blank" rel="noopener">${esc(b.label)}</a>` +
+      (String(b.note || '').trim() ? `<span class="note">${esc(b.note)}</span>` : '') +
+      '</div>';
+  },
+
+  /* An empty ABN takes the line break with it. */
+  'footer-legal': () => {
+    const abn = String(get('footer.abn')).trim();
+    return '<span class="legal">' +
+      `<span>${esc(get('footer.copyright'))}</span>` +
+      (abn ? `<br><span class="abn">${esc(abn)}</span>` : '') +
+      '</span>';
+  }
 };
 
 /* ── the three template hooks ───────────────────────────────────────────── */
@@ -234,16 +259,30 @@ function injectContent(html) {
     html = html.slice(0, openStart) + tag + html.slice(openEnd);
   }
 
+  let dropped = 0;
   for (;;) {
     const m = /\sdata-cms="([^"]*)"/.exec(html);
     if (!m) break;
     const span = elementSpan(html, m.index + 1);
+    const value = String(get(m[1]));
+
+    /* An emptied field means "hide this", not "render an empty box" — an
+       empty <span> still eats a flex gap and an empty <p> still takes a
+       margin. Drop the element instead. */
+    if (!value.trim()) {
+      const closeEnd = html.indexOf('>', span.closeStart) + 1;
+      html = html.slice(0, span.open) + html.slice(closeEnd);
+      dropped++;
+      continue;
+    }
+
     const tag = html.slice(span.open, span.openEnd).replace(m[0], '');
-    html = html.slice(0, span.open) + tag + rich(get(m[1])) + html.slice(span.closeStart);
+    html = html.slice(0, span.open) + tag + rich(value) + html.slice(span.closeStart);
     texts++;
   }
 
-  steps.push(`content injected: ${texts} text hooks, ${attrs} attributes, ${regions} generated regions`);
+  steps.push(`content injected: ${texts} text hooks` + (dropped ? ` (${dropped} empty, dropped)` : '') +
+    `, ${attrs} attributes, ${regions} generated regions`);
   return html;
 }
 

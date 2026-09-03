@@ -81,9 +81,9 @@ collections:
             hint: "Each card is rendered twice so the marquee loops seamlessly — you only enter it once. Keep at least one."
             fields:
               - { label: Pull quote, name: quote, widget: text, hint: "The big bold line. Two lines reads best." }
-              - { label: Detail, name: detail, widget: text }
+              - { label: Detail, name: detail, widget: text, required: false, hint: "The smaller paragraph under the quote. Leave empty for a one-line testimonial." }
               - { label: Name, name: name, widget: string }
-              - { label: Role and company, name: company, widget: string }
+              - { label: Role and company, name: company, widget: string, required: false }
 
       # ── content/site.json ───────────────────────────────────────────────
       - name: site
@@ -118,6 +118,7 @@ collections:
                 fields:
                   - { label: Label, name: label, widget: string }
                   - { label: Link, name: href, widget: string }
+                  - { label: Tooltip, name: tooltip, widget: string, hint: "Appears under the button on hover. Clear it to remove the tooltip." }
 
           - label: Hero
             name: hero
@@ -234,7 +235,7 @@ collections:
             fields:
               - { label: Heading, name: heading, widget: string }
               - { label: Paragraph, name: lede, widget: text }
-              - { label: Label above the cards, name: waysLabel, widget: string }
+              - { label: Label above the cards, name: waysLabel, widget: string, hint: "Say how many cards are actually showing." }
               - label: Phone card
                 name: phone
                 widget: object
@@ -247,18 +248,19 @@ collections:
                     fields:
                       - { label: Shown as, name: display, widget: string, hint: "e.g. 0161 496 0142" }
                       - { label: Dials, name: tel, widget: string, hint: "International form, no spaces — e.g. +441614960142" }
-                  - { label: Note, name: note, widget: string }
+                  - { label: Note, name: note, widget: string, required: false, hint: "Small grey line under the number. Leave empty to hide it." }
               - label: Email card
                 name: email
                 widget: object
                 fields:
                   - { label: Card label, name: cap, widget: string }
                   - { label: Address, name: address, widget: string, hint: "Shown on the page and used for the mailto: link." }
-                  - { label: Note, name: note, widget: string }
+                  - { label: Note, name: note, widget: string, required: false, hint: "Small grey line under the address. Leave empty to hide it." }
               - label: Booking card
                 name: booking
                 widget: object
                 fields:
+                  - { label: Show this card, name: enabled, widget: boolean, default: false, hint: "Off while there is no booking calendar to point at. The other two cards spread out to fill the space." }
                   - { label: Card label, name: cap, widget: string }
                   - { label: Button label, name: label, widget: string }
                   - { label: Booking link, name: href, widget: string }
@@ -277,4 +279,4 @@ collections:
                   - { label: Label, name: label, widget: string }
                   - { label: Link, name: href, widget: string }
               - { label: Copyright line, name: copyright, widget: string }
-              - { label: ABN, name: abn, widget: string }
+              - { label: ABN, name: abn, widget: string, required: false, hint: "Leave empty to hide the ABN line entirely." }

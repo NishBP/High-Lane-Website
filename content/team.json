@@ -1,12 +1,13 @@
 {
   "heading": "Behind the scenes",
   "kicker": "The team",
-  "intro": "Five specialists, no layers. The person who plans your content is the person who posts it.",
+  "intro": "Six specialists, no layers. The person who plans your content is the person who posts it.",
   "members": [
-    { "name": "Nishal Paranagama", "role": "Role TBC", "image": "/assets/uploads/nishal-paranagama.jpeg" },
-    { "name": "Nabeel Ikram", "role": "Role TBC", "image": "/assets/uploads/nabeel-ikram.jpeg" },
-    { "name": "Joshua Boltong", "role": "Role TBC", "image": "/assets/uploads/joshua-boltong.jpeg" },
-    { "name": "Tarun Sarvanathan", "role": "Role TBC", "image": "/assets/uploads/tarun-sarvanathan.jpg" },
-    { "name": "Fifth member", "role": "Name & role TBC", "image": "" }
+    { "name": "Nabeel Ikram", "role": "Co-founder & CEO", "image": "/assets/uploads/nabeel-ikram.jpeg" },
+    { "name": "Lishan De Silva", "role": "Co-founder & CEO", "image": "" },
+    { "name": "Joshua Boltong", "role": "AI Development Specialist", "image": "/assets/uploads/joshua-boltong.jpeg" },
+    { "name": "Nishal Paranagama", "role": "Software Engineer", "image": "/assets/uploads/nishal-paranagama.jpeg" },
+    { "name": "Tarun Saravanan", "role": "AI Workflow Designer", "image": "/assets/uploads/tarun-sarvanathan.jpg" },
+    { "name": "Nivirithi Sirisha Dookhun", "role": "Social Media and Content Manager", "image": "" }
   ]
 }
