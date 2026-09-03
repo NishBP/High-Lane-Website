@@ -55,6 +55,7 @@ const ICONS = {
   'layout-panel-left': '<rect width="7" height="18" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/>',
   'phone-call': '<path d="M13 2a9 9 0 0 1 9 9"/><path d="M13 6a5 5 0 0 1 5 5"/><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>',
   'mail': '<path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/>',
+  'image': '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
   'calendar-check': '<path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="m9 15 2 2 4-4"/>'
 };
 
@@ -136,7 +137,7 @@ const REGIONS = {
   'team-cards': () => get('team.members').map((m) => {
     const shot = m.image
       ? `<img src="${escAttr(url(m.image))}" alt="${escAttr(m.name)}">`
-      : '<div class="portrait-empty" role="img" aria-label="Headshot to come">Headshot</div>';
+      : '<div class="portrait-empty" role="img" aria-label="Headshot to come"><i data-lucide="image"></i></div>';
     return '<div class="person">' +
       `<div class="portrait">${shot}</div>` +
       `<div class="who"><p class="nm">${esc(m.name)}</p><p class="rl">${esc(m.role)}</p></div>` +

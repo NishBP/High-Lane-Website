@@ -492,8 +492,10 @@ a{color:inherit;text-decoration:none}
   transition:transform .7s var(--ease)}
 .person:hover .portrait img{transform:scale(1.04)}
 .portrait-empty{display:flex;align-items:center;justify-content:center;height:100%;
-  background:var(--surface-2);color:var(--ink-40);font-size:12px;letter-spacing:.08em;
-  text-transform:uppercase;font-weight:600}
+  background:var(--surface-2);color:var(--ink-40)}
+/* thinner than the icons in the rest of the page: this one is a quiet
+   placeholder, not a label */
+.portrait-empty svg{width:clamp(28px,20%,44px);height:auto;aspect-ratio:1;stroke-width:1.4}
 .person .who{padding:14px 15px 17px}
 .person .nm{font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:-.02em}
 .person .rl{margin-top:4px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
@@ -955,7 +957,7 @@ a{color:inherit;text-decoration:none}
       <div class="who"><p class="nm">Tarun Sarvanathan</p><p class="rl">Role TBC</p></div>
     </div>
     <div class="person">
-      <div class="portrait"><div class="portrait-empty" role="img" aria-label="Headshot to come">Headshot</div></div>
+      <div class="portrait"><div class="portrait-empty" role="img" aria-label="Headshot to come"><i data-lucide="image"></i></div></div>
       <div class="who"><p class="nm">Fifth member</p><p class="rl">Name &amp; role TBC</p></div>
     </div>
     <!--/cms:team-cards-->

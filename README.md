@@ -65,8 +65,8 @@ for how to add or remove an editor.
   longer than "Web Development" will wrap the hero headline on narrow screens.
 - **Headshots and the story photo are cropped to 4:5 portrait.** A landscape
   photo loses its top and bottom. Crop before uploading.
-- **A team member with no headshot** shows a grey "Headshot" placeholder — that
-  is deliberate, not a broken image.
+- **A team member with no headshot** shows a grey panel with a picture icon.
+  That is deliberate, not a broken image.
 - **Testimonials are rendered twice** so the marquee can loop seamlessly. You
   enter each one once; the build duplicates it. Editing the same quote twice
   used to be a real trap here — it isn't any more.
