@@ -1,7 +1,9 @@
 {
   "meta": {
     "title": "High Lane | Social media, AI automations & web development",
-    "description": "High Lane runs your social channels, automates the work behind them with AI, and ships the web apps and sites those channels point at."
+    "description": "High Lane runs your social channels, automates the work behind them with AI, and ships the web apps and sites those channels point at.",
+    "siteUrl": "https://highlanemedia.com/",
+    "sameAs": []
   },
   "nav": {
     "links": [

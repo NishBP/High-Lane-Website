@@ -127,6 +127,25 @@ for how to add or remove an editor.
 Every style, animation and graphic lives inside the template. There is no
 separate CSS or JS file.
 
+## Search and sharing
+
+Generated into `dist/` by the build, from the same content the page uses:
+
+| | |
+| --- | --- |
+| `<link rel="canonical">` | points at `meta.siteUrl`, so the `workers.dev` copy of the site can't compete with the real domain |
+| Open Graph + Twitter tags | title, description and `og-card.jpg` for link previews |
+| JSON-LD | `Organization` (name, logo, email, phone, the three services) and `WebSite` |
+| `robots.txt` | allows everything except `/admin/`, repeats Cloudflare's AI-crawler blocks, points at the sitemap |
+| `sitemap.xml` | one URL; `lastmod` is the newest of the template and `content/`, so a rebuild that changed nothing doesn't claim otherwise |
+
+`Organization` is used rather than `LocalBusiness` on purpose: the latter
+wants a street address and Google reports it as an error without one.
+
+Add the LinkedIn and Instagram links under **Site copy → Browser tab and
+search results → Social profiles** and they become `sameAs`, which is how
+search engines tie the site to those accounts.
+
 ## How content reaches the page
 
 The template carries the same copy inline as `content/` does, so it still
@@ -181,8 +200,15 @@ It also lifts the `<helmet>` block into `<head>` (Claude Design leaves it in
 
 - `assets/uploads/` — CMS-managed. Team headshots and the story photo. Safe to
   add to from `/admin`.
-- `assets/hlm-logo.png`, `assets/hlm-mark.png` — brand marks, referenced by the
-  template. Not CMS-managed.
+- `assets/hlm-logo.png` — the wordmark. `assets/hlm-mark.png` — the swoosh on
+  its own. Brand marks, not CMS-managed.
+- `assets/favicon.ico`, `icon-32/192/512.png`, `apple-touch-icon.png` — the
+  tab and home-screen icon: the swoosh knocked out white on brand teal.
+- `assets/og-card.jpg` — the 1200x630 image shown when the site is shared.
+
+The last two groups are **generated**. Re-run `python3 tools/make-icons.py`
+after changing the logo or the mark; it needs Pillow and is not part of the
+build.
 - `assets/hlm-logo-original.png` — the untrimmed master, kept for re-cropping.
   Excluded from `dist/`.
 

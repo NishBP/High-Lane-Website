@@ -98,6 +98,13 @@ collections:
             fields:
               - { label: Page title, name: title, widget: string }
               - { label: Search description, name: description, widget: text }
+              - { label: Site address, name: siteUrl, widget: string, hint: "The address search engines should treat as the real one. Used for the canonical link and the sitemap." }
+              - label: Social profiles
+                name: sameAs
+                widget: list
+                required: false
+                field: { label: Profile URL, name: url, widget: string }
+                hint: "Full links to your LinkedIn, Instagram and so on. Search engines use these to tie the site to those accounts."
 
           - label: Navigation
             name: nav

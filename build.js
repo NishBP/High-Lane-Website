@@ -136,7 +136,7 @@ const REGIONS = {
 
   'team-cards': () => get('team.members').map((m) => {
     const shot = m.image
-      ? `<img src="${escAttr(url(m.image))}" alt="${escAttr(m.name)}">`
+      ? `<img src="${escAttr(url(m.image))}" alt="${escAttr(m.name)}" loading="lazy" decoding="async">`
       : '<div class="portrait-empty" role="img" aria-label="Headshot to come"><i data-lucide="image"></i></div>';
     return '<div class="person">' +
       `<div class="portrait">${shot}</div>` +
@@ -197,6 +197,75 @@ const REGIONS = {
       `href="${escAttr(b.href)}" target="_blank" rel="noopener">${esc(b.label)}</a>` +
       (String(b.note || '').trim() ? `<span class="note">${esc(b.note)}</span>` : '') +
       '</div>';
+  },
+
+  /* Everything a crawler or a link preview reads, generated from the same
+     content the page is built from so the two can't drift. */
+  'seo': () => {
+    const base = String(get('meta.siteUrl')).replace(/\/+$/, '');
+    const title = String(get('meta.title'));
+    const desc = String(get('meta.description'));
+    const brand = String(get('hero.brand'));
+    const image = `${base}/assets/og-card.jpg`;
+    const sameAs = (get('meta.sameAs') || []).filter((u) => String(u).trim());
+
+    const tag = (attr, name, content) => `<meta ${attr}="${name}" content="${escAttr(content)}">`;
+    const head = [
+      /* the defaults are index,follow — these two ask for a full-size image
+         and an unclipped snippet, which is the part worth stating */
+      tag('name', 'robots', 'index, follow, max-image-preview:large, max-snippet:-1'),
+      tag('property', 'og:type', 'website'),
+      tag('property', 'og:site_name', brand),
+      tag('property', 'og:title', title),
+      tag('property', 'og:description', desc),
+      tag('property', 'og:url', `${base}/`),
+      tag('property', 'og:image', image),
+      tag('property', 'og:image:width', '1200'),
+      tag('property', 'og:image:height', '630'),
+      tag('property', 'og:image:alt', `${brand} logo`),
+      tag('property', 'og:locale', 'en_AU'),
+      tag('name', 'twitter:card', 'summary_large_image'),
+      tag('name', 'twitter:title', title),
+      tag('name', 'twitter:description', desc),
+      tag('name', 'twitter:image', image)
+    ];
+
+    /* Organization and WebSite only. LocalBusiness wants a street address,
+       and Google flags it as an error without one. */
+    const org = {
+      '@type': 'Organization',
+      '@id': `${base}/#organisation`,
+      name: brand,
+      url: `${base}/`,
+      description: desc,
+      logo: { '@type': 'ImageObject', url: `${base}/assets/hlm-logo.png`, width: 1063, height: 340 },
+      image,
+      email: get('contact.email.address'),
+      telephone: get('contact.phone.numbers')[0].tel,
+      makesOffer: get('services.items').map((it) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: it.title, description: it.copy }
+      }))
+    };
+    if (sameAs.length) org.sameAs = sameAs;
+
+    const graph = {
+      '@context': 'https://schema.org',
+      '@graph': [org, {
+        '@type': 'WebSite',
+        '@id': `${base}/#website`,
+        url: `${base}/`,
+        name: brand,
+        description: desc,
+        inLanguage: 'en',
+        publisher: { '@id': `${base}/#organisation` }
+      }]
+    };
+
+    return head.join('\n') +
+      '\n<script type="application/ld+json">' +
+      JSON.stringify(graph).replace(/</g, '\\u003c') +
+      '</script>';
   },
 
   /* Parked while there is nothing to log in to. An emptied label would only
@@ -417,6 +486,32 @@ if (missing.length) {
   throw new Error(`build failed: referenced but not in dist/:\n  ${missing.join('\n  ')}`);
 }
 steps.push('every <img> resolves inside dist/');
+
+/* A one-page site, so the sitemap is one URL. Its lastmod is the newest of
+   the files the page is actually built from, rather than "now" — a rebuild
+   that changed nothing shouldn't claim the content is new. */
+const siteUrl = String(get('meta.siteUrl')).replace(/\/+$/, '');
+const sources = [SRC, ...fs.readdirSync(CONTENT_DIR).map((f) => path.join(CONTENT_DIR, f))];
+const lastmod = new Date(Math.max(...sources.map((f) => fs.statSync(f).mtimeMs)))
+  .toISOString().slice(0, 10);
+/* Cloudflare injects a managed robots.txt when the origin serves none. Its
+   AI-crawler blocks are repeated here so owning this file costs nothing. */
+fs.writeFileSync(path.join(OUT, 'robots.txt'),
+  'User-agent: *\nAllow: /\nDisallow: /admin/\n\n' +
+  ['Amazonbot', 'Applebot-Extended', 'Bytespider', 'CCBot', 'ClaudeBot',
+   'Google-Extended', 'GPTBot', 'meta-externalagent']
+    .map((bot) => `User-agent: ${bot}\nDisallow: /\n`).join('\n') +
+  `\nSitemap: ${siteUrl}/sitemap.xml\n`);
+steps.push('robots.txt written');
+
+fs.writeFileSync(path.join(OUT, 'sitemap.xml'),
+  '<?xml version="1.0" encoding="UTF-8"?>\n' +
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+  `  <url><loc>${siteUrl}/</loc><lastmod>${lastmod}</lastmod></url>\n` +
+  '</urlset>\n');
+steps.push(`sitemap.xml written (${siteUrl}/, lastmod ${lastmod})`);
+
+fs.copyFileSync(path.join(ROOT, 'assets', 'favicon.ico'), path.join(OUT, 'favicon.ico'));
 
 const bytes = (p) => fs.statSync(p).size;
 const walk = (d) => fs.readdirSync(d, { withFileTypes: true })
