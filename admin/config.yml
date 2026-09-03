@@ -116,6 +116,7 @@ collections:
                 name: cta
                 widget: object
                 fields:
+                  - { label: Show this button, name: enabled, widget: boolean, default: false, hint: "Off while there is nothing for clients to log in to." }
                   - { label: Label, name: label, widget: string }
                   - { label: Link, name: href, widget: string }
                   - { label: Tooltip, name: tooltip, widget: string, hint: "Appears under the button on hover. Clear it to remove the tooltip." }

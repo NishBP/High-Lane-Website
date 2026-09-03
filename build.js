@@ -198,6 +198,18 @@ const REGIONS = {
       '</div>';
   },
 
+  /* Parked while there is nothing to log in to. An emptied label would only
+     blank the text and leave an empty pill sitting in the nav. */
+  'nav-cta': () => {
+    const c = get('nav.cta');
+    if (!c.enabled) return '';
+    const tip = String(c.tooltip || '').trim();
+    return `<a class="btn btn-primary btn-sm nav-cta" href="${escAttr(c.href)}">` +
+      `<span>${esc(c.label)}</span>` +
+      (tip ? `<span class="tip">${esc(tip)}</span>` : '') +
+      '</a>';
+  },
+
   /* An empty ABN takes the line break with it. */
   'footer-legal': () => {
     const abn = String(get('footer.abn')).trim();

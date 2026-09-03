@@ -88,8 +88,9 @@ for how to add or remove an editor.
   an empty `<p>` still takes a margin. That is how the ABN, the contact-card
   notes and the Login tooltip are switched off. Clear a heading and the heading
   disappears, so only empty what you mean to hide.
-- **The booking card has its own on/off switch**, since an empty field would
-  only blank its text and leave the card. With it off, the two remaining cards
+- **The Login button and the booking card have on/off switches**, since an
+  empty label would only blank the text and leave an empty pill or card
+  behind. Both keep their wording while switched off, ready to come back. With it off, the two remaining cards
   share the width; with it on, the email card gets the roomiest column so the
   address stays on one line.
 - **House style: no em dashes.** Use a full stop, a colon, or `*asterisks*` to
@@ -197,5 +198,8 @@ and is never published.
 - **The ABN** is hidden, not removed. Type it into the footer field to show it.
 - **The booking card** is switched off while there is no calendar to point at.
   Turn on "Show this card" under Contact, and fix the link, to bring it back.
+- **The Login button** is switched off. Turn on "Show this button" under
+  Navigation when there is somewhere for clients to log in to. Its label,
+  link and tooltip are all still there.
 
 All of these are editable at `/admin`, with no code change needed.

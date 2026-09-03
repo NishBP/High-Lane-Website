@@ -23,6 +23,7 @@
       }
     ],
     "cta": {
+      "enabled": false,
       "label": "Login",
       "href": "#contact",
       "tooltip": "For Clients and Team Members"
