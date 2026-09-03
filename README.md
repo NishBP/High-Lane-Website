@@ -47,7 +47,7 @@ for how to add or remove an editor.
 | Nav & footer | link labels, link targets, button label, the Login tooltip | the logo |
 | Hero | badge, wordmark, the 3 rotating services, intro, both buttons | the animated graphic's layout and icons |
 | Hero graphic | centre label, 3 node labels, 2 chip labels | icons, wiring, animation |
-| Services | heading, subtitle, intro, and per service: number, title, sub-line, copy, bullets, button | the 3 animated mockups |
+| Services | heading, subtitle, intro, and per service: number, title, keywords, copy, bullets, button | the 3 animated mockups |
 | Our story | heading, subtitle, paragraphs, both buttons, **the photo** | — |
 | Team | heading, subtitle, intro, and per person: name, role, **headshot** | — |
 | Testimonials | heading, subtitle, and per review: quote, detail, name, company | — |
@@ -97,6 +97,17 @@ for how to add or remove an editor.
   contact panel; they are gone.
 - **Testimonials are two fields**, a bold pull quote and a smaller detail
   paragraph. A one-line testimonial can leave the detail empty.
+- **Service keywords are badges**, one per entry in the list. They used to be
+  one run of text with dots between, which wrapped mid-list and left a dot
+  stranded at the start of a line. Two or three words each reads best.
+- **The team grid is four across**, and a short last row centres under it
+  rather than stretching. Three across on a tablet, two on a phone.
+- **On a phone the services are a swipeable carousel**, not an accordion:
+  every card is already open and you move sideways between them, so the
+  arrow points right instead of being a plus. The script skips its toggle
+  wiring below 768px, and the stylesheet overrides the inline height it uses
+  for the desktop open/close animation. Change one of those and you have to
+  change the other.
 
 ## The files that matter
 

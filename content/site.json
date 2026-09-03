@@ -75,7 +75,12 @@
       {
         "num": "01",
         "title": "Social Media Management",
-        "sub": "Strategy · Content production · Community · Paid support",
+        "keywords": [
+          "Strategy",
+          "Content production",
+          "Community",
+          "Paid support"
+        ],
         "copy": "The service we were born doing. Channel strategy, a month of content planned in advance, shooting and editing, publishing, community replies, and a monthly read on what actually moved.",
         "bullets": [
           "Content calendars & production",
@@ -90,7 +95,12 @@
       {
         "num": "02",
         "title": "AI Automations",
-        "sub": "Lead routing · Inbox triage · Reporting · Internal tools",
+        "keywords": [
+          "Lead routing",
+          "Inbox triage",
+          "Reporting",
+          "Internal tools"
+        ],
         "copy": "We map the admin that eats your week, then hand it to something that never gets tired: lead qualification, inbox triage, first-line replies, content repurposing and reports that write themselves.",
         "bullets": [
           "Lead capture & follow-up agents",
@@ -105,7 +115,12 @@
       {
         "num": "03",
         "title": "Web Development",
-        "sub": "Landing pages · CRMs & web apps · Payments · CMS",
+        "keywords": [
+          "Landing pages",
+          "CRMs & web apps",
+          "Payments",
+          "CMS"
+        ],
         "copy": "Not a brochure. A launchpad for the whole business. Fast, light sites and the machinery attached: card payments and checkout, forms wired to your CRM, custom web apps built around the problem you actually have, and a CMS so your team edits copy without calling us.",
         "bullets": [
           "Landing pages, design, build & launch",

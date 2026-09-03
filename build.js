@@ -179,6 +179,11 @@ const REGIONS = {
   'svc-bullets': (i) => get(`services.items.${i}.bullets`)
     .map((b) => `<li>${esc(b)}</li>`).join(''),
 
+  /* Badges rather than one run of text separated by dots, which wrapped
+     badly and left a dangling separator at the start of a line. */
+  'svc-tags': (i) => get(`services.items.${i}.keywords`)
+    .map((k) => `<li class="svc-tag">${esc(k)}</li>`).join(''),
+
   /* The booking card can be switched off entirely while there's no calendar
      to point it at. The contact grid reads how many cards it actually got. */
   'contact-booking': () => {

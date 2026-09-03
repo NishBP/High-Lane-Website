@@ -183,7 +183,11 @@ collections:
                 fields:
                   - { label: Number, name: num, widget: string }
                   - { label: Title, name: title, widget: string }
-                  - { label: Sub-line, name: sub, widget: string }
+                  - label: Keywords
+                    name: keywords
+                    widget: list
+                    field: { label: Keyword, name: keyword, widget: string }
+                    hint: "Shown as small badges under the title. Two or three words each reads best."
                   - { label: Body copy, name: copy, widget: text }
                   - label: Bullets
                     name: bullets

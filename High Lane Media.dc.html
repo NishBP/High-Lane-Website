@@ -385,12 +385,18 @@ a{color:inherit;text-decoration:none}
   color:var(--ink-40);transition:color .4s var(--ease);font-variant-numeric:tabular-nums}
 .svc-title{font-size:clamp(22px,2.9vw,36px);letter-spacing:-.03em;font-weight:700;color:var(--ink);
   transition:color .4s var(--ease)}
-.svc-sub{margin-top:7px;font-size:13.5px;color:var(--ink-55);transition:color .4s var(--ease)}
+.svc-tags{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.svc-tag{font-size:11.5px;font-weight:500;line-height:1;color:var(--ink-55);padding:6px 10px;
+  border-radius:var(--r-pill);background:var(--surface);border:1px solid var(--line);
+  transition:color .4s var(--ease),background .4s var(--ease),border-color .4s var(--ease)}
+.svc[data-open] .svc-tag{background:#fff;color:var(--teal-700);
+  border-color:color-mix(in srgb,var(--teal) 22%,transparent)}
 .svc-arrow{width:clamp(40px,3.4vw,48px);height:clamp(40px,3.4vw,48px);border-radius:50%;flex:none;
   display:flex;align-items:center;justify-content:center;border:1px solid var(--line-2);
   color:var(--ink-70);background:transparent;
   transition:background .4s var(--ease),color .4s var(--ease),border-color .4s var(--ease),transform .5s var(--ease)}
 .svc-arrow svg{width:18px;height:18px}
+.svc-arrow .ic-next{display:none}
 .svc-body{overflow:hidden;max-height:0;opacity:0;
   transition:max-height .65s var(--ease),opacity .45s var(--ease)}
 .svc-body-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));
@@ -406,6 +412,39 @@ a{color:inherit;text-decoration:none}
 .svc[data-open] .svc-title{color:var(--deep)}
 .svc[data-open] .svc-arrow{background:var(--deep);border-color:var(--deep);color:#fff;transform:rotate(45deg)}
 .svc:hover .svc-arrow{border-color:var(--teal)}
+
+/* On a phone the accordion became a swipeable row: every service is already
+   open, and you move sideways between them. The script skips its toggle
+   wiring at this width, so tapping a card does nothing to fight the swipe. */
+@media (max-width:768px){
+  .svc-list{display:flex;gap:14px;align-items:stretch;
+    margin-inline:calc(var(--pad) * -1);padding:2px var(--pad) 8px;
+    overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;
+    scroll-snap-type:x mandatory;scroll-padding-inline:var(--pad);
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    background:transparent;border:0;border-radius:0;box-shadow:none}
+  .svc-list::-webkit-scrollbar{display:none}
+  .svc{flex:0 0 min(88%,420px);scroll-snap-align:start;cursor:default;
+    border:1px solid var(--line);border-radius:var(--r-lg);background:var(--bg);
+    box-shadow:var(--sh-1);overflow:hidden}
+  /* the number and the arrow share a line, so the title and its badges get
+     the full width of the card instead of a 170px middle column */
+  .svc-head{grid-template-columns:auto 1fr;grid-template-areas:"num arrow" "copy copy";
+    gap:12px;padding:18px}
+  .svc-num{grid-area:num;align-self:center}
+  .svc-head > div{grid-area:copy;min-width:0}
+  .svc-arrow{grid-area:arrow;justify-self:end}
+  .svc[data-open]{background:var(--bg)}
+  /* the script writes an inline max-height for its open/close animation;
+     here the cards simply stay open */
+  .svc-body{max-height:none !important;opacity:1 !important;overflow:visible}
+  .svc-arrow .ic-plus{display:none}
+  .svc-arrow .ic-next{display:block}
+  .svc[data-open] .svc-arrow{background:transparent;border-color:var(--line-2);
+    color:var(--ink-70);transform:none}
+  /* nothing to swipe to after the last one */
+  .svc:last-child .svc-arrow{visibility:hidden}
+}
 
 /* the little product vignettes inside each service row */
 .mock{position:relative;height:200px;border-radius:var(--r);overflow:hidden;background:var(--bg);
@@ -440,9 +479,12 @@ a{color:inherit;text-decoration:none}
   box-shadow:inset 0 0 0 1px var(--line);pointer-events:none}
 
 /* ── TEAM ─────────────────────────────────────────────────────────────── */
-.team-grid{margin-top:clamp(30px,4vw,48px);display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,186px),1fr));gap:clamp(16px,2vw,26px)}
-.person{border-radius:var(--r);overflow:hidden;background:var(--bg);border:1px solid var(--line);
+.team-grid{margin-top:clamp(30px,4vw,48px);--tgap:clamp(16px,2vw,26px);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:var(--tgap)}
+/* four across, so a fifth and sixth member centre under the row above
+   instead of stretching to fill it */
+.person{flex:0 0 calc((100% - 3*var(--tgap))/4);max-width:calc((100% - 3*var(--tgap))/4);
+  border-radius:var(--r);overflow:hidden;background:var(--bg);border:1px solid var(--line);
   box-shadow:var(--sh-1);transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
 .person:hover{transform:translateY(-5px);box-shadow:var(--sh-2)}
 .portrait{position:relative;aspect-ratio:4/5;background:var(--surface);overflow:hidden}
@@ -455,7 +497,16 @@ a{color:inherit;text-decoration:none}
 .person .who{padding:14px 15px 17px}
 .person .nm{font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:-.02em}
 .person .rl{margin-top:4px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--teal-700);font-weight:600}
+  color:var(--teal-700);font-weight:500}
+@media (max-width:900px){.person{flex-basis:calc((100% - 2*var(--tgap))/3);
+  max-width:calc((100% - 2*var(--tgap))/3)}}
+/* two up on a phone: a single full-width card made each face enormous */
+@media (max-width:600px){
+  .person{flex-basis:calc((100% - var(--tgap))/2);max-width:calc((100% - var(--tgap))/2)}
+  .person .who{padding:11px 12px 14px}
+  .person .nm{font-size:14px}
+  .person .rl{font-size:10px;letter-spacing:.07em}
+}
 
 /* ── REVIEWS ──────────────────────────────────────────────────────────── */
 .reviews{background:var(--surface);border-top:1px solid var(--line)}
@@ -699,9 +750,9 @@ a{color:inherit;text-decoration:none}
         <span class="svc-num" data-cms="services.items.0.num">01</span>
         <div>
           <h3 class="svc-title" data-cms="services.items.0.title">Social Media Management</h3>
-          <p class="svc-sub" data-cms="services.items.0.sub">Strategy · Content production · Community · Paid support</p>
+          <ul class="svc-tags"><!--cms:svc-tags:0--><li class="svc-tag">Strategy</li><li class="svc-tag">Content production</li><li class="svc-tag">Community</li><li class="svc-tag">Paid support</li><!--/cms:svc-tags:0--></ul>
         </div>
-        <span class="svc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
+        <span class="svc-arrow" aria-hidden="true"><svg class="ic-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg><svg class="ic-next" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
       </div>
       <div class="svc-body" data-svc-body>
         <div class="svc-body-in">
@@ -746,9 +797,9 @@ a{color:inherit;text-decoration:none}
         <span class="svc-num" data-cms="services.items.1.num">02</span>
         <div>
           <h3 class="svc-title" data-cms="services.items.1.title">AI Automations</h3>
-          <p class="svc-sub" data-cms="services.items.1.sub">Lead routing · Inbox triage · Reporting · Internal tools</p>
+          <ul class="svc-tags"><!--cms:svc-tags:1--><li class="svc-tag">Lead routing</li><li class="svc-tag">Inbox triage</li><li class="svc-tag">Reporting</li><li class="svc-tag">Internal tools</li><!--/cms:svc-tags:1--></ul>
         </div>
-        <span class="svc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
+        <span class="svc-arrow" aria-hidden="true"><svg class="ic-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg><svg class="ic-next" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
       </div>
       <div class="svc-body" data-svc-body>
         <div class="svc-body-in">
@@ -797,9 +848,9 @@ a{color:inherit;text-decoration:none}
         <span class="svc-num" data-cms="services.items.2.num">03</span>
         <div>
           <h3 class="svc-title" data-cms="services.items.2.title">Web Development</h3>
-          <p class="svc-sub" data-cms="services.items.2.sub">Landing pages · CRMs &amp; web apps · Payments · CMS</p>
+          <ul class="svc-tags"><!--cms:svc-tags:2--><li class="svc-tag">Landing pages</li><li class="svc-tag">CRMs &amp; web apps</li><li class="svc-tag">Payments</li><li class="svc-tag">CMS</li><!--/cms:svc-tags:2--></ul>
         </div>
-        <span class="svc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
+        <span class="svc-arrow" aria-hidden="true"><svg class="ic-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg><svg class="ic-next" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
       </div>
       <div class="svc-body" data-svc-body>
         <div class="svc-body-in">
@@ -1146,13 +1197,21 @@ class Component extends DCLogic {
       }
     };
     const open = (i) => { rows.forEach((r, j) => set(r, i === j)); this.svcOpen = i; };
+    /* Below this width the rows are a swipeable carousel with everything
+       already open, so there is nothing to toggle. */
+    if (matchMedia('(max-width: 768px)').matches) { rows.forEach((r) => set(r, true)); return; }
+
     const canHover = matchMedia('(hover: hover)').matches;
     rows.forEach((row, i) => {
       if (canHover) row.addEventListener('mouseenter', () => open(i));
       row.addEventListener('focusin', () => open(i));
+      /* A tap focuses the row before it clicks it, and focusin opens it — so
+         by the time click ran, the row it was meant to open already counted
+         as open and got closed again. Capture the state before focus moves. */
+      row.addEventListener('pointerdown', () => { row.dataset.wasOpen = this.svcOpen === i ? '1' : '0'; });
       row.addEventListener('click', (e) => {
         if (e.target.closest('a,button')) return;
-        open(this.svcOpen === i ? -1 : i);
+        open(row.dataset.wasOpen === '1' ? -1 : i);
       });
       row.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(this.svcOpen === i ? -1 : i); }
