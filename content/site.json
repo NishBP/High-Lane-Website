@@ -25,9 +25,9 @@
       }
     ],
     "cta": {
-      "enabled": false,
+      "enabled": true,
       "label": "Login",
-      "href": "#contact",
+      "href": "https://erp.highlanemedia.com/",
       "tooltip": "For Clients and Team Members"
     }
   },
