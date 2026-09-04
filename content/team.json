@@ -14,14 +14,14 @@
       "image": ""
     },
     {
-      "name": "Joshua Boltong",
-      "role": "AI Development Specialist",
-      "image": "/assets/uploads/joshua-boltong.jpeg"
-    },
-    {
       "name": "Nishal Paranagama",
       "role": "Software Engineer | Tech Lead",
       "image": "/assets/uploads/nishal-paranagama.jpeg"
+    },
+    {
+      "name": "Joshua Boltong",
+      "role": "AI Development Specialist",
+      "image": "/assets/uploads/joshua-boltong.jpeg"
     },
     {
       "name": "Tarun Saravanan",
