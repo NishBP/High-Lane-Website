@@ -409,26 +409,32 @@ a{color:inherit;text-decoration:none}
   transition:max-height .65s var(--ease),opacity .45s var(--ease)}
 .svc-body-in{display:grid;grid-template-columns:minmax(0,1fr);
   gap:clamp(22px,3vw,46px);align-items:center;padding:0 clamp(18px,2.2vw,32px) clamp(28px,3vw,38px)}
-/* With a photograph the right column runs to the card edge, so the padding
-   moves off the grid and onto the text beside it. */
-/* an explicit 50% rather than 1fr 1fr: with a gap and a left padding in the
-   grid, two equal fractions leave the photograph on 47% of the row */
-.svc-body-in:has(.svc-shot){grid-template-columns:minmax(0,1fr) 50%;
-  align-items:stretch;padding:0 0 0 clamp(18px,2.2vw,32px)}
-.svc-body-in:has(.svc-shot) .svc-text{align-self:center;padding-bottom:clamp(28px,3vw,38px)}
-.svc-shot{position:relative;margin:0;overflow:hidden;background:var(--surface)}
-/* Taken out of flow on purpose: in flow the photograph's own aspect ratio
-   sets the height of the row, so a square one made the card enormous and the
-   open/close animation measured a height that no longer matched. Absolutely
-   positioned, the text column decides the height and the photograph crops
-   into whatever that turns out to be. */
+.svc-shot{position:relative;margin:0;overflow:hidden;background:var(--surface);
+  opacity:0;transition:opacity .5s var(--ease-out)}
+.svc[data-open] .svc-shot{opacity:1}
+/* Out of flow on purpose: in flow the photograph's own aspect ratio sets the
+   height of the row, so a square one made the card enormous and the
+   open/close animation then measured a height that no longer matched. */
 .svc-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transform:scale(1.07);
-  transition:opacity .9s var(--ease-out) .15s,transform 1.3s var(--ease-out) .15s}
-.svc[data-open] .svc-shot img{opacity:1;transform:none}
-/* a hairline so the photograph doesn't float free of the row above it */
+  transform:scale(1.07);transition:transform 1.3s var(--ease-out) .1s}
+.svc[data-open] .svc-shot img{transform:none}
+/* a hairline so the photograph doesn't float free of the copy beside it */
 .svc-shot::after{content:"";position:absolute;inset:0;pointer-events:none;
   box-shadow:inset 1px 0 0 var(--line)}
+
+/* From tablet up the photograph is pinned to the CARD rather than living
+   inside the collapsible body, so it runs the row's whole height: up past the
+   header to the top edge, with the open/close button floating over it. */
+@media (min-width:769px){
+  .svc:has(.svc-shot) .svc-shot{position:absolute;top:0;right:0;bottom:0;width:50%}
+  /* the header and its button paint above the photograph */
+  .svc-head{position:relative;z-index:1}
+  /* and nothing in the header or the body runs under it */
+  .svc[data-open]:has(.svc-shot) .svc-head{grid-template-columns:auto minmax(0,1fr) 50%}
+  /* the button keeps its place at the far right of the wider column */
+  .svc[data-open]:has(.svc-shot) .svc-arrow{justify-self:end}
+  .svc:has(.svc-shot) .svc-body-in{padding-right:calc(50% + clamp(22px,3vw,46px))}
+}
 .svc-copy{font-size:15.5px;line-height:1.65;color:var(--ink-70);max-width:50ch}
 .svc-ul{margin:20px 0 0;padding:0;list-style:none;display:grid;gap:10px;font-size:14.5px;color:var(--ink)}
 .svc-ul li{display:flex;gap:11px;align-items:center}
@@ -462,8 +468,8 @@ a{color:inherit;text-decoration:none}
   .svc-num{grid-area:num;align-self:center}
   .svc-head > div{grid-area:copy;min-width:0}
   .svc-arrow{grid-area:arrow;justify-self:end}
-  .svc-body-in,.svc-body-in:has(.svc-shot){grid-template-columns:minmax(0,1fr);gap:0;padding:0}
-  .svc-body-in:has(.svc-shot) .svc-text,.svc-text{padding:0 18px 20px}
+  .svc-body-in{grid-template-columns:minmax(0,1fr);gap:0;padding:0}
+  .svc-text{padding:0 18px 20px}
   .svc-shot{aspect-ratio:16/10}
   .svc-shot::after{box-shadow:inset 0 1px 0 var(--line)}
   .svc[data-open]{background:var(--bg)}
@@ -777,9 +783,9 @@ a{color:inherit;text-decoration:none}
             <!--/cms:svc-bullets:0--></ul>
             <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px" data-cms="services.items.0.cta.label" data-cms-attr="href=services.items.0.cta.href">Discuss a project</a>
           </div>
-          <!--cms:svc-shot:0--><!--/cms:svc-shot:0-->
         </div>
       </div>
+      <!--cms:svc-shot:0--><!--/cms:svc-shot:0-->
     </article>
 
     <article class="svc" data-svc="1" tabindex="0" role="button" aria-expanded="false">
@@ -803,9 +809,9 @@ a{color:inherit;text-decoration:none}
             <!--/cms:svc-bullets:1--></ul>
             <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px" data-cms="services.items.1.cta.label" data-cms-attr="href=services.items.1.cta.href">Discuss a project</a>
           </div>
-          <!--cms:svc-shot:1--><!--/cms:svc-shot:1-->
         </div>
       </div>
+      <!--cms:svc-shot:1--><!--/cms:svc-shot:1-->
     </article>
 
     <article class="svc" data-svc="2" tabindex="0" role="button" aria-expanded="false">
@@ -829,9 +835,9 @@ a{color:inherit;text-decoration:none}
             <!--/cms:svc-bullets:2--></ul>
             <a class="btn btn-aqua btn-sm" href="#contact" style="margin-top:22px" data-cms="services.items.2.cta.label" data-cms-attr="href=services.items.2.cta.href">Discuss a project</a>
           </div>
-          <!--cms:svc-shot:2--><!--/cms:svc-shot:2-->
         </div>
       </div>
+      <!--cms:svc-shot:2--><!--/cms:svc-shot:2-->
     </article>
 
   </div>

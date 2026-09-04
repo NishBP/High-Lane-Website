@@ -98,11 +98,14 @@ for how to add or remove an editor.
   contact panel; they are gone.
 - **Testimonials are two fields**, a bold pull quote and a smaller detail
   paragraph. A one-line testimonial can leave the detail empty.
-- **Each service card has a photograph** filling the right half when it
-  opens, bleeding to the card edge. It is cropped to whatever height the text
-  beside it happens to be, centred, so any shape works but the middle of the
-  picture is what survives. Clear the field and that card is text only, full
-  width, with no gap left behind.
+- **Each service card has a photograph** filling the right half when it opens.
+  From tablet up it is pinned to the card rather than to the collapsible body,
+  so it runs the row's whole height — up past the header to the top edge, with
+  the open/close button floating over it. The header's title column and the
+  body text both stop at the halfway line so nothing runs underneath. It is
+  cropped to whatever height the text beside it happens to be, centred, so any
+  shape works but the middle of the picture is what survives. Clear the field
+  and that card is text only, full width, with no gap left behind.
 - **Service keywords are badges**, one per entry in the list. They used to be
   one run of text with dots between, which wrapped mid-list and left a dot
   stranded at the start of a line. Two or three words each reads best.
