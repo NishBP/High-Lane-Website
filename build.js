@@ -180,6 +180,18 @@ const REGIONS = {
   'svc-bullets': (i) => get(`services.items.${i}.bullets`)
     .map((b) => `<li>${esc(b)}</li>`).join(''),
 
+  /* The photograph filling the right half of an expanded row. Optional: with
+     no image the row falls back to a single column of text, and the CSS
+     keys off :has(.svc-shot) rather than needing to be told. The animated
+     vignettes these replaced are in archive/service-mocks.html. */
+  'svc-shot': (i) => {
+    const src = String(get(`services.items.${i}.image`)).trim();
+    if (!src) return '';
+    const alt = String(get(`services.items.${i}.imageAlt`) || '').trim();
+    return `<figure class="svc-shot"><img src="${escAttr(url(src))}" alt="${escAttr(alt)}" ` +
+      'loading="lazy" decoding="async"></figure>';
+  },
+
   /* Badges rather than one run of text separated by dots, which wrapped
      badly and left a dangling separator at the start of a line. */
   'svc-tags': (i) => get(`services.items.${i}.keywords`)

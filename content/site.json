@@ -93,7 +93,9 @@
         "cta": {
           "label": "Discuss a project",
           "href": "#contact"
-        }
+        },
+        "image": "/assets/uploads/service-social-media.jpg",
+        "imageAlt": "A medium-format film camera, its viewfinder framing a rose garden"
       },
       {
         "num": "02",
@@ -113,7 +115,9 @@
         "cta": {
           "label": "Discuss a project",
           "href": "#contact"
-        }
+        },
+        "image": "/assets/uploads/service-ai-automations.jpg",
+        "imageAlt": "An overhead view of people spread across a floor, joined by a web of fine lines"
       },
       {
         "num": "03",
@@ -133,7 +137,9 @@
         "cta": {
           "label": "Discuss a project",
           "href": "#contact"
-        }
+        },
+        "image": "/assets/uploads/service-web-development.jpg",
+        "imageAlt": "A sheet of paper in a typewriter, headed Terms of Service"
       }
     ]
   },

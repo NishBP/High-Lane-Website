@@ -47,7 +47,7 @@ for how to add or remove an editor.
 | Nav & footer | link labels, link targets, button label, the Login tooltip | the logo |
 | Hero | badge, wordmark, the 3 rotating services, intro, both buttons | the animated graphic's layout and icons |
 | Hero graphic | centre label, 3 node labels, 2 chip labels | icons, wiring, animation |
-| Services | heading, subtitle, intro, and per service: number, title, keywords, copy, bullets, button | the 3 animated mockups |
+| Services | heading, subtitle, intro, and per service: number, title, keywords, copy, bullets, button, **photo** | the split-lane graphic |
 | Our story | heading, subtitle, paragraphs, both buttons, **the photo** | — |
 | Team | heading, subtitle, intro, and per person: name, role, **headshot** | — |
 | Testimonials | heading, subtitle, and per review: quote, detail, name, company | — |
@@ -98,6 +98,11 @@ for how to add or remove an editor.
   contact panel; they are gone.
 - **Testimonials are two fields**, a bold pull quote and a smaller detail
   paragraph. A one-line testimonial can leave the detail empty.
+- **Each service card has a photograph** filling the right half when it
+  opens, bleeding to the card edge. It is cropped to whatever height the text
+  beside it happens to be, centred, so any shape works but the middle of the
+  picture is what survives. Clear the field and that card is text only, full
+  width, with no gap left behind.
 - **Service keywords are badges**, one per entry in the list. They used to be
   one run of text with dots between, which wrapped mid-list and left a dot
   stranded at the start of a line. Two or three words each reads best.
@@ -211,6 +216,18 @@ after changing the logo or the mark; it needs Pillow and is not part of the
 build.
 - `assets/hlm-logo-original.png` — the untrimmed master, kept for re-cropping.
   Excluded from `dist/`.
+
+## archive/
+
+Not built, not served, not copied into `dist/` — kept so it can come back.
+
+- **`service-mocks.html`** — the animated vignettes that used to fill the
+  right half of each expanded service row: posts cycling with a sparkline,
+  inputs routed through an AI node, a browser skeleton. Markup and stylesheet
+  together, with instructions at the top for putting one back. `hl-float` is
+  deliberately not in there, because the hero graphic still uses it.
+- **`service-images-source/`** — the full-size originals of the three service
+  photographs, before they were resized and re-encoded into `assets/uploads/`.
 
 ## Not in this repo
 

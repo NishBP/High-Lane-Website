@@ -1,0 +1,118 @@
+<!-- ══════════════════════════════════════════════════════════════════════
+     ARCHIVED — the animated vignettes that used to sit in the right half of
+     each expanded service row, replaced on 2026-09-04 by photographs.
+
+     Nothing here is built or served: `archive/` is outside everything
+     build.js copies. It is kept verbatim so the animations can come back.
+
+     To restore one:
+       1. paste its markup back as the second child of that row's
+          <div class="svc-body-in">, in place of <!--cms:svc-shot:N-->
+       2. paste the <style> block below back into the helmet stylesheet,
+          just above the STORY section
+       3. drop the .svc-shot rules, or leave them: a service with an empty
+          image field renders no photograph at all
+
+     `hl-float` is NOT in here — the hero graphic still uses it.
+     ══════════════════════════════════════════════════════════════════════ -->
+
+<style>
+/* the little product vignettes inside each service row */
+.mock{position:relative;height:200px;border-radius:var(--r);overflow:hidden;background:var(--bg);
+  border:1px solid var(--line);box-shadow:var(--sh-2)}
+.mock-in{position:absolute;inset:0;background:linear-gradient(180deg,var(--bg-soft),var(--surface))}
+.card{position:absolute;background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);
+  box-shadow:var(--sh-1)}
+@keyframes hl-post{0%{transform:translateY(12px) scale(.97);opacity:0}
+  10%,44%{transform:none;opacity:1}54%,100%{transform:translateY(-12px) scale(.97);opacity:0}}
+/* engagement sparkline: thin tonal bars, not a wall of accent */
+.spark{display:flex;align-items:flex-end;gap:5px}
+.spark span{flex:1;height:100%;border-radius:3px 3px 1px 1px;transform-origin:bottom;
+  background:linear-gradient(180deg,var(--aqua),color-mix(in srgb,var(--teal) 55%,var(--aqua)));
+  opacity:.85;animation:hl-bar 3.2s var(--ease-out) infinite;animation-delay:var(--d)}
+@keyframes hl-bar{0%,100%{transform:scaleY(.22)}50%{transform:scaleY(1)}}
+@keyframes hl-skeleton{0%,100%{opacity:.4}50%{opacity:.95}}
+@keyframes hl-dash{to{stroke-dashoffset:-28}}
+@keyframes hl-travel{0%{offset-distance:0%;opacity:0}10%,90%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@keyframes hl-pulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.3);opacity:.2}}
+@keyframes hl-chip{0%,20%{background:var(--aqua-100);color:var(--teal-800)}
+  32%,58%{background:var(--aqua);color:var(--deep)}72%,100%{background:var(--aqua-100);color:var(--teal-800)}}
+</style>
+
+<!-- ── 01 · Social Media Management — posts cycling, engagement sparkline ── -->
+          <div class="mock" data-svc-mock>
+            <div class="mock-in">
+              <div style="position:absolute;left:18px;top:18px;right:18px;height:112px">
+                <div class="card" style="inset:0;padding:12px;animation:hl-post 7s var(--ease-out) infinite">
+                  <div style="display:flex;align-items:center;gap:9px"><span style="width:22px;height:22px;border-radius:50%;background:var(--aqua);display:block"></span><span style="height:7px;width:78px;border-radius:4px;background:var(--aqua-200);display:block"></span></div>
+                  <div style="margin-top:11px;display:flex;flex-direction:column;gap:6px"><span style="height:7px;width:100%;border-radius:4px;background:rgba(8,25,27,.10);display:block"></span><span style="height:7px;width:62%;border-radius:4px;background:rgba(8,25,27,.10);display:block"></span></div>
+                  <div style="margin-top:13px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--teal-700)"><span style="width:8px;height:8px;border-radius:50%;background:var(--aqua);display:block;animation:hl-pulse 2.2s var(--ease-out) infinite"></span>2.4k engaged</div>
+                </div>
+                <div class="card" style="inset:0;padding:12px;animation:hl-post 7s var(--ease-out) infinite;animation-delay:3.5s">
+                  <div style="display:flex;align-items:center;gap:9px"><span style="width:22px;height:22px;border-radius:50%;background:var(--deep);display:block"></span><span style="height:7px;width:60px;border-radius:4px;background:var(--aqua-200);display:block"></span></div>
+                  <div style="margin-top:11px;display:flex;flex-direction:column;gap:6px"><span style="height:7px;width:86%;border-radius:4px;background:rgba(8,25,27,.10);display:block"></span><span style="height:7px;width:46%;border-radius:4px;background:rgba(8,25,27,.10);display:block"></span></div>
+                  <div style="margin-top:13px;display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--teal-700)"><span style="width:8px;height:8px;border-radius:50%;background:var(--aqua);display:block;animation:hl-pulse 2.2s var(--ease-out) infinite"></span>+38% reach</div>
+                </div>
+              </div>
+              <div class="spark" style="position:absolute;left:18px;right:18px;bottom:18px;height:44px">
+                <span style="--d:0s"></span><span style="--d:.14s"></span><span style="--d:.28s"></span>
+                <span style="--d:.42s"></span><span style="--d:.56s"></span><span style="--d:.7s"></span>
+                <span style="--d:.84s"></span><span style="--d:.98s"></span><span style="--d:1.12s"></span>
+                <span style="--d:1.26s"></span>
+              </div>
+            </div>
+          </div>
+
+<!-- ── 02 · AI Automations — inputs routed through an AI node to outputs ── -->
+          <div class="mock" data-svc-mock>
+            <div class="mock-in">
+              <svg viewBox="0 0 330 200" style="position:absolute;inset:0;width:100%;height:100%">
+                <g fill="none" stroke="#08191b" stroke-opacity=".2" stroke-width="1.4" stroke-dasharray="5 6" style="animation:hl-dash 1.9s linear infinite">
+                  <path d="M74 52 C 118 52 122 100 164 100"/>
+                  <path d="M74 100 H 164"/>
+                  <path d="M74 148 C 118 148 122 100 164 100"/>
+                  <path d="M206 100 C 244 100 242 58 276 58"/>
+                  <path d="M206 100 C 244 100 242 142 276 142"/>
+                </g>
+                <g fill="#fff" stroke="#08191b" stroke-opacity=".16">
+                  <rect x="24" y="40" width="50" height="24" rx="7"/><rect x="24" y="88" width="50" height="24" rx="7"/><rect x="24" y="136" width="50" height="24" rx="7"/>
+                  <rect x="276" y="46" width="50" height="24" rx="7"/><rect x="276" y="130" width="50" height="24" rx="7"/>
+                </g>
+                <g fill="#08191b" font-size="8" font-family="Inter, sans-serif" font-weight="600" opacity=".6" letter-spacing=".6">
+                  <text x="33" y="55">INBOX</text><text x="33" y="103">FORMS</text><text x="33" y="151">DMS</text>
+                  <text x="288" y="61">CRM</text><text x="285" y="145">REPLY</text>
+                </g>
+                <rect x="164" y="76" width="42" height="48" rx="11" fill="#06383c"/>
+                <text x="175" y="106" fill="#12eef2" font-size="14" font-family="Poppins, sans-serif" font-weight="800">AI</text>
+                <circle cx="185" cy="100" r="32" fill="none" stroke="#12eef2" stroke-width="1.6" style="transform-origin:185px 100px;animation:hl-pulse 3s var(--ease-out) infinite"/>
+              </svg>
+              <span style="position:absolute;width:8px;height:8px;border-radius:50%;background:var(--aqua);offset-path:path('M74 100 H 164');animation:hl-travel 2.6s linear infinite"></span>
+              <span style="position:absolute;width:8px;height:8px;border-radius:50%;background:var(--teal);offset-path:path('M206 100 C 244 100 242 58 276 58');animation:hl-travel 2.6s linear infinite;animation-delay:1.3s"></span>
+            </div>
+          </div>
+
+<!-- ── 03 · Web Development — a browser chrome with skeleton blocks ── -->
+          <div class="mock" data-svc-mock>
+            <div class="mock-in" style="display:flex;align-items:center;justify-content:center">
+              <div class="card" style="position:relative;width:86%;border-radius:var(--r);animation:hl-float 7s var(--ease-out) infinite">
+                <div style="display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line)">
+                  <span style="width:7px;height:7px;border-radius:50%;background:var(--aqua);display:block"></span>
+                  <span style="width:7px;height:7px;border-radius:50%;background:var(--aqua-300);display:block"></span>
+                  <span style="width:7px;height:7px;border-radius:50%;background:var(--aqua-200);display:block"></span>
+                  <span style="margin-left:8px;height:8px;flex:1;border-radius:4px;background:rgba(8,25,27,.07);display:block"></span>
+                </div>
+                <div style="padding:13px;display:grid;grid-template-columns:1fr 1fr;gap:9px">
+                  <span style="height:34px;border-radius:6px;background:var(--aqua-200);display:block;animation:hl-skeleton 3s var(--ease-out) infinite"></span>
+                  <span style="height:34px;border-radius:6px;background:rgba(8,25,27,.07);display:block;animation:hl-skeleton 3s var(--ease-out) infinite;animation-delay:.5s"></span>
+                  <span style="height:14px;border-radius:5px;background:rgba(8,25,27,.07);display:block;animation:hl-skeleton 3s var(--ease-out) infinite;animation-delay:1s"></span>
+                  <span style="height:14px;border-radius:5px;background:var(--aqua-300);display:block;animation:hl-skeleton 3s var(--ease-out) infinite;animation-delay:1.5s"></span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;padding:0 13px 14px">
+                  <span style="font-size:10px;font-weight:600;letter-spacing:.05em;padding:5px 9px;border-radius:var(--r-pill);animation:hl-chip 6s var(--ease-out) infinite">PAYMENTS</span>
+                  <span style="font-size:10px;font-weight:600;letter-spacing:.05em;padding:5px 9px;border-radius:var(--r-pill);animation:hl-chip 6s var(--ease-out) infinite;animation-delay:1.5s">CRM</span>
+                  <span style="font-size:10px;font-weight:600;letter-spacing:.05em;padding:5px 9px;border-radius:var(--r-pill);animation:hl-chip 6s var(--ease-out) infinite;animation-delay:3s">WEB APP</span>
+                  <span style="font-size:10px;font-weight:600;letter-spacing:.05em;padding:5px 9px;border-radius:var(--r-pill);animation:hl-chip 6s var(--ease-out) infinite;animation-delay:4.5s">CMS</span>
+                </div>
+              </div>
+            </div>
+          </div>

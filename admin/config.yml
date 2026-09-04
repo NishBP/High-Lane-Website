@@ -207,6 +207,15 @@ collections:
                     fields:
                       - { label: Label, name: label, widget: string }
                       - { label: Link, name: href, widget: string }
+                  - label: Photo
+                    name: image
+                    widget: image
+                    required: false
+                    hint: "Fills the right half of the card when it opens. Landscape or square; it is cropped to fit, centred. Leave empty and the card is text only. Max 2 MB."
+                    media_library:
+                      config:
+                        max_file_size: 2097152
+                  - { label: Photo description, name: imageAlt, widget: string, required: false, hint: "Read aloud by screen readers, and shown if the image fails to load." }
 
           - label: Our story
             name: story
