@@ -111,12 +111,18 @@ for how to add or remove an editor.
   stranded at the start of a line. Two or three words each reads best.
 - **The team grid is four across**, and a short last row centres under it
   rather than stretching. Three across on a tablet, two on a phone.
-- **On a phone the services are a swipeable carousel**, not an accordion:
-  every card is already open and you move sideways between them, so the
-  arrow points right instead of being a plus. The script skips its toggle
-  wiring below 768px, and the stylesheet overrides the inline height it uses
-  for the desktop open/close animation. Change one of those and you have to
-  change the other.
+- **On a phone the services are a swipeable carousel**, not an accordion, and
+  a card is a different thing entirely: the service name over a photograph,
+  with the keywords sitting on the picture. The body copy, the bullets and
+  the "Discuss a project" button are hidden below 768px — they are still in
+  the HTML, so search engines read them, but nobody on a phone sees them and
+  there is no call to action in this section on mobile. The script also skips
+  its toggle wiring below 768px, since there is nothing left to expand.
+- **The photograph's height on mobile comes from flex, not aspect-ratio.**
+  An `aspect-ratio` box does not reliably give an absolutely positioned child
+  a definite height in Safari, and these came out blank on an iPhone because
+  of it. Its `opacity` is pinned on there too: a lazily loaded image inside an
+  `opacity:0` subtree can sit undecoded. Both are load-bearing.
 
 ## The files that matter
 
