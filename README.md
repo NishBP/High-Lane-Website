@@ -47,7 +47,7 @@ for how to add or remove an editor.
 | Nav & footer | link labels, link targets, button label, the Login tooltip | the logo |
 | Hero | badge, wordmark, the 3 rotating services, intro, both buttons | the animated graphic's layout and icons |
 | Hero graphic | centre label, 3 node labels, 2 chip labels | icons, wiring, animation |
-| Services | heading, subtitle, intro, and per service: number, title, keywords, copy, bullets, button, **photo** | the split-lane graphic |
+| Services | heading, subtitle, intro, and per service: title, keywords, copy, bullets, button, photo | the split-lane graphic |
 | Our story | heading, subtitle, paragraphs, both buttons, **the photo** | — |
 | Team | heading, subtitle, intro, and per person: name, role, **headshot** | — |
 | Testimonials | heading, subtitle, and per review: quote, detail, name, company | — |
@@ -106,6 +106,18 @@ for how to add or remove an editor.
   cropped to whatever height the text beside it happens to be, centred, so any
   shape works but the middle of the picture is what survives. Clear the field
   and that card is text only, full width, with no gap left behind.
+- **The nav floats**: inset from the page edges, rounded, sticky over the
+  hero rather than above it. The hero is pulled up by exactly the bar's outer
+  height so its background still reaches the top of the page, and given that
+  height back as padding so nothing else moves. That height is `--nav-h`,
+  measured by the script on load, on resize and once the webfont lands; the
+  value in the stylesheet is a fallback for an unscripted page.
+- **Below 860px the nav links live behind a hamburger** and the Login button
+  is hidden. The links are wrapped in `.nav-links`, which is `display:contents`
+  on a wide screen — no box, so the links stay direct children of the bar —
+  and becomes the dropdown panel on a phone. The panel is opaque rather than
+  frosted like the bar: a menu has to be readable wherever `backdrop-filter`
+  is not.
 - **Service keywords are badges**, one per entry in the list. They used to be
   one run of text with dots between, which wrapped mid-list and left a dot
   stranded at the start of a line. Two or three words each reads best.

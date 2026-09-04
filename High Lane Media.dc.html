@@ -93,6 +93,10 @@
 /* ── base ─────────────────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+/* the floating nav's outer height, remeasured by the script on load and on
+   resize; this fallback is what an unscripted page gets */
+:root{--nav-h:76px}
+@media (max-width:520px){:root{--nav-h:70px}}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:var(--font-body);font-size:16px;line-height:1.6;
@@ -152,13 +156,26 @@ a{color:inherit;text-decoration:none}
 
 /* ── nav ──────────────────────────────────────────────────────────────── */
 .nav{
-  position:sticky;top:0;z-index:60;display:flex;align-items:center;
-  gap:clamp(14px,2.4vw,34px);padding:13px var(--pad);
-  background:color-mix(in srgb,var(--bg) 78%,transparent);
+  --nav-gap:clamp(9px,1.2vw,14px);
+  position:sticky;top:var(--nav-gap);z-index:60;display:flex;align-items:center;
+  gap:clamp(14px,2.4vw,34px);
+  /* --pad is the same inset .wrap uses, so the bar lines up with the page */
+  margin:var(--nav-gap) var(--pad) 0;
+  padding:11px clamp(13px,1.5vw,18px) 11px clamp(15px,1.8vw,22px);
+  border-radius:var(--r-lg);
+  background:color-mix(in srgb,var(--bg) 76%,transparent);
   backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);
-  border-bottom:1px solid transparent;transition:border-color .4s var(--ease),background .4s var(--ease);
+  border:1px solid transparent;box-shadow:var(--sh-1);
+  transition:border-color .4s var(--ease),background .4s var(--ease),box-shadow .4s var(--ease);
 }
-.nav[data-stuck]{border-bottom-color:var(--line);background:color-mix(in srgb,var(--bg) 88%,transparent)}
+.nav[data-stuck]{border-color:var(--line);box-shadow:var(--sh-2);
+  background:color-mix(in srgb,var(--bg) 90%,transparent)}
+
+/* On a wide screen the links sit in the bar itself; on a phone this wrapper
+   becomes the dropdown panel, which is why it is a real element and not just
+   four siblings. */
+.nav-links{display:contents}
+.nav-burger{display:none}
 .nav-brand{display:flex;align-items:center;margin-right:auto}
 /* the logo file is the wordmark — never re-typeset the brand name in CSS */
 .nav-brand img{display:block;height:38px;width:auto}
@@ -182,10 +199,40 @@ a{color:inherit;text-decoration:none}
   border:5px solid transparent;border-bottom-color:var(--deep)}
 @media (hover:hover){.nav-cta:hover .tip{opacity:1;transform:none}}
 .nav-cta:focus-visible .tip{opacity:1;transform:none}
-@media (max-width:860px){.nav-link{display:none}}
+@media (max-width:860px){
+  .nav-cta{display:none}
+  .nav-burger{display:flex;flex-direction:column;justify-content:center;gap:5px;flex:none;
+    width:42px;height:42px;padding:0 9px;border-radius:var(--r-sm);
+    border:1px solid var(--line-2);background:transparent;cursor:pointer;
+    -webkit-appearance:none;appearance:none;
+    transition:background .3s var(--ease),border-color .3s var(--ease)}
+  .nav-burger:hover{border-color:var(--teal)}
+  .nav-burger span{display:block;width:100%;height:2px;border-radius:2px;background:var(--ink);
+    transition:transform .35s var(--ease),opacity .2s var(--ease)}
+  .nav[data-menu] .nav-burger{background:var(--surface)}
+  .nav[data-menu] .nav-burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nav[data-menu] .nav-burger span:nth-child(2){opacity:0}
+  .nav[data-menu] .nav-burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  /* solid, not translucent like the bar above it: a menu has to be readable
+     even where backdrop-filter is unsupported or switched off */
+  .nav-links{display:grid;gap:2px;position:absolute;left:0;right:0;top:calc(100% + 8px);
+    padding:8px;border-radius:var(--r-lg);background:var(--bg);
+    border:1px solid var(--line);box-shadow:var(--sh-2);
+    opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none;
+    transition:opacity .3s var(--ease),transform .3s var(--ease),visibility 0s .3s}
+  .nav[data-menu] .nav-links{opacity:1;visibility:visible;transform:none;pointer-events:auto;
+    transition:opacity .3s var(--ease),transform .3s var(--ease),visibility 0s}
+  .nav-link{display:block;padding:12px 14px;border-radius:var(--r-sm);
+    font-size:15.5px;font-weight:500;color:var(--ink)}
+  .nav-link::after{display:none}
+  .nav-link:hover{background:var(--surface)}
+}
 
 /* ── HERO ─────────────────────────────────────────────────────────────── */
-.hero{position:relative;padding:clamp(48px,7vw,96px) var(--pad) clamp(56px,8vw,104px);isolation:isolate}
+.hero{position:relative;isolation:isolate;
+  padding:calc(var(--nav-h) + clamp(48px,7vw,96px)) var(--pad) clamp(56px,8vw,104px);
+  margin-top:calc(var(--nav-h) * -1)}
 .hero-bg{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .hero-glow{position:absolute;inset:0;
   background:
@@ -387,10 +434,8 @@ a{color:inherit;text-decoration:none}
 .svc + .svc{border-top:1px solid var(--line)}
 .svc-bar{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--aqua);
   transform:scaleY(0);transform-origin:top;transition:transform .5s var(--ease)}
-.svc-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
+.svc-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;
   gap:clamp(12px,2vw,26px);padding:clamp(20px,2.5vw,30px) clamp(18px,2.2vw,32px)}
-.svc-num{font-family:var(--font-display);font-weight:600;font-size:12.5px;letter-spacing:.1em;
-  color:var(--ink-40);transition:color .4s var(--ease);font-variant-numeric:tabular-nums}
 .svc-title{font-size:clamp(22px,2.9vw,36px);letter-spacing:-.03em;font-weight:700;color:var(--ink);
   transition:color .4s var(--ease)}
 .svc-tags{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
@@ -430,7 +475,7 @@ a{color:inherit;text-decoration:none}
   /* the header and its button paint above the photograph */
   .svc-head{position:relative;z-index:1}
   /* and nothing in the header or the body runs under it */
-  .svc[data-open]:has(.svc-shot) .svc-head{grid-template-columns:auto minmax(0,1fr) 50%}
+  .svc[data-open]:has(.svc-shot) .svc-head{grid-template-columns:minmax(0,1fr) 50%}
   /* the button keeps its place at the far right of the wider column */
   .svc[data-open]:has(.svc-shot) .svc-arrow{justify-self:end}
   .svc:has(.svc-shot) .svc-body-in{padding-right:calc(50% + clamp(22px,3vw,46px))}
@@ -442,7 +487,6 @@ a{color:inherit;text-decoration:none}
   box-shadow:0 0 0 3px color-mix(in srgb,var(--aqua) 18%,transparent)}
 .svc[data-open] {background:color-mix(in srgb,var(--aqua-100) 72%,var(--bg))}
 .svc[data-open] .svc-bar{transform:scaleY(1)}
-.svc[data-open] .svc-num{color:var(--teal-700)}
 .svc[data-open] .svc-title{color:var(--deep)}
 .svc[data-open] .svc-arrow{background:var(--deep);border-color:var(--deep);color:#fff;transform:rotate(45deg)}
 .svc:hover .svc-arrow{border-color:var(--teal)}
@@ -463,11 +507,10 @@ a{color:inherit;text-decoration:none}
     box-shadow:var(--sh-1);overflow:hidden}
   /* the number and the arrow share a line, so the title and its badges get
      the full width of the card instead of a 170px middle column */
-  .svc-head{grid-template-columns:auto 1fr;grid-template-areas:"num arrow" "copy copy";
-    gap:12px;padding:18px}
-  .svc-num{grid-area:num;align-self:center}
-  .svc-head > div{grid-area:copy;min-width:0}
-  .svc-arrow{grid-area:arrow;justify-self:end}
+  /* without the number the title comes up alongside the arrow rather than
+     under it, which hands a whole row back to the photograph */
+  .svc-head{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:12px;padding:18px}
+  .svc-head > div{min-width:0}
   .svc[data-open]{background:var(--bg)}
   /* the script writes an inline max-height for its open/close animation;
      here the cards simply stay open */
@@ -477,7 +520,7 @@ a{color:inherit;text-decoration:none}
      expanding, and there is nothing to expand here. */
   .svc{display:flex;flex-direction:column}
   .svc-body{display:none}
-  .svc-head{flex:none;padding:18px 18px 15px}
+  .svc-head{flex:none;padding:16px 16px 14px}
   .svc-title{font-size:26px;line-height:1.14}
   /* The photograph takes whatever height is left and runs to three edges.
      Its height comes from flex, deliberately: an aspect-ratio box does not
@@ -485,7 +528,7 @@ a{color:inherit;text-decoration:none}
      which is why these came out blank on an iPhone. opacity is pinned on for
      the same reason — a lazily loaded image inside an opacity:0 subtree can
      sit there undecoded. */
-  .svc-shot{flex:1;min-height:min(52vw,230px);aspect-ratio:auto;opacity:1}
+  .svc-shot{flex:1;min-height:min(62vw,270px);aspect-ratio:auto;opacity:1}
   .svc-shot::after{box-shadow:inset 0 1px 0 var(--line)}
   /* a scrim, because the keywords have to read over a light photograph */
   .svc-shot::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -652,13 +695,15 @@ a{color:inherit;text-decoration:none}
   <a class="nav-brand" href="#top" aria-label="High Lane, back to top">
     <img src="assets/hlm-logo.png" alt="High Lane" width="1063" height="340" decoding="async">
   </a>
-  <!--cms:nav-links-->
+  <div class="nav-links" id="hl-nav-links"><!--cms:nav-links-->
   <a class="nav-link" href="#services">Services</a>
   <a class="nav-link" href="#story">Story</a>
   <a class="nav-link" href="#team">Team</a>
   <a class="nav-link" href="#reviews">Reviews</a>
-  <!--/cms:nav-links-->
+  <!--/cms:nav-links--></div>
   <!--cms:nav-cta--><a class="btn btn-primary btn-sm nav-cta" href="#contact"><span>Login</span><span class="tip">For Clients and Team Members</span></a><!--/cms:nav-cta-->
+  <button class="nav-burger" type="button" data-nav-toggle aria-label="Open menu"
+          aria-expanded="false" aria-controls="hl-nav-links"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- ══════════════════════════════════════════════════════════════════════
@@ -782,7 +827,6 @@ a{color:inherit;text-decoration:none}
     <article class="svc" data-svc="0" tabindex="0" role="button" aria-expanded="true">
       <span class="svc-bar" aria-hidden="true"></span>
       <div class="svc-head">
-        <span class="svc-num" data-cms="services.items.0.num">01</span>
         <div>
           <h3 class="svc-title" data-cms="services.items.0.title">Social Media Management</h3>
           <ul class="svc-tags"><!--cms:svc-tags:0--><li class="svc-tag">Strategy</li><li class="svc-tag">Content production</li><li class="svc-tag">Community</li><li class="svc-tag">Paid support</li><!--/cms:svc-tags:0--></ul>
@@ -808,7 +852,6 @@ a{color:inherit;text-decoration:none}
     <article class="svc" data-svc="1" tabindex="0" role="button" aria-expanded="false">
       <span class="svc-bar" aria-hidden="true"></span>
       <div class="svc-head">
-        <span class="svc-num" data-cms="services.items.1.num">02</span>
         <div>
           <h3 class="svc-title" data-cms="services.items.1.title">AI Automations</h3>
           <ul class="svc-tags"><!--cms:svc-tags:1--><li class="svc-tag">Lead routing</li><li class="svc-tag">Inbox triage</li><li class="svc-tag">Reporting</li><li class="svc-tag">Internal tools</li><!--/cms:svc-tags:1--></ul>
@@ -834,7 +877,6 @@ a{color:inherit;text-decoration:none}
     <article class="svc" data-svc="2" tabindex="0" role="button" aria-expanded="false">
       <span class="svc-bar" aria-hidden="true"></span>
       <div class="svc-head">
-        <span class="svc-num" data-cms="services.items.2.num">03</span>
         <div>
           <h3 class="svc-title" data-cms="services.items.2.title">Web Development</h3>
           <ul class="svc-tags"><!--cms:svc-tags:2--><li class="svc-tag">Landing pages</li><li class="svc-tag">CRMs &amp; web apps</li><li class="svc-tag">Payments</li><li class="svc-tag">CMS</li><!--/cms:svc-tags:2--></ul>
@@ -1055,6 +1097,7 @@ class Component extends DCLogic {
     this.sizePinwheel();
     this.revealOnScroll();
     this.stickyNav();
+    this.wireMenu();
     this.buildGrid();
     this.wireServices();
     this.wireLucide();
@@ -1103,6 +1146,38 @@ class Component extends DCLogic {
     this.onScroll = () => nav.toggleAttribute('data-stuck', scrollY > 8);
     this.onScroll();
     addEventListener('scroll', this.onScroll, { passive: true });
+
+    /* The bar floats over the hero rather than sitting above it, so the hero
+       is pulled up by exactly the bar's outer height. Measure it rather than
+       guess: it changes with the logo size and the webfont. */
+    const measure = () => {
+      const gap = parseFloat(getComputedStyle(nav).marginTop) || 0;
+      document.documentElement.style.setProperty('--nav-h', (nav.offsetHeight + gap) + 'px');
+    };
+    measure();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    this.navResize = () => measure();
+    addEventListener('resize', this.navResize);
+  }
+
+  /* Below 860px the nav links live behind a hamburger. Anything that should
+     obviously dismiss a menu does: a link, a tap outside, Escape. */
+  wireMenu() {
+    const nav = document.querySelector('[data-nav]');
+    const btn = nav && nav.querySelector('[data-nav-toggle]');
+    if (!nav || !btn) return;
+    const set = (on) => {
+      nav.toggleAttribute('data-menu', on);
+      btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+      btn.setAttribute('aria-label', on ? 'Close menu' : 'Open menu');
+    };
+    // without this the document handler below would close it again immediately
+    btn.addEventListener('click', (e) => { e.stopPropagation(); set(!nav.hasAttribute('data-menu')); });
+    nav.querySelectorAll('.nav-link').forEach((a) => a.addEventListener('click', () => set(false)));
+    this.onDocClick = (e) => { if (!nav.contains(e.target)) set(false); };
+    this.onKey = (e) => { if (e.key === 'Escape') set(false); };
+    addEventListener('click', this.onDocClick);
+    addEventListener('keydown', this.onKey);
   }
 
   /* hero grid: hairline cells with a soft light running along one row */
@@ -1206,7 +1281,10 @@ class Component extends DCLogic {
     if (this.gridResize) removeEventListener('resize', this.gridResize);
     if (this.svcResize) removeEventListener('resize', this.svcResize);
     if (this.onScroll) removeEventListener('scroll', this.onScroll);
+    if (this.onDocClick) removeEventListener('click', this.onDocClick);
+    if (this.onKey) removeEventListener('keydown', this.onKey);
     if (this.pwResize) removeEventListener('resize', this.pwResize);
+    if (this.navResize) removeEventListener('resize', this.navResize);
     this.io && this.io.disconnect();
   }
   renderVals() { return {}; }

@@ -76,7 +76,6 @@
     "lede": "Start anywhere. Most clients add the next service once they see what the first one frees up.",
     "items": [
       {
-        "num": "01",
         "title": "Social Media Management",
         "keywords": [
           "Strategy",
@@ -98,7 +97,6 @@
         "imageAlt": "A medium-format film camera, its viewfinder framing a rose garden"
       },
       {
-        "num": "02",
         "title": "AI Automations",
         "keywords": [
           "Lead routing",
@@ -120,7 +118,6 @@
         "imageAlt": "An overhead view of people spread across a floor, joined by a web of fine lines"
       },
       {
-        "num": "03",
         "title": "Web Development",
         "keywords": [
           "Landing pages",

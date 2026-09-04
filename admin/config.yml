@@ -186,10 +186,9 @@ collections:
                 name: items
                 widget: list
                 label_singular: service
-                summary: "{{fields.num}} — {{fields.title}}"
+                summary: "{{fields.title}}"
                 hint: "Exactly three. Each row has a hand-built animation that belongs to its position, so adding a fourth will not draw anything."
                 fields:
-                  - { label: Number, name: num, widget: string }
                   - { label: Title, name: title, widget: string }
                   - label: Keywords
                     name: keywords
